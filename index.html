@@ -1915,7 +1915,7 @@ if (bookingDate) {
 
 /* ========== Reservation automation : Make + Google Calendar ==========
 Replace this URL with the Custom Webhook URL generated in Make.
-Expected Make fields: name, phone, area, date, time, people, message, start, end, summary, description.
+Expected Make fields: name, phone, area, date, time, people, message, google_start, google_end, summary, description.
 */
 const MAKE_RESERVATION_WEBHOOK_URL = 'https://hook.eu1.make.com/ufk9jzbjuihgsp6liyqrk8ige71rbxpn';
 const bookingForm = document.getElementById('bookingForm');
@@ -2033,16 +2033,7 @@ if (bookingForm) {
     const people = String(formData.get('people') || '').trim();
     const message = String(formData.get('message') || '').trim();
 
-    formData.set('time', time);
-    formData.append('requested_date', requestedDate);
-    formData.append('requested_time', time);
-    formData.append('start', formatCalendarIso(startSlot));
-    formData.append('end', formatCalendarIso(endSlot));
-    formData.append('start_local', `${startSlot.date} ${startSlot.time}`);
-    formData.append('end_local', `${endSlot.date} ${endSlot.time}`);
-    formData.append('timezone', 'Europe/Paris');
-    formData.append('summary', `Réservation - ${name || 'Client'} - ${people} - ${area}`);
-    formData.append('description', [
+    const calendarDescription = [
       `Nom : ${name}`,
       `Téléphone : ${phone}`,
       `Nombre de personnes : ${people}`,
@@ -2054,9 +2045,14 @@ if (bookingForm) {
       message || '-',
       '',
       'Source : site web Made in Italy'
-    ].join('\n'));
-    formData.append('source', 'site-web-made-in-italy');
-    formData.append('created_at', new Date().toISOString());
+    ].join('\n');
+
+    formData.set('time', time);
+    formData.set('date', requestedDate);
+    formData.append('google_start', `${startSlot.date} ${startSlot.time}`);
+    formData.append('google_end', `${endSlot.date} ${endSlot.time}`);
+    formData.append('summary', `Réservation - ${name || 'Client'} - ${people} - ${area}`);
+    formData.append('description', calendarDescription);
 
     if (bookingSubmit) {
       bookingSubmit.disabled = true;
