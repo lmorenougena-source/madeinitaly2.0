@@ -1374,8 +1374,11 @@
             <input required class="field mt-1" type="tel" name="phone" autocomplete="tel" placeholder="+33 6 12 34 56 78">
           </label>
           <label class="block sm:col-span-2">
-            <span class="text-xs uppercase tracking-widest text-charcoal/55">Email</span>
-            <input required class="field mt-1" type="email" name="email" autocomplete="email" placeholder="vous@email.com">
+            <span class="text-xs uppercase tracking-widest text-charcoal/55">Emplacement souhaité</span>
+            <select required class="field mt-1" name="area">
+              <option value="Salle intérieure">Salle intérieure</option>
+              <option value="Terrasse extérieure">Terrasse extérieure</option>
+            </select>
           </label>
           <label class="block">
             <span class="text-xs uppercase tracking-widest text-charcoal/55">Date</span>
@@ -1383,7 +1386,36 @@
           </label>
           <label class="block">
             <span class="text-xs uppercase tracking-widest text-charcoal/55">Heure</span>
-            <input required class="field mt-1" type="time" name="time">
+            <select required class="field mt-1" name="time">
+              <option value="">Choisissez un créneau</option>
+              <option value="11:00">11:00</option>
+              <option value="11:30">11:30</option>
+              <option value="12:00">12:00</option>
+              <option value="12:30">12:30</option>
+              <option value="13:00">13:00</option>
+              <option value="13:30">13:30</option>
+              <option value="14:00">14:00</option>
+              <option value="14:30">14:30</option>
+              <option value="15:00">15:00</option>
+              <option value="15:30">15:30</option>
+              <option value="16:00">16:00</option>
+              <option value="16:30">16:30</option>
+              <option value="17:00">17:00</option>
+              <option value="17:30">17:30</option>
+              <option value="18:00">18:00</option>
+              <option value="18:30">18:30</option>
+              <option value="19:00">19:00</option>
+              <option value="19:30">19:30</option>
+              <option value="20:00">20:00</option>
+              <option value="20:30">20:30</option>
+              <option value="21:00">21:00</option>
+              <option value="21:30">21:30</option>
+              <option value="22:00">22:00</option>
+              <option value="22:30">22:30</option>
+              <option value="23:00">23:00</option>
+              <option value="23:30">23:30</option>
+              <option value="24:00">00:00</option>
+            </select>
           </label>
           <label class="block sm:col-span-2">
             <span class="text-xs uppercase tracking-widest text-charcoal/55">Nombre de personnes</span>
@@ -1883,7 +1915,7 @@ if (bookingDate) {
 
 /* ========== Reservation automation : Make + Google Calendar ==========
 Replace this URL with the Custom Webhook URL generated in Make.
-Expected Make fields: name, phone, email, date, time, people, message, start, end, summary, description.
+Expected Make fields: name, phone, area, date, time, people, message, start, end, summary, description.
 */
 const MAKE_RESERVATION_WEBHOOK_URL = 'https://hook.eu1.make.com/ufk9jzbjuihgsp6liyqrk8ige71rbxpn';
 const bookingForm = document.getElementById('bookingForm');
@@ -1923,11 +1955,20 @@ const bookingMessages = {
 };
 
 function localBookingDate(date, time) {
+  if (time === '24:00') {
+    const nextDay = new Date(`${date}T00:00:00`);
+    nextDay.setDate(nextDay.getDate() + 1);
+    return nextDay;
+  }
   return new Date(`${date}T${time || '12:00'}:00`);
 }
 
 function formatCalendarIso(date) {
   return date.toISOString();
+}
+
+function displayBookingTime(time) {
+  return time === '24:00' ? '00:00' : time;
 }
 
 function bookingText(key) {
@@ -1953,19 +1994,22 @@ if (bookingForm) {
     const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
     const name = String(formData.get('name') || '').trim();
     const phone = String(formData.get('phone') || '').trim();
-    const email = String(formData.get('email') || '').trim();
+    const area = String(formData.get('area') || '').trim();
+    const time = displayBookingTime(String(formData.get('time') || '').trim());
     const people = String(formData.get('people') || '').trim();
     const message = String(formData.get('message') || '').trim();
 
+    formData.set('time', time);
     formData.append('start', formatCalendarIso(start));
     formData.append('end', formatCalendarIso(end));
     formData.append('timezone', 'Europe/Paris');
-    formData.append('summary', `Réservation - ${name || 'Client'} - ${people}`);
+    formData.append('summary', `Réservation - ${name || 'Client'} - ${people} - ${area}`);
     formData.append('description', [
       `Nom : ${name}`,
       `Téléphone : ${phone}`,
-      `Email : ${email}`,
       `Nombre de personnes : ${people}`,
+      `Emplacement souhaité : ${area}`,
+      `Heure demandée : ${time}`,
       '',
       'Message :',
       message || '-',
@@ -2963,9 +3007,27 @@ Object.keys(ALLERGEN_LABELS).forEach(lang => {
 });
 
 const UI_TRANSLATIONS = {
-  en: { "Scroll horizontal":"Horizontal scroll" },
-  it: { "Scroll horizontal":"Scorrimento orizzontale" },
-  es: { "Scroll horizontal":"Desplazamiento horizontal" }
+  en: {
+    "Scroll horizontal":"Horizontal scroll",
+    "Emplacement souhaité":"Preferred seating",
+    "Salle intérieure":"Indoor dining room",
+    "Terrasse extérieure":"Outdoor terrace",
+    "Choisissez un créneau":"Choose a time slot"
+  },
+  it: {
+    "Scroll horizontal":"Scorrimento orizzontale",
+    "Emplacement souhaité":"Posto desiderato",
+    "Salle intérieure":"Sala interna",
+    "Terrasse extérieure":"Terrazza esterna",
+    "Choisissez un créneau":"Scegli una fascia oraria"
+  },
+  es: {
+    "Scroll horizontal":"Desplazamiento horizontal",
+    "Emplacement souhaité":"Ubicación deseada",
+    "Salle intérieure":"Sala interior",
+    "Terrasse extérieure":"Terraza exterior",
+    "Choisissez un créneau":"Elige una franja horaria"
+  }
 };
 
 Object.keys(UI_TRANSLATIONS).forEach(lang => {
