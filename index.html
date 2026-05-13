@@ -1360,52 +1360,53 @@
 
     <div class="grid lg:grid-cols-12 gap-8">
       <!-- Form -->
-      <form id="bookingForm" class="lg:col-span-7 card p-7 lg:p-10 reveal" onsubmit="event.preventDefault(); document.getElementById('bookingOk').classList.remove('hidden'); this.reset();">
+      <form id="bookingForm" class="lg:col-span-7 card p-7 lg:p-10 reveal">
         <h3 class="font-serif text-2xl">Demande de réservation</h3>
         <p class="text-sm text-charcoal/60 mt-1">Réponse de notre équipe sous 2 h ouvrées.</p>
 
         <div class="grid sm:grid-cols-2 gap-4 mt-6">
           <label class="block">
             <span class="text-xs uppercase tracking-widest text-charcoal/55">Nom complet</span>
-            <input required class="field mt-1" type="text" placeholder="Ex. Fabrizio Pizza">
+            <input required class="field mt-1" type="text" name="name" autocomplete="name" placeholder="Ex. Fabrizio Pizza">
           </label>
           <label class="block">
             <span class="text-xs uppercase tracking-widest text-charcoal/55">Téléphone</span>
-            <input required class="field mt-1" type="tel" placeholder="+33 6 12 34 56 78">
+            <input required class="field mt-1" type="tel" name="phone" autocomplete="tel" placeholder="+33 6 12 34 56 78">
           </label>
           <label class="block sm:col-span-2">
             <span class="text-xs uppercase tracking-widest text-charcoal/55">Email</span>
-            <input required class="field mt-1" type="email" placeholder="vous@email.com">
+            <input required class="field mt-1" type="email" name="email" autocomplete="email" placeholder="vous@email.com">
           </label>
           <label class="block">
             <span class="text-xs uppercase tracking-widest text-charcoal/55">Date</span>
-            <input required class="field mt-1" type="date">
+            <input required class="field mt-1" type="date" name="date">
           </label>
           <label class="block">
             <span class="text-xs uppercase tracking-widest text-charcoal/55">Heure</span>
-            <input required class="field mt-1" type="time">
+            <input required class="field mt-1" type="time" name="time">
           </label>
           <label class="block sm:col-span-2">
             <span class="text-xs uppercase tracking-widest text-charcoal/55">Nombre de personnes</span>
-            <select required class="field mt-1">
+            <select required class="field mt-1" name="people">
               <option>1 personne</option><option>2 personnes</option><option>3 personnes</option><option>4 personnes</option>
               <option>5 personnes</option><option>6 personnes</option><option>7 +</option><option>Groupe (10+)</option>
             </select>
           </label>
           <label class="block sm:col-span-2">
             <span class="text-xs uppercase tracking-widest text-charcoal/55">Message (allergies, occasion...)</span>
-            <textarea rows="4" class="field mt-1" placeholder="Anniversaire, allergies, demande spéciale..."></textarea>
+            <textarea rows="4" class="field mt-1" name="message" placeholder="Anniversaire, allergies, demande spéciale..."></textarea>
           </label>
         </div>
 
         <div class="mt-7 flex flex-wrap items-center gap-3">
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary" id="bookingSubmit">
             Envoyer ma demande
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </button>
           <span class="text-xs text-charcoal/55">Pas d'engagement · réponse rapide</span>
         </div>
         <div id="bookingOk" class="hidden mt-5 p-4 rounded-lg bg-olive/15 text-olivedeep text-sm">Merci ! Votre demande a bien été envoyée. Nous revenons vers vous très vite.</div>
+        <div id="bookingError" class="hidden mt-5 p-4 rounded-lg bg-terracotta/10 text-terracotta text-sm">La réservation n'a pas pu être envoyée. Merci d'appeler le restaurant au 06 95 28 60 59.</div>
       </form>
 
       <!-- Coord & map -->
@@ -1878,6 +1879,131 @@ window.addEventListener('keydown', e => {
 const bookingDate = document.querySelector('#bookingForm input[type="date"]');
 if (bookingDate) {
   bookingDate.min = new Date().toISOString().split('T')[0];
+}
+
+/* ========== Reservation automation : Make + Google Calendar ==========
+Replace this URL with the Custom Webhook URL generated in Make.
+Expected Make fields: name, phone, email, date, time, people, message, start, end, summary, description.
+*/
+const MAKE_RESERVATION_WEBHOOK_URL = 'https://hook.eu1.make.com/ufk9jzbjuihgsp6liyqrk8ige71rbxpn';
+const bookingForm = document.getElementById('bookingForm');
+const bookingOk = document.getElementById('bookingOk');
+const bookingError = document.getElementById('bookingError');
+const bookingSubmit = document.getElementById('bookingSubmit');
+
+const bookingMessages = {
+  fr: {
+    sending: 'Envoi en cours...',
+    ready: 'Envoyer ma demande',
+    ok: 'Merci ! Votre demande a bien été envoyée. Nous revenons vers vous très vite.',
+    missing: "Le formulaire est prêt. Il reste à remplacer TON_URL_MAKE_ICI par l'URL du webhook Make.",
+    error: "La réservation n'a pas pu être envoyée. Merci d'appeler le restaurant au 06 95 28 60 59."
+  },
+  en: {
+    sending: 'Sending...',
+    ready: 'Send my request',
+    ok: 'Thank you! Your request has been sent. We will get back to you very soon.',
+    missing: 'The form is ready. Replace TON_URL_MAKE_ICI with the Make webhook URL.',
+    error: 'The booking could not be sent. Please call the restaurant on 06 95 28 60 59.'
+  },
+  it: {
+    sending: 'Invio in corso...',
+    ready: 'Invia la richiesta',
+    ok: 'Grazie! La tua richiesta è stata inviata. Ti risponderemo molto presto.',
+    missing: "Il modulo è pronto. Sostituisci TON_URL_MAKE_ICI con l'URL del webhook Make.",
+    error: 'La prenotazione non è stata inviata. Chiama il ristorante allo 06 95 28 60 59.'
+  },
+  es: {
+    sending: 'Enviando...',
+    ready: 'Enviar solicitud',
+    ok: '¡Gracias! Tu solicitud se ha enviado correctamente. Te responderemos muy pronto.',
+    missing: 'El formulario está listo. Sustituye TON_URL_MAKE_ICI por la URL del webhook de Make.',
+    error: 'No se pudo enviar la reserva. Llama al restaurante al 06 95 28 60 59.'
+  }
+};
+
+function localBookingDate(date, time) {
+  return new Date(`${date}T${time || '12:00'}:00`);
+}
+
+function formatCalendarIso(date) {
+  return date.toISOString();
+}
+
+function bookingText(key) {
+  return (bookingMessages[currentLang] || bookingMessages.fr)[key];
+}
+
+if (bookingForm) {
+  bookingForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    bookingOk?.classList.add('hidden');
+    bookingError?.classList.add('hidden');
+
+    if (!MAKE_RESERVATION_WEBHOOK_URL || MAKE_RESERVATION_WEBHOOK_URL === 'TON_URL_MAKE_ICI') {
+      if (bookingError) {
+        bookingError.textContent = bookingText('missing');
+        bookingError.classList.remove('hidden');
+      }
+      return;
+    }
+
+    const formData = new FormData(bookingForm);
+    const start = localBookingDate(formData.get('date'), formData.get('time'));
+    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+    const name = String(formData.get('name') || '').trim();
+    const phone = String(formData.get('phone') || '').trim();
+    const email = String(formData.get('email') || '').trim();
+    const people = String(formData.get('people') || '').trim();
+    const message = String(formData.get('message') || '').trim();
+
+    formData.append('start', formatCalendarIso(start));
+    formData.append('end', formatCalendarIso(end));
+    formData.append('timezone', 'Europe/Paris');
+    formData.append('summary', `Réservation - ${name || 'Client'} - ${people}`);
+    formData.append('description', [
+      `Nom : ${name}`,
+      `Téléphone : ${phone}`,
+      `Email : ${email}`,
+      `Nombre de personnes : ${people}`,
+      '',
+      'Message :',
+      message || '-',
+      '',
+      'Source : site web Made in Italy'
+    ].join('\n'));
+    formData.append('source', 'site-web-made-in-italy');
+    formData.append('created_at', new Date().toISOString());
+
+    if (bookingSubmit) {
+      bookingSubmit.disabled = true;
+      bookingSubmit.textContent = bookingText('sending');
+    }
+
+    try {
+      await fetch(MAKE_RESERVATION_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      });
+      if (bookingOk) {
+        bookingOk.textContent = bookingText('ok');
+        bookingOk.classList.remove('hidden');
+      }
+      bookingForm.reset();
+      if (bookingDate) bookingDate.min = new Date().toISOString().split('T')[0];
+    } catch (error) {
+      if (bookingError) {
+        bookingError.textContent = bookingText('error');
+        bookingError.classList.remove('hidden');
+      }
+    } finally {
+      if (bookingSubmit) {
+        bookingSubmit.disabled = false;
+        bookingSubmit.textContent = bookingText('ready');
+      }
+    }
+  });
 }
 
 /* ========== Pizza scroll animation — full ingredient choreography ==========
