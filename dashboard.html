@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Dashboard réservations — Made in Italy Lourdes</title>
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#11100d" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:#11100d;
+    --panel:#1c1a16;
+    --panel-soft:#24211c;
+    --paper:#f7f0e6;
+    --muted:#a7a097;
+    --line:rgba(247,240,230,.12);
+    --line-strong:rgba(247,240,230,.2);
+    --gold:#c8a45a;
+    --red:#bf513a;
+    --green:#2d8a58;
+    --cream:#f7f0e6;
+    --shadow:0 24px 70px -36px rgba(0,0,0,.72);
+  }
+  * { box-sizing:border-box; }
+  html { min-height:100%; background:var(--bg); }
+  body {
+    margin:0;
+    min-height:100%;
+    color:var(--cream);
+    font-family:Inter, system-ui, sans-serif;
+    background:
+      radial-gradient(1000px 460px at 10% -10%, rgba(200,164,90,.18), transparent 62%),
+      radial-gradient(760px 380px at 100% 0%, rgba(191,81,58,.13), transparent 60%),
+      linear-gradient(180deg, #15130f, #0f0e0c 62%, #15130f);
+  }
+  body::before {
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.18;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+    mix-blend-mode:soft-light;
+  }
+  button, input, select { font:inherit; }
+  a { color:inherit; text-decoration:none; }
+  .app { width:min(1240px, calc(100% - 32px)); margin:0 auto; padding:28px 0 56px; }
+  .topbar {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:16px 0 28px;
+  }
+  .brand { display:flex; align-items:center; gap:14px; min-width:0; }
+  .brand img {
+    width:72px;
+    height:72px;
+    object-fit:contain;
+    filter:drop-shadow(0 10px 24px rgba(0,0,0,.45));
+  }
+  .brand-title { min-width:0; }
+  .brand-title strong {
+    display:block;
+    font-family:"Cormorant Garamond", serif;
+    font-size:clamp(1.65rem, 3vw, 2.45rem);
+    line-height:1;
+    letter-spacing:.01em;
+  }
+  .brand-title span {
+    display:block;
+    margin-top:6px;
+    color:var(--muted);
+    font-size:.82rem;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+  }
+  .actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+  .btn {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-height:42px;
+    padding:0 14px;
+    border:1px solid var(--line-strong);
+    border-radius:8px;
+    color:var(--cream);
+    background:rgba(255,255,255,.05);
+    cursor:pointer;
+    transition:.2s ease;
+  }
+  .btn:hover { border-color:rgba(247,240,230,.38); background:rgba(255,255,255,.08); }
+  .btn-primary { border-color:transparent; background:var(--red); box-shadow:0 18px 34px -24px rgba(191,81,58,.9); }
+  .btn-primary:hover { background:#ce5a42; }
+  .btn[disabled] { opacity:.55; cursor:not-allowed; }
+  .panel {
+    background:linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+  }
+  .hero {
+    display:grid;
+    grid-template-columns:minmax(0, 1.25fr) minmax(280px, .75fr);
+    gap:18px;
+    align-items:stretch;
+    margin-bottom:18px;
+  }
+  .hero-main { padding:28px; min-height:260px; position:relative; overflow:hidden; }
+  .hero-main::after {
+    content:"";
+    position:absolute;
+    right:-110px;
+    top:-110px;
+    width:320px;
+    height:320px;
+    border:1px solid rgba(200,164,90,.2);
+    border-radius:999px;
+    background:radial-gradient(circle, rgba(200,164,90,.1), transparent 64%);
+  }
+  .kicker { color:var(--gold); font-size:.74rem; letter-spacing:.28em; text-transform:uppercase; }
+  h1, h2, h3 { margin:0; font-family:"Cormorant Garamond", serif; font-weight:600; }
+  h1 { margin-top:12px; font-size:clamp(2.5rem, 6vw, 5rem); line-height:.9; max-width:780px; }
+  .hero-copy { margin:18px 0 0; max-width:680px; color:#d5cec3; font-size:1.02rem; line-height:1.7; }
+  .date-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:26px; position:relative; z-index:1; }
+  .field {
+    min-height:44px;
+    border:1px solid var(--line-strong);
+    border-radius:8px;
+    color:var(--cream);
+    background:rgba(0,0,0,.18);
+    padding:0 12px;
+    color-scheme:dark;
+  }
+  .status {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top:18px;
+    color:var(--muted);
+    font-size:.86rem;
+  }
+  .status::before {
+    content:"";
+    width:8px;
+    height:8px;
+    border-radius:999px;
+    background:var(--green);
+    box-shadow:0 0 0 6px rgba(45,138,88,.16);
+  }
+  .next-card { padding:24px; display:flex; flex-direction:column; justify-content:space-between; }
+  .next-card h2 { font-size:2rem; }
+  .next-reservation { margin-top:26px; padding:18px; border-radius:8px; background:rgba(255,255,255,.06); border:1px solid var(--line); }
+  .next-reservation .time { color:var(--gold); font-family:"Cormorant Garamond", serif; font-size:2.8rem; line-height:1; }
+  .next-reservation .name { margin-top:10px; font-weight:700; }
+  .next-reservation .meta { margin-top:7px; color:var(--muted); font-size:.92rem; }
+  .grid-kpi { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:14px; margin-bottom:18px; }
+  .kpi { padding:20px; min-height:142px; display:flex; flex-direction:column; justify-content:space-between; }
+  .kpi span { color:var(--muted); font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; }
+  .kpi strong { display:block; font-family:"Cormorant Garamond", serif; font-size:3.15rem; line-height:.95; font-weight:600; }
+  .kpi em { color:var(--gold); font-style:normal; font-size:.88rem; }
+  .main-grid { display:grid; grid-template-columns:minmax(0, 1.45fr) minmax(300px, .75fr); gap:18px; }
+  .section-head { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; padding:22px 22px 0; }
+  .section-head h2 { font-size:2rem; }
+  .section-head p { margin:8px 0 0; color:var(--muted); }
+  .filters { display:flex; gap:8px; flex-wrap:wrap; }
+  .filter {
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.04);
+    color:var(--muted);
+    border-radius:999px;
+    padding:8px 12px;
+    cursor:pointer;
+  }
+  .filter.active { color:#14110e; background:var(--gold); border-color:transparent; }
+  .table-wrap { overflow:auto; padding:16px 22px 22px; }
+  table { width:100%; border-collapse:collapse; min-width:760px; }
+  th, td { padding:14px 10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:middle; }
+  th { color:var(--muted); font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; font-weight:600; }
+  td { color:#eee8dc; }
+  .reservation-name { font-weight:700; }
+  .reservation-note { display:block; margin-top:4px; color:var(--muted); font-size:.82rem; max-width:260px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .badge { display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:5px 9px; font-size:.78rem; border:1px solid var(--line); color:var(--muted); }
+  .badge.confirmed { color:#bfe5cc; background:rgba(45,138,88,.15); border-color:rgba(45,138,88,.25); }
+  .badge.pending { color:#f5d58e; background:rgba(200,164,90,.13); border-color:rgba(200,164,90,.25); }
+  .badge.cancelled { color:#efb9ad; background:rgba(191,81,58,.14); border-color:rgba(191,81,58,.26); }
+  .aside { display:grid; gap:18px; align-content:start; }
+  .side-card { padding:22px; }
+  .side-card h2 { font-size:2rem; }
+  .bars { margin-top:20px; display:grid; gap:14px; }
+  .bar-row { display:grid; grid-template-columns:62px minmax(0,1fr) 56px; align-items:center; gap:12px; color:#e8e0d4; }
+  .bar-track { height:10px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
+  .bar { height:100%; border-radius:999px; background:linear-gradient(90deg, var(--gold), var(--red)); min-width:4px; }
+  .service-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; margin-top:18px; }
+  .service { padding:15px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.04); }
+  .service span { color:var(--muted); font-size:.76rem; letter-spacing:.18em; text-transform:uppercase; }
+  .service strong { display:block; margin-top:8px; font-size:1.55rem; }
+  .empty { padding:28px 22px; color:var(--muted); }
+  .pin-lock {
+    position:fixed;
+    inset:0;
+    z-index:20;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:rgba(17,16,13,.88);
+    backdrop-filter:blur(14px);
+  }
+  .pin-lock.active { display:flex; }
+  .pin-box { width:min(440px, 100%); padding:30px; text-align:center; }
+  .pin-box img { width:86px; height:86px; object-fit:contain; margin-bottom:18px; }
+  .pin-box h2 { font-size:2.25rem; }
+  .pin-box p { color:var(--muted); line-height:1.6; }
+  .pin-box input { width:100%; text-align:center; font-size:1.35rem; letter-spacing:.18em; margin:12px 0; }
+  .pin-error { min-height:22px; color:#f1aa9e; font-size:.9rem; }
+  @media (max-width: 960px) {
+    .hero, .main-grid { grid-template-columns:1fr; }
+    .grid-kpi { grid-template-columns:repeat(2, minmax(0,1fr)); }
+  }
+  @media (max-width: 640px) {
+    .app { width:min(100% - 24px, 1240px); padding-top:14px; }
+    .topbar { align-items:flex-start; }
+    .brand img { width:58px; height:58px; }
+    .actions { width:100%; justify-content:flex-start; }
+    .hero-main, .next-card, .side-card { padding:20px; }
+    .grid-kpi { grid-template-columns:1fr; }
+    .section-head { display:block; padding:20px 18px 0; }
+    .filters { margin-top:14px; }
+    .table-wrap { padding:12px 18px 18px; }
+    .service-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="pin-lock active" id="pinLock">
+  <form class="pin-box panel" id="pinForm">
+    <img src="assets/logo-couleur-italie-web.png" alt="Fabrizio">
+    <h2>Accès réservations</h2>
+    <p>Espace privé du restaurant. Entrez le code d'accès pour consulter le service.</p>
+    <input class="field" id="pinInput" inputmode="numeric" autocomplete="one-time-code" placeholder="Code" />
+    <button class="btn btn-primary" type="submit">Entrer</button>
+    <div class="pin-error" id="pinError"></div>
+  </form>
+</div>
+
+<main class="app" id="dashboardApp" aria-live="polite">
+  <header class="topbar">
+    <a class="brand" href="index.html#accueil">
+      <img src="assets/logo-couleur-italie-web.png" alt="Fabrizio">
+      <div class="brand-title">
+        <strong>Dashboard réservations</strong>
+        <span>Made in Italy Lourdes</span>
+      </div>
+    </a>
+    <div class="actions">
+      <button class="btn" id="lockBtn" type="button">Verrouiller</button>
+      <button class="btn" id="printBtn" type="button">Imprimer</button>
+      <button class="btn btn-primary" id="refreshBtn" type="button">Actualiser</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-main panel">
+      <span class="kicker">Service du jour</span>
+      <h1>Vue claire sur les tables.</h1>
+      <p class="hero-copy">Réservations, couverts, créneaux chargés et prochains services en un seul écran pour préparer la salle sans stress.</p>
+      <div class="date-row">
+        <input class="field" type="date" id="datePicker" />
+        <select class="field" id="serviceSelect" aria-label="Service">
+          <option value="all">Toute la journée</option>
+          <option value="lunch">Midi</option>
+          <option value="dinner">Soir</option>
+        </select>
+      </div>
+      <div class="status" id="dataStatus">Mode démonstration prêt</div>
+    </div>
+    <aside class="next-card panel">
+      <div>
+        <span class="kicker">Prochaine table</span>
+        <h2>À préparer</h2>
+      </div>
+      <div class="next-reservation" id="nextReservation"></div>
+    </aside>
+  </section>
+
+  <section class="grid-kpi" aria-label="Indicateurs clés">
+    <article class="kpi panel">
+      <span>Réservations</span>
+      <strong id="kpiBookings">0</strong>
+      <em id="kpiBookingsMeta">confirmées et en attente</em>
+    </article>
+    <article class="kpi panel">
+      <span>Couverts</span>
+      <strong id="kpiCovers">0</strong>
+      <em id="kpiCoversMeta">sur la journée</em>
+    </article>
+    <article class="kpi panel">
+      <span>Terrasse</span>
+      <strong id="kpiTerrace">0</strong>
+      <em>couverts demandés</em>
+    </article>
+    <article class="kpi panel">
+      <span>Annulations</span>
+      <strong id="kpiCancelled">0</strong>
+      <em>à surveiller</em>
+    </article>
+  </section>
+
+  <section class="main-grid">
+    <div class="panel">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Planning</span>
+          <h2>Réservations</h2>
+          <p id="tableSubtitle">Toutes les réservations du jour sélectionné.</p>
+        </div>
+        <div class="filters" role="tablist" aria-label="Filtrer les réservations">
+          <button class="filter active" type="button" data-filter="all">Tout</button>
+          <button class="filter" type="button" data-filter="confirmed">Confirmées</button>
+          <button class="filter" type="button" data-filter="pending">À confirmer</button>
+          <button class="filter" type="button" data-filter="cancelled">Annulées</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Heure</th>
+              <th>Client</th>
+              <th>Couverts</th>
+              <th>Espace</th>
+              <th>Statut</th>
+              <th>Téléphone</th>
+            </tr>
+          </thead>
+          <tbody id="reservationsBody"></tbody>
+        </table>
+        <div class="empty" id="emptyState" hidden>Aucune réservation pour cette sélection.</div>
+      </div>
+    </div>
+
+    <aside class="aside">
+      <section class="side-card panel">
+        <span class="kicker">Horaires chargés</span>
+        <h2>Pic de service</h2>
+        <div class="bars" id="busyBars"></div>
+      </section>
+      <section class="side-card panel">
+        <span class="kicker">Prochains services</span>
+        <h2>Prévision</h2>
+        <div class="service-grid">
+          <div class="service">
+            <span>Midi</span>
+            <strong id="lunchCovers">0 couverts</strong>
+          </div>
+          <div class="service">
+            <span>Soir</span>
+            <strong id="dinnerCovers">0 couverts</strong>
+          </div>
+          <div class="service">
+            <span>Salle</span>
+            <strong id="insideCovers">0</strong>
+          </div>
+          <div class="service">
+            <span>Terrasse</span>
+            <strong id="outsideCovers">0</strong>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </section>
+</main>
+
+<script>
+const DASHBOARD_PIN = '1130';
+const DASHBOARD_FEED_URL = '';
+
+const sampleReservations = [
+  { id:'r1', name:'Marie Dupont', phone:'06 12 34 56 78', date:todayOffset(0), time:'11:30', people:2, area:'Terrasse extérieure', status:'confirmed', message:'Proche de l’entrée si possible.' },
+  { id:'r2', name:'Lucas Martin', phone:'06 45 10 22 90', date:todayOffset(0), time:'12:00', people:4, area:'Salle intérieure', status:'confirmed', message:'' },
+  { id:'r3', name:'Famille Bernard', phone:'06 70 18 44 20', date:todayOffset(0), time:'12:30', people:6, area:'Salle intérieure', status:'pending', message:'Avec une poussette.' },
+  { id:'r4', name:'Sophie L.', phone:'06 09 55 31 12', date:todayOffset(0), time:'13:00', people:3, area:'Terrasse extérieure', status:'confirmed', message:'' },
+  { id:'r5', name:'Hotel Alba', phone:'05 62 00 00 00', date:todayOffset(0), time:'19:30', people:8, area:'Salle intérieure', status:'confirmed', message:'Groupe pèlerins.' },
+  { id:'r6', name:'Paolo Rossi', phone:'06 88 11 29 33', date:todayOffset(0), time:'20:00', people:2, area:'Terrasse extérieure', status:'confirmed', message:'Anniversaire.' },
+  { id:'r7', name:'Camille Moreau', phone:'06 71 41 22 10', date:todayOffset(0), time:'20:30', people:5, area:'Salle intérieure', status:'cancelled', message:'Annulé via SMS.' },
+  { id:'r8', name:'Groupe Italie', phone:'06 33 66 12 00', date:todayOffset(0), time:'21:00', people:10, area:'Salle intérieure', status:'pending', message:'Table longue.' },
+  { id:'r9', name:'Nadia Karim', phone:'06 49 88 73 22', date:todayOffset(1), time:'12:00', people:2, area:'Terrasse extérieure', status:'confirmed', message:'' },
+  { id:'r10', name:'Thomas & Clara', phone:'06 29 85 78 11', date:todayOffset(1), time:'20:00', people:2, area:'Salle intérieure', status:'confirmed', message:'' }
+];
+
+const state = {
+  reservations: [],
+  filter: 'all',
+  service: 'all',
+  date: todayOffset(0)
+};
+
+function todayOffset(days) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+function byId(id) {
+  return document.getElementById(id);
+}
+
+function normalizeReservation(item) {
+  const summary = item.summary || item.title || item.name || '';
+  const start = item.start?.dateTime || item.start || item.google_start || '';
+  const dateFromStart = typeof start === 'string' ? start.slice(0, 10) : '';
+  const timeFromStart = typeof start === 'string' && start.includes('T') ? start.slice(11, 16) : '';
+  return {
+    id: item.id || item.eventId || crypto.randomUUID?.() || `${summary}-${Math.random()}`,
+    name: item.name || summary.replace(/^Réservation\s*-\s*/i, '').split(' - ')[0] || 'Client',
+    phone: item.phone || item.telephone || '',
+    date: item.date || dateFromStart || todayOffset(0),
+    time: item.time || timeFromStart || '12:00',
+    people: Number(String(item.people || item.covers || item.personnes || 1).match(/\d+/)?.[0] || 1),
+    area: item.area || item.space || item.emplacement || 'Salle intérieure',
+    status: item.status || (summary.toLowerCase().includes('annul') ? 'cancelled' : 'confirmed'),
+    message: item.message || item.description || ''
+  };
+}
+
+async function loadReservations() {
+  const status = byId('dataStatus');
+  if (!DASHBOARD_FEED_URL) {
+    state.reservations = sampleReservations;
+    status.textContent = 'Mode démonstration. Prêt à connecter à Make.';
+    render();
+    return;
+  }
+  status.textContent = 'Actualisation en cours...';
+  try {
+    const response = await fetch(DASHBOARD_FEED_URL, { cache:'no-store' });
+    if (!response.ok) throw new Error('Flux indisponible');
+    const payload = await response.json();
+    const list = Array.isArray(payload) ? payload : payload.reservations || payload.events || [];
+    state.reservations = list.map(normalizeReservation);
+    status.textContent = 'Données synchronisées avec Make.';
+  } catch (error) {
+    state.reservations = sampleReservations;
+    status.textContent = 'Flux Make indisponible. Affichage du mode démonstration.';
+  }
+  render();
+}
+
+function filteredReservations() {
+  return state.reservations
+    .filter(item => item.date === state.date)
+    .filter(item => {
+      if (state.service === 'lunch') return item.time >= '11:00' && item.time < '15:00';
+      if (state.service === 'dinner') return item.time >= '18:00' || item.time <= '00:30';
+      return true;
+    })
+    .filter(item => state.filter === 'all' || item.status === state.filter)
+    .sort((a, b) => a.time.localeCompare(b.time));
+}
+
+function activeReservations() {
+  return state.reservations
+    .filter(item => item.date === state.date)
+    .filter(item => item.status !== 'cancelled');
+}
+
+function countPeople(list) {
+  return list.reduce((sum, item) => sum + Number(item.people || 0), 0);
+}
+
+function statusLabel(status) {
+  if (status === 'cancelled') return 'Annulée';
+  if (status === 'pending') return 'À confirmer';
+  return 'Confirmée';
+}
+
+function renderKpis() {
+  const today = state.reservations.filter(item => item.date === state.date);
+  const active = today.filter(item => item.status !== 'cancelled');
+  const terrace = active.filter(item => item.area.toLowerCase().includes('terrasse'));
+  const cancelled = today.filter(item => item.status === 'cancelled');
+  byId('kpiBookings').textContent = active.length;
+  byId('kpiCovers').textContent = countPeople(active);
+  byId('kpiTerrace').textContent = countPeople(terrace);
+  byId('kpiCancelled').textContent = cancelled.length;
+  byId('kpiBookingsMeta').textContent = `${today.length} demandes au total`;
+  byId('kpiCoversMeta').textContent = state.date === todayOffset(0) ? "aujourd'hui" : state.date;
+}
+
+function renderTable() {
+  const list = filteredReservations();
+  const body = byId('reservationsBody');
+  const empty = byId('emptyState');
+  body.innerHTML = list.map(item => `
+    <tr>
+      <td><strong>${item.time}</strong></td>
+      <td>
+        <span class="reservation-name">${escapeHtml(item.name)}</span>
+        <span class="reservation-note">${escapeHtml(item.message || 'Aucune note')}</span>
+      </td>
+      <td>${item.people}</td>
+      <td>${escapeHtml(item.area)}</td>
+      <td><span class="badge ${item.status}">${statusLabel(item.status)}</span></td>
+      <td>${escapeHtml(item.phone || '-')}</td>
+    </tr>
+  `).join('');
+  empty.hidden = list.length > 0;
+  byId('tableSubtitle').textContent = `${list.length} réservation${list.length > 1 ? 's' : ''} affichée${list.length > 1 ? 's' : ''}.`;
+}
+
+function renderNext() {
+  const now = new Date();
+  const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  const upcoming = activeReservations()
+    .filter(item => state.date !== todayOffset(0) || item.time >= currentTime)
+    .sort((a, b) => a.time.localeCompare(b.time))[0];
+  const el = byId('nextReservation');
+  if (!upcoming) {
+    el.innerHTML = '<div class="time">--:--</div><div class="name">Aucune table à venir</div><div class="meta">Le service sélectionné est calme.</div>';
+    return;
+  }
+  el.innerHTML = `
+    <div class="time">${upcoming.time}</div>
+    <div class="name">${escapeHtml(upcoming.name)}</div>
+    <div class="meta">${upcoming.people} couvert${upcoming.people > 1 ? 's' : ''} · ${escapeHtml(upcoming.area)}</div>
+  `;
+}
+
+function renderBusyBars() {
+  const slots = new Map();
+  activeReservations().forEach(item => {
+    slots.set(item.time, (slots.get(item.time) || 0) + Number(item.people || 0));
+  });
+  const rows = [...slots.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const max = Math.max(...rows.map(row => row[1]), 1);
+  byId('busyBars').innerHTML = rows.length ? rows.map(([time, covers]) => `
+    <div class="bar-row">
+      <span>${time}</span>
+      <div class="bar-track"><div class="bar" style="width:${Math.max(8, (covers / max) * 100)}%"></div></div>
+      <strong>${covers}</strong>
+    </div>
+  `).join('') : '<p style="color:var(--muted);margin:0;">Aucun pic détecté.</p>';
+}
+
+function renderServices() {
+  const active = activeReservations();
+  const lunch = active.filter(item => item.time >= '11:00' && item.time < '15:00');
+  const dinner = active.filter(item => item.time >= '18:00' || item.time <= '00:30');
+  const inside = active.filter(item => !item.area.toLowerCase().includes('terrasse'));
+  const outside = active.filter(item => item.area.toLowerCase().includes('terrasse'));
+  byId('lunchCovers').textContent = `${countPeople(lunch)} couverts`;
+  byId('dinnerCovers').textContent = `${countPeople(dinner)} couverts`;
+  byId('insideCovers').textContent = countPeople(inside);
+  byId('outsideCovers').textContent = countPeople(outside);
+}
+
+function render() {
+  renderKpis();
+  renderTable();
+  renderNext();
+  renderBusyBars();
+  renderServices();
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'
+  }[char]));
+}
+
+function unlock() {
+  sessionStorage.setItem('madeItalyDashboardUnlocked', 'true');
+  byId('pinLock').classList.remove('active');
+}
+
+byId('datePicker').value = state.date;
+byId('datePicker').addEventListener('change', event => {
+  state.date = event.target.value || todayOffset(0);
+  render();
+});
+byId('serviceSelect').addEventListener('change', event => {
+  state.service = event.target.value;
+  render();
+});
+document.querySelectorAll('.filter').forEach(button => {
+  button.addEventListener('click', () => {
+    state.filter = button.dataset.filter;
+    document.querySelectorAll('.filter').forEach(item => item.classList.toggle('active', item === button));
+    render();
+  });
+});
+byId('refreshBtn').addEventListener('click', loadReservations);
+byId('printBtn').addEventListener('click', () => window.print());
+byId('lockBtn').addEventListener('click', () => {
+  sessionStorage.removeItem('madeItalyDashboardUnlocked');
+  byId('pinInput').value = '';
+  byId('pinLock').classList.add('active');
+});
+byId('pinForm').addEventListener('submit', event => {
+  event.preventDefault();
+  if (byId('pinInput').value.trim() === DASHBOARD_PIN) {
+    unlock();
+    return;
+  }
+  byId('pinError').textContent = 'Code incorrect.';
+});
+if (sessionStorage.getItem('madeItalyDashboardUnlocked') === 'true') unlock();
+loadReservations();
+</script>
+</body>
+</html>
