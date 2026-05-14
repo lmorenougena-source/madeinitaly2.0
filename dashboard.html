@@ -428,6 +428,42 @@ function normalizeReservation(item) {
   };
 }
 
+function parseCsvLine(line) {
+  const cells = [];
+  let current = '';
+  let quoted = false;
+  for (let i = 0; i < line.length; i += 1) {
+    const char = line[i];
+    const next = line[i + 1];
+    if (char === '"' && quoted && next === '"') {
+      current += '"';
+      i += 1;
+    } else if (char === '"') {
+      quoted = !quoted;
+    } else if (char === ',' && !quoted) {
+      cells.push(current);
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  cells.push(current);
+  return cells;
+}
+
+function parseCsv(text) {
+  const lines = text.trim().split(/\r?\n/).filter(Boolean);
+  if (lines.length < 2) return [];
+  const headers = parseCsvLine(lines[0]).map(header => header.trim());
+  return lines.slice(1).map(line => {
+    const values = parseCsvLine(line);
+    return headers.reduce((row, header, index) => {
+      row[header] = values[index] || '';
+      return row;
+    }, {});
+  });
+}
+
 async function loadReservations() {
   const status = byId('dataStatus');
   if (!DASHBOARD_FEED_URL) {
@@ -440,10 +476,12 @@ async function loadReservations() {
   try {
     const response = await fetch(DASHBOARD_FEED_URL, { cache:'no-store' });
     if (!response.ok) throw new Error('Flux indisponible');
-    const payload = await response.json();
+    const raw = await response.text();
+    const isCsv = DASHBOARD_FEED_URL.includes('output=csv') || DASHBOARD_FEED_URL.includes('/pub?') || raw.trim().startsWith('id,') || raw.trim().startsWith('eventId,');
+    const payload = isCsv ? parseCsv(raw) : JSON.parse(raw);
     const list = Array.isArray(payload) ? payload : payload.reservations || payload.events || [];
     state.reservations = list.map(normalizeReservation);
-    status.textContent = 'Données synchronisées avec Make.';
+    status.textContent = isCsv ? 'Données synchronisées avec Google Sheets.' : 'Données synchronisées avec Make.';
   } catch (error) {
     state.reservations = sampleReservations;
     status.textContent = 'Flux Make indisponible. Affichage du mode démonstration.';
