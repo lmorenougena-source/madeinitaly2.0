@@ -211,10 +211,12 @@
   .map-shell { background:#dce8ee; }
   .map-fallback {
     display:none;
+    transition: opacity .35s ease, visibility .35s ease;
     background:
       linear-gradient(24deg, transparent 0 38%, rgba(255,255,255,.70) 38.3% 42%, transparent 42.3%),
       linear-gradient(112deg, transparent 0 47%, rgba(255,255,255,.72) 47.3% 51%, transparent 51.3%),
       linear-gradient(158deg, transparent 0 58%, rgba(255,255,255,.62) 58.3% 62%, transparent 62.3%),
+      linear-gradient(62deg, transparent 0 51%, rgba(184,83,58,.18) 51.3% 52.8%, transparent 53%),
       repeating-linear-gradient(0deg, rgba(63,96,112,.10) 0 1px, transparent 1px 38px),
       repeating-linear-gradient(90deg, rgba(63,96,112,.10) 0 1px, transparent 1px 38px),
       linear-gradient(135deg, #d8e7ee, #eef3e4 52%, #e6dcc8);
@@ -232,7 +234,16 @@
     content:""; position:absolute; width:14px; height:14px; border-radius:9999px; background:#fffaf0;
     left:50%; top:50%; transform:translate(-50%,-50%);
   }
-  .map-iframe { position:absolute; inset:0; width:100%; height:100%; border:0; opacity:1; pointer-events:auto; filter:saturate(.92) contrast(.96); }
+  .map-iframe {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+    opacity:1;
+    pointer-events:auto;
+    filter:saturate(.95) contrast(.98);
+  }
   /* Tabs */
   .tab { padding:.6rem 1.1rem; border-radius:9999px; font-size:.9rem; font-weight:500; color:#5e5247; transition: all .25s ease; cursor:pointer; white-space:nowrap; }
   .tab.active { background: var(--charcoal); color:#fff; }
@@ -1518,11 +1529,11 @@
             loading="lazy"
             allowfullscreen
             referrerpolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps?q=113%20rue%20de%20la%20Grotte%2C%2065100%20Lourdes%2C%20France&amp;output=embed">
+            src="https://maps.google.com/maps?hl=fr&amp;q=&amp;layer=c&amp;cbll=43.095,-0.0527051&amp;cbp=12,105,,0,0&amp;output=svembed">
           </iframe>
           <div class="absolute top-3 left-3 bg-cream/95 backdrop-blur px-3 py-2 rounded-lg text-xs font-medium shadow-soft">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="#b8533a" class="inline mr-1"><circle cx="12" cy="12" r="6"/></svg>
-            Made in Italy · Lourdes
+            Vue de la rue · Made in Italy
           </div>
           <div class="absolute left-3 bottom-3 right-3 sm:right-auto bg-charcoal/88 text-cream backdrop-blur px-4 py-3 rounded-lg shadow-soft">
             <div class="text-sm font-semibold">113 rue de la Grotte, 65100 Lourdes</div>
@@ -2779,7 +2790,7 @@ const EXTRA_TRANSLATIONS = {
     "« Une vraie napolitaine, légère et savoureuse. On reviendra. »":"“A true Neapolitan pizza, light and tasty. We’ll be back.”",
     "Voyageuse · Bordeaux":"Traveller · Bordeaux", "Visiteur · Milano":"Visitor · Milan", "Pèlerine · Madrid":"Pilgrim · Madrid", "Local · Lourdes":"Local · Lourdes",
     "Email":"Email", "Date":"Date", "Heure":"Time", "1 personne":"1 guest", "2 personnes":"2 guests", "3 personnes":"3 guests", "4 personnes":"4 guests", "5 personnes":"5 guests", "6 personnes":"6 guests", "7 +":"7+", "Groupe (10+)":"Group (10+)",
-    "Lun – Dim · 8h00 - 2h00":"Mon - Sun · 8:00 AM - 2:00 AM", "WhatsApp":"WhatsApp", "Maps":"Maps", "Made in Italy · Lourdes":"Made in Italy · Lourdes",
+    "Lun – Dim · 8h00 - 2h00":"Mon - Sun · 8:00 AM - 2:00 AM", "WhatsApp":"WhatsApp", "Maps":"Maps", "Made in Italy · Lourdes":"Made in Italy · Lourdes", "Vue de la rue · Made in Italy":"Street view · Made in Italy",
     "Ouvrir l'itinéraire Google Maps →":"Open Google Maps directions →",
     "Pizzeria napolitaine authentique à Lourdes, à deux pas du Sanctuaire. Terrasse extérieure, salles climatisées, cuisine italienne généreuse.":"Authentic Neapolitan pizzeria in Lourdes, just steps from the Sanctuary. Outdoor terrace, air-conditioned dining rooms and generous Italian cooking.",
     "4,8 · Google · +1550 avis":"4.8 · Google · 1550+ reviews",
@@ -2840,7 +2851,7 @@ const EXTRA_TRANSLATIONS = {
     "« Parfait après la visite de Lourdes, service rapide et ambiance italienne. »":"“Perfetto dopo la visita di Lourdes, servizio rapido e atmosfera italiana.”",
     "« Une vraie napolitaine, légère et savoureuse. On reviendra. »":"“Una vera napoletana, leggera e saporita. Torneremo.”",
     "Email":"Email", "Date":"Data", "Heure":"Ora", "1 personne":"1 persona", "2 personnes":"2 persone", "3 personnes":"3 persone", "4 personnes":"4 persone", "5 personnes":"5 persone", "6 personnes":"6 persone", "7 +":"7+", "Groupe (10+)":"Gruppo (10+)",
-    "Lun – Dim · 8h00 - 2h00":"Lun - Dom · 8:00 - 2:00", "WhatsApp":"WhatsApp", "Maps":"Mappe", "Made in Italy · Lourdes":"Made in Italy · Lourdes",
+    "Lun – Dim · 8h00 - 2h00":"Lun - Dom · 8:00 - 2:00", "WhatsApp":"WhatsApp", "Maps":"Mappe", "Made in Italy · Lourdes":"Made in Italy · Lourdes", "Vue de la rue · Made in Italy":"Vista strada · Made in Italy",
     "Ouvrir l'itinéraire Google Maps →":"Apri indicazioni su Google Maps →",
     "Pizzeria napolitaine authentique à Lourdes, à deux pas du Sanctuaire. Terrasse extérieure, salles climatisées, cuisine italienne généreuse.":"Pizzeria napoletana autentica a Lourdes, a pochi passi dal Santuario. Terrazza esterna, sale climatizzate e cucina italiana generosa.",
     "4,8 · Google · +1550 avis":"4,8 · Google · +1550 recensioni",
@@ -2901,7 +2912,7 @@ const EXTRA_TRANSLATIONS = {
     "« Parfait après la visite de Lourdes, service rapide et ambiance italienne. »":"“Perfecto después de visitar Lourdes, servicio rápido y ambiente italiano.”",
     "« Une vraie napolitaine, légère et savoureuse. On reviendra. »":"“Una auténtica napolitana, ligera y sabrosa. Volveremos.”",
     "Email":"Email", "Date":"Fecha", "Heure":"Hora", "1 personne":"1 persona", "2 personnes":"2 personas", "3 personnes":"3 personas", "4 personnes":"4 personas", "5 personnes":"5 personas", "6 personnes":"6 personas", "7 +":"7+", "Groupe (10+)":"Grupo (10+)",
-    "Lun – Dim · 8h00 - 2h00":"Lun - Dom · 8:00 - 2:00", "WhatsApp":"WhatsApp", "Maps":"Mapas", "Made in Italy · Lourdes":"Made in Italy · Lourdes",
+    "Lun – Dim · 8h00 - 2h00":"Lun - Dom · 8:00 - 2:00", "WhatsApp":"WhatsApp", "Maps":"Mapas", "Made in Italy · Lourdes":"Made in Italy · Lourdes", "Vue de la rue · Made in Italy":"Vista de la calle · Made in Italy",
     "Ouvrir l'itinéraire Google Maps →":"Abrir ruta en Google Maps →",
     "Pizzeria napolitaine authentique à Lourdes, à deux pas du Sanctuaire. Terrasse extérieure, salles climatisées, cuisine italienne généreuse.":"Pizzería napolitana auténtica en Lourdes, a dos pasos del Santuario. Terraza exterior, salas climatizadas y cocina italiana generosa.",
     "4,8 · Google · +1550 avis":"4,8 · Google · +1550 opiniones",
