@@ -178,7 +178,7 @@
   }
   .filter.active { color:#14110e; background:var(--gold); border-color:transparent; }
   .table-wrap { overflow:auto; padding:16px 22px 22px; }
-  table { width:100%; border-collapse:collapse; min-width:760px; }
+  table { width:100%; border-collapse:collapse; min-width:900px; }
   th, td { padding:14px 10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:middle; }
   th { color:var(--muted); font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; font-weight:600; }
   td { color:#eee8dc; }
@@ -188,6 +188,20 @@
   .badge.confirmed { color:#bfe5cc; background:rgba(45,138,88,.15); border-color:rgba(45,138,88,.25); }
   .badge.pending { color:#f5d58e; background:rgba(200,164,90,.13); border-color:rgba(200,164,90,.25); }
   .badge.cancelled { color:#efb9ad; background:rgba(191,81,58,.14); border-color:rgba(191,81,58,.26); }
+  .action-btn {
+    min-height:34px;
+    border:1px solid rgba(45,138,88,.34);
+    background:rgba(45,138,88,.16);
+    color:#c8efd5;
+    border-radius:8px;
+    padding:0 11px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.2s ease;
+  }
+  .action-btn:hover { background:rgba(45,138,88,.26); border-color:rgba(45,138,88,.55); }
+  .action-btn[disabled] { opacity:.5; cursor:not-allowed; }
+  .action-muted { color:var(--muted); font-size:.85rem; }
   .aside { display:grid; gap:18px; align-content:start; }
   .side-card { padding:22px; }
   .side-card h2 { font-size:2rem; }
@@ -336,6 +350,7 @@
               <th>Espace</th>
               <th>Statut</th>
               <th>Téléphone</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody id="reservationsBody"></tbody>
@@ -379,6 +394,7 @@
 <script>
 const DASHBOARD_PIN = '1130';
 const DASHBOARD_FEED_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQOuHuyjj9W-gBZ6vN7S7VDqPNRHbNbFLBCsO7gUnPSyibAXbfj5cneQ1Smixf0ztrUjW1Ixv5ss2CZ/pub?gid=0&single=true&output=csv';
+const DASHBOARD_CONFIRM_WEBHOOK_URL = '';
 
 const sampleReservations = [
   { id:'r1', name:'Marie Dupont', phone:'06 12 34 56 78', date:todayOffset(0), time:'11:30', people:2, area:'Terrasse extérieure', status:'confirmed', message:'Proche de l’entrée si possible.' },
@@ -417,6 +433,7 @@ function normalizeReservation(item) {
   const timeFromStart = typeof start === 'string' && start.includes('T') ? start.slice(11, 16) : '';
   return {
     id: item.id || item.eventId || crypto.randomUUID?.() || `${summary}-${Math.random()}`,
+    eventId: item.eventId || item.id || '',
     name: item.name || summary.replace(/^Réservation\s*-\s*/i, '').split(' - ')[0] || 'Client',
     phone: item.phone || item.telephone || '',
     date: item.date || dateFromStart || todayOffset(0),
@@ -464,6 +481,12 @@ function parseCsv(text) {
   });
 }
 
+function feedUrlWithCacheBust() {
+  if (!DASHBOARD_FEED_URL) return '';
+  const separator = DASHBOARD_FEED_URL.includes('?') ? '&' : '?';
+  return `${DASHBOARD_FEED_URL}${separator}_=${Date.now()}`;
+}
+
 async function loadReservations() {
   const status = byId('dataStatus');
   if (!DASHBOARD_FEED_URL) {
@@ -474,7 +497,7 @@ async function loadReservations() {
   }
   status.textContent = 'Actualisation en cours...';
   try {
-    const response = await fetch(DASHBOARD_FEED_URL, { cache:'no-store' });
+    const response = await fetch(feedUrlWithCacheBust(), { cache:'no-store' });
     if (!response.ok) throw new Error('Flux indisponible');
     const raw = await response.text();
     const isCsv = DASHBOARD_FEED_URL.includes('output=csv') || DASHBOARD_FEED_URL.includes('/pub?') || raw.trim().startsWith('id,') || raw.trim().startsWith('eventId,');
@@ -487,6 +510,13 @@ async function loadReservations() {
     status.textContent = 'Flux Make indisponible. Affichage du mode démonstration.';
   }
   render();
+}
+
+function scheduleSheetRefresh() {
+  byId('dataStatus').textContent = 'Confirmation envoyée. Actualisation Google Sheets en cours...';
+  [1200, 3500, 7000, 12000].forEach(delay => {
+    window.setTimeout(loadReservations, delay);
+  });
 }
 
 function filteredReservations() {
@@ -545,10 +575,50 @@ function renderTable() {
       <td>${escapeHtml(item.area)}</td>
       <td><span class="badge ${item.status}">${statusLabel(item.status)}</span></td>
       <td>${escapeHtml(item.phone || '-')}</td>
+      <td>${renderReservationAction(item)}</td>
     </tr>
   `).join('');
   empty.hidden = list.length > 0;
   byId('tableSubtitle').textContent = `${list.length} réservation${list.length > 1 ? 's' : ''} affichée${list.length > 1 ? 's' : ''}.`;
+}
+
+function renderReservationAction(item) {
+  if (item.status === 'pending') {
+    return `<button class="action-btn" type="button" data-confirm="${escapeHtml(item.eventId || item.id)}">Confirmer</button>`;
+  }
+  if (item.status === 'confirmed') return '<span class="action-muted">Confirmée</span>';
+  return '<span class="action-muted">Annulée</span>';
+}
+
+async function confirmReservation(eventId) {
+  if (!eventId) return;
+  if (!DASHBOARD_CONFIRM_WEBHOOK_URL) {
+    alert("Le webhook de confirmation Make n'est pas encore branché.");
+    return;
+  }
+  const reservation = state.reservations.find(item => item.eventId === eventId || item.id === eventId);
+  if (!reservation) return;
+  const formData = new FormData();
+  formData.append('eventId', reservation.eventId || reservation.id);
+  formData.append('id', reservation.id);
+  formData.append('status', 'confirmed');
+  formData.append('name', reservation.name);
+  formData.append('date', reservation.date);
+  formData.append('time', reservation.time);
+  formData.append('people', reservation.people);
+  formData.append('area', reservation.area);
+  try {
+    await fetch(DASHBOARD_CONFIRM_WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: formData
+    });
+    reservation.status = 'confirmed';
+    render();
+    scheduleSheetRefresh();
+  } catch (error) {
+    alert("La confirmation n'a pas pu être envoyée à Make.");
+  }
 }
 
 function renderNext() {
@@ -631,6 +701,13 @@ document.querySelectorAll('.filter').forEach(button => {
     document.querySelectorAll('.filter').forEach(item => item.classList.toggle('active', item === button));
     render();
   });
+});
+byId('reservationsBody').addEventListener('click', event => {
+  const button = event.target.closest('[data-confirm]');
+  if (!button) return;
+  button.disabled = true;
+  button.textContent = 'Confirmation...';
+  confirmReservation(button.dataset.confirm);
 });
 byId('refreshBtn').addEventListener('click', loadReservations);
 byId('printBtn').addEventListener('click', () => window.print());

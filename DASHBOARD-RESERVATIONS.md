@@ -160,3 +160,99 @@ cancelled
 ```
 
 Important : publier un Google Sheet en CSV rend ces données accessibles à toute personne qui possède le lien. Pour un restaurant réel, évite de partager ce lien et passe ensuite à une vraie protection serveur si le dashboard contient des numéros de téléphone clients.
+
+## Confirmation manuelle depuis le dashboard
+
+Le dashboard contient maintenant un bouton :
+
+```txt
+Confirmer
+```
+
+Il apparaît uniquement sur les réservations dont le statut est :
+
+```txt
+pending
+```
+
+Après clic, le dashboard passe la ligne en confirmé visuellement, puis relance plusieurs actualisations automatiques de Google Sheets pour récupérer les données finales du tableau.
+
+Pour qu'il mette à jour Google Sheets, il faut créer un troisième scénario Make.
+
+### Scénario Make : confirmation-dashboard
+
+Module 1 :
+
+```txt
+Webhooks > Custom webhook
+```
+
+Nom :
+
+```txt
+confirmation-dashboard
+```
+
+Le dashboard enverra :
+
+```txt
+eventId
+id
+status
+name
+date
+time
+people
+area
+```
+
+Module 2 :
+
+```txt
+Google Sheets > Search Rows
+```
+
+Recherche :
+
+```txt
+eventId Equal to eventId
+```
+
+Module 3 :
+
+```txt
+Google Sheets > Update a Row
+```
+
+Row number :
+
+```txt
+Row number du module Search Rows
+```
+
+Colonnes :
+
+```txt
+id      = id trouvé par Search Rows
+eventId = eventId trouvé par Search Rows
+date    = date trouvé par Search Rows
+time    = time trouvé par Search Rows
+name    = name trouvé par Search Rows
+phone   = phone trouvé par Search Rows
+people  = people trouvé par Search Rows
+area    = area trouvé par Search Rows
+status  = confirmed
+message = message trouvé par Search Rows
+```
+
+Ensuite, dans `dashboard.html`, remplace :
+
+```js
+const DASHBOARD_CONFIRM_WEBHOOK_URL = '';
+```
+
+par l'URL du webhook Make :
+
+```js
+const DASHBOARD_CONFIRM_WEBHOOK_URL = 'https://hook.eu1.make.com/xxxx';
+```
