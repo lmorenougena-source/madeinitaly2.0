@@ -142,7 +142,7 @@ https://docs.google.com/spreadsheets/d/e/xxxx/pub?gid=0&single=true&output=csv
 Puis dans `dashboard.html`, remplacer :
 
 ```js
-const DASHBOARD_FEED_URL = '';
+const DASHBOARD_FEED_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQOuHuyjj9W-gBZ6vN7S7VDqPNRHbNbFLBCsO7gUnPSyibAXbfj5cneQ1Smixf0ztrUjW1Ixv5ss2CZ/pub?gid=0&single=true&output=csv';
 ```
 
 par l'URL CSV de Google Sheets :
