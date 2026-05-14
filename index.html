@@ -210,6 +210,7 @@
   /* Contact map */
   .map-shell { background:#dce8ee; }
   .map-fallback {
+    display:none;
     background:
       linear-gradient(24deg, transparent 0 38%, rgba(255,255,255,.70) 38.3% 42%, transparent 42.3%),
       linear-gradient(112deg, transparent 0 47%, rgba(255,255,255,.72) 47.3% 51%, transparent 51.3%),
@@ -231,7 +232,7 @@
     content:""; position:absolute; width:14px; height:14px; border-radius:9999px; background:#fffaf0;
     left:50%; top:50%; transform:translate(-50%,-50%);
   }
-  .map-iframe { position:absolute; inset:0; width:100%; height:100%; border:0; opacity:.28; pointer-events:none; }
+  .map-iframe { position:absolute; inset:0; width:100%; height:100%; border:0; opacity:1; pointer-events:auto; filter:saturate(.92) contrast(.96); }
   /* Tabs */
   .tab { padding:.6rem 1.1rem; border-radius:9999px; font-size:.9rem; font-weight:500; color:#5e5247; transition: all .25s ease; cursor:pointer; white-space:nowrap; }
   .tab.active { background: var(--charcoal); color:#fff; }
@@ -1015,7 +1016,7 @@
 
       <article class="card overflow-hidden reveal reveal-delay-1">
         <div class="zoom h-64">
-          <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=900&q=80" alt="Tiramisu" class="w-full h-full object-cover">
+          <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=900&q=80" alt="Tiramisu" class="w-full h-full object-cover" style="object-position:center 72%;">
         </div>
         <div class="p-6">
           <div class="flex items-baseline justify-between gap-3">
@@ -1032,7 +1033,7 @@
           <div>
             <span class="eyebrow text-gold">Envie de découvrir ?</span>
             <h3 class="font-serif text-3xl mt-3 leading-tight">La carte<br/>complète, par ici.</h3>
-            <p class="text-sm text-cream/70 mt-3">Antipasti, pizzas, salades, desserts, boissons — toutes nos recettes.</p>
+            <p class="text-sm text-cream/70 mt-3">Antipasti, pizzas, salades, desserts— toutes nos recettes.</p>
           </div>
           <a href="#carte" class="btn btn-primary mt-6 self-start">
             Découvrir la carte
@@ -1059,7 +1060,7 @@
           <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=900&q=80" class="w-full h-full object-cover" alt="Terrasse extérieure">
         </div>
         <h3 class="font-serif text-2xl mt-2">Terrasse extérieure</h3>
-        <p class="text-sm text-charcoal/70 mt-3 leading-relaxed">Profitez de Lourdes en extérieur dans une ambiance conviviale et chaleureuse, baignée de la lumière des Pyrénées.</p>
+        <p class="text-sm text-charcoal/70 mt-3 leading-relaxed">Profitez de Lourdes en extérieur dans une ambiance conviviale et chaleureuse, au rythme du gave et de son eau si précieuse.</p>
       </div>
       <div class="reveal reveal-delay-1 group">
         <div class="zoom h-80 mb-5">
@@ -1116,7 +1117,14 @@
         <!-- Floating badge -->
         <div class="absolute -bottom-6 -left-6 bg-cream text-charcoal px-5 py-4 rounded-lg shadow-card flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-terracotta/15 flex items-center justify-center">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#b8533a"><path d="M12 2l2.39 7.36H22l-6.18 4.49L18.18 21 12 16.51 5.82 21l2.36-7.15L2 9.36h7.61z"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b8533a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="7" r="3"/>
+              <path d="M6 21v-2a6 6 0 0 1 12 0v2"/>
+              <circle cx="5" cy="10" r="2"/>
+              <path d="M2 20v-1.2a4 4 0 0 1 5-3.9"/>
+              <circle cx="19" cy="10" r="2"/>
+              <path d="M22 20v-1.2a4 4 0 0 0-5-3.9"/>
+            </svg>
           </div>
           <div>
             <div class="font-serif text-lg leading-none">Familles bienvenues</div>
@@ -1133,7 +1141,7 @@
   <div class="max-w-7xl mx-auto px-5 lg:px-10">
     <div class="flex items-end justify-between gap-6 flex-wrap mb-12 reveal">
       <div>
-        <span class="eyebrow">Avis clients</span>
+        <span class="eyebrow">Merci pour vos retours chaleureux</span>
         <h2 class="font-serif text-4xl lg:text-5xl mt-2 accent">Noté par nos clients sur Google</h2>
       </div>
       <div class="flex items-center gap-4">
@@ -1322,8 +1330,8 @@
   <div class="max-w-7xl mx-auto px-5 lg:px-10">
     <div class="flex items-end justify-between flex-wrap gap-4 mb-10 reveal">
       <div>
-        <span class="eyebrow">Galerie</span>
-        <h2 class="font-serif text-4xl lg:text-5xl mt-2 accent">L'atelier en images</h2>
+        <span class="eyebrow">Nous vous présentons</span>
+        <h2 class="font-serif text-4xl lg:text-5xl mt-2 accent">Le restaurant en images</h2>
       </div>
       <div class="flex flex-wrap gap-2">
         <button class="tab active" data-gal="all">Tout</button>
@@ -1342,7 +1350,7 @@
       <div class="gal-item zoom h-56 md:h-72" data-cat="details"><img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
       <div class="gal-item zoom h-56 md:h-72" data-cat="pizzas"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
       <div class="gal-item zoom h-56 md:h-72" data-cat="salle"><img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
-      <div class="gal-item zoom h-56 md:h-72" data-cat="details"><img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
+      <div class="gal-item zoom h-56 md:h-72" data-cat="details"><img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" style="object-position:center 72%;" alt=""></div>
       <div class="gal-item zoom h-56 md:h-72" data-cat="pizzas"><img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
       <div class="gal-item zoom h-56 md:h-72" data-cat="ambiance"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
       <div class="gal-item zoom h-56 md:h-72" data-cat="terrasse"><img src="https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
@@ -2400,12 +2408,12 @@ const TRANSLATIONS = {
     "Premium":"Premium",
     "Envie de découvrir ?":"Want to explore?",
     "La carte complète, par ici.":"The full menu is here.",
-    "Antipasti, pizzas, salades, desserts, boissons — toutes nos recettes.":"Antipasti, pizzas, salads, desserts and drinks: all our recipes.",
+    "Antipasti, pizzas, salades, desserts— toutes nos recettes.":"Antipasti, pizzas, salads and desserts: all our recipes.",
     "Découvrir la carte":"Explore the menu",
     "L'expérience":"The experience",
     "Terrasse, salle climatisée, ambiance italienne.":"Terrace, air-conditioned dining room, Italian atmosphere.",
     "Terrasse extérieure":"Outdoor terrace",
-    "Profitez de Lourdes en extérieur dans une ambiance conviviale et chaleureuse, baignée de la lumière des Pyrénées.":"Enjoy Lourdes outdoors in a friendly, warm atmosphere filled with Pyrenean light.",
+    "Profitez de Lourdes en extérieur dans une ambiance conviviale et chaleureuse, au rythme du gave et de son eau si précieuse.":"Enjoy Lourdes outdoors in a friendly, warm atmosphere, to the rhythm of the Gave and its precious waters.",
     "Salle climatisée":"Air-conditioned dining room",
     "Un espace confortable pour déjeuner ou dîner au frais après une journée de visite ou de pèlerinage.":"A comfortable place to cool down after a day of visits or pilgrimage.",
     "Ambiance Made in Italy":"Made in Italy atmosphere",
@@ -2422,6 +2430,7 @@ const TRANSLATIONS = {
     "Familles bienvenues":"Families welcome",
     "Menu enfant disponible":"Children's menu available",
     "Avis clients":"Guest reviews",
+    "Merci pour vos retours chaleureux":"Thank you for your kind words",
     "Noté par nos clients sur Google":"Rated by our guests on Google",
     "Voyageuse · Bordeaux":"Traveller · Bordeaux",
     "Visiteur · Milano":"Visitor · Milan",
@@ -2460,7 +2469,8 @@ const TRANSLATIONS = {
     "Familles, groupes et voyageurs":"Families, groups and travellers",
     "Nous accueillons les familles avec un menu enfant, les groupes (pèlerinages, séminaires, voyages organisés) sur réservation, et les voyageurs solo ou en couple en quête d'une vraie pause italienne.":"We welcome families with a children's menu, groups by reservation and solo travellers or couples looking for a true Italian break.",
     "Demander un devis groupe":"Request a group quote",
-    "L'atelier en images":"The workshop in pictures",
+    "Nous vous présentons":"A look inside",
+    "Le restaurant en images":"The restaurant in pictures",
     "Tout":"All",
     "Pizzas":"Pizzas",
     "Ambiance":"Atmosphere",
@@ -2563,6 +2573,7 @@ const TRANSLATIONS = {
     "Familles bienvenues":"Famiglie benvenute",
     "Menu enfant disponible":"Menu bambini disponibile",
     "Avis clients":"Recensioni clienti",
+    "Merci pour vos retours chaleureux":"Grazie per i vostri calorosi commenti",
     "Noté par nos clients sur Google":"Valutato dai nostri clienti su Google",
     "Notre carte":"Il nostro menu",
     "La carte Made in Italy":"Il menu Made in Italy",
@@ -2586,7 +2597,8 @@ const TRANSLATIONS = {
     "L'accueil":"L'accoglienza",
     "Familles, groupes et voyageurs":"Famiglie, gruppi e viaggiatori",
     "Demander un devis groupe":"Richiedi un preventivo gruppo",
-    "L'atelier en images":"Il laboratorio in immagini",
+    "Nous vous présentons":"Vi presentiamo",
+    "Le restaurant en images":"Il ristorante in immagini",
     "Tout":"Tutto",
     "Ambiance":"Atmosfera",
     "Terrasse":"Terrazza",
@@ -2679,6 +2691,7 @@ const TRANSLATIONS = {
     "Familles bienvenues":"Familias bienvenidas",
     "Menu enfant disponible":"Menú infantil disponible",
     "Avis clients":"Opiniones",
+    "Merci pour vos retours chaleureux":"Gracias por vuestros cálidos comentarios",
     "Noté par nos clients sur Google":"Valorado por nuestros clientes en Google",
     "Notre carte":"Nuestra carta",
     "La carte Made in Italy":"La carta Made in Italy",
@@ -2702,7 +2715,8 @@ const TRANSLATIONS = {
     "L'accueil":"La acogida",
     "Familles, groupes et voyageurs":"Familias, grupos y viajeros",
     "Demander un devis groupe":"Solicitar presupuesto de grupo",
-    "L'atelier en images":"El taller en imágenes",
+    "Nous vous présentons":"Os presentamos",
+    "Le restaurant en images":"El restaurante en imágenes",
     "Tout":"Todo",
     "Ambiance":"Ambiente",
     "Terrasse":"Terraza",
@@ -2965,8 +2979,8 @@ const COMPLETE_TRANSLATIONS = {
     "Tomate, mozzarella, chorizo, gorgonzola":"Pomodoro, mozzarella, chorizo, gorgonzola",
     "Jambon di Parma":"Prosciutto di Parma", "Grand Salade « Made In Italy » / Insalatona":"Grande Insalata “Made In Italy” / Insalatona",
     "Tiramisu Maison":"Tiramisù della casa", "Mascarpone, biscuits imbibés d'espresso, cacao amer — recette familiale.":"Mascarpone, biscotti imbevuti di espresso, cacao amaro — ricetta di famiglia.",
-    "Antipasti, pizzas, salades, desserts, boissons — toutes nos recettes.":"Antipasti, pizze, insalate, dolci, bevande — tutte le nostre ricette.",
-    "Profitez de Lourdes en extérieur dans une ambiance conviviale et chaleureuse, baignée de la lumière des Pyrénées.":"Goditi Lourdes all'aperto in un'atmosfera conviviale e calorosa, immersa nella luce dei Pirenei.",
+    "Antipasti, pizzas, salades, desserts— toutes nos recettes.":"Antipasti, pizze, insalate e dolci: tutte le nostre ricette.",
+    "Profitez de Lourdes en extérieur dans une ambiance conviviale et chaleureuse, au rythme du gave et de son eau si précieuse.":"Goditi Lourdes all'aperto in un'atmosfera conviviale e calorosa, al ritmo del Gave e della sua acqua preziosa.",
     "Un espace confortable pour déjeuner ou dîner au frais après une journée de visite ou de pèlerinage.":"Uno spazio confortevole per pranzare o cenare al fresco dopo una giornata di visite o pellegrinaggio.",
     "Une adresse vivante, généreuse et authentique, pensée pour partager un vrai moment italien — comme à Naples.":"Un indirizzo vivo, generoso e autentico, pensato per condividere un vero momento italiano, come a Napoli.",
     "Situé à quelques pas du Sanctuaire, Made in Italy est l'adresse idéale pour une pause italienne après une journée de visite. Nous accueillons familles, couples, groupes et voyageurs dans un cadre chaleureux et moderne.":"A pochi passi dal Santuario, Made in Italy è l'indirizzo ideale per una pausa italiana dopo una giornata di visite. Accogliamo famiglie, coppie, gruppi e viaggiatori in un ambiente caldo e moderno.",
@@ -3008,8 +3022,8 @@ const COMPLETE_TRANSLATIONS = {
     "Tomate, mozzarella, chorizo, gorgonzola":"Tomate, mozzarella, chorizo, gorgonzola",
     "Jambon di Parma":"Jamón de Parma", "Grand Salade « Made In Italy » / Insalatona":"Gran Ensalada “Made In Italy” / Insalatona",
     "Tiramisu Maison":"Tiramisú casero", "Mascarpone, biscuits imbibés d'espresso, cacao amer — recette familiale.":"Mascarpone, bizcochos empapados en espresso, cacao amargo — receta familiar.",
-    "Antipasti, pizzas, salades, desserts, boissons — toutes nos recettes.":"Antipasti, pizzas, ensaladas, postres, bebidas — todas nuestras recetas.",
-    "Profitez de Lourdes en extérieur dans une ambiance conviviale et chaleureuse, baignée de la lumière des Pyrénées.":"Disfruta de Lourdes al aire libre en un ambiente cálido y acogedor, bañado por la luz de los Pirineos.",
+    "Antipasti, pizzas, salades, desserts— toutes nos recettes.":"Antipasti, pizzas, ensaladas y postres: todas nuestras recetas.",
+    "Profitez de Lourdes en extérieur dans une ambiance conviviale et chaleureuse, au rythme du gave et de son eau si précieuse.":"Disfruta de Lourdes al aire libre en un ambiente cálido y acogedor, al ritmo del Gave y de su agua preciosa.",
     "Un espace confortable pour déjeuner ou dîner au frais après une journée de visite ou de pèlerinage.":"Un espacio cómodo para comer o cenar al fresco tras un día de visita o peregrinación.",
     "Une adresse vivante, généreuse et authentique, pensée pour partager un vrai moment italien — comme à Naples.":"Un lugar vivo, generoso y auténtico, pensado para compartir un verdadero momento italiano, como en Nápoles.",
     "Situé à quelques pas du Sanctuaire, Made in Italy est l'adresse idéale pour une pause italienne après une journée de visite. Nous accueillons familles, couples, groupes et voyageurs dans un cadre chaleureux et moderne.":"A pocos pasos del Santuario, Made in Italy es la dirección ideal para una pausa italiana tras un día de visita. Recibimos familias, parejas, grupos y viajeros en un entorno cálido y moderno.",
