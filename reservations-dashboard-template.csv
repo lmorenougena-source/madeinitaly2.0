@@ -1,2 +1,2 @@
-id,eventId,date,time,name,phone,people,area,status,message
-demo-1,,2026-05-14,12:00,Exemple Client,0600000000,2,Salle intérieure,confirmed,Table proche de la fenêtre
+id,eventId,date_creation,date,time,service,name,phone,people,area,status,source,sms_confirmation_envoye,sms_rappel_envoye,date_confirmation,date_annulation,no_show,message,langue_client
+demo-1,,2026-05-14 12:00,2026-05-15,12:00,Midi,Exemple Client,0600000000,2,Salle intérieure,pending,site,false,false,,,,Table proche de la fenêtre,fr

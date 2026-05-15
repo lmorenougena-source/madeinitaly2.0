@@ -79,6 +79,17 @@
     text-transform:uppercase;
   }
   .actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+  .sync-pill {
+    display:inline-flex;
+    align-items:center;
+    min-height:36px;
+    padding:0 12px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:var(--muted);
+    background:rgba(255,255,255,.04);
+    font-size:.82rem;
+  }
   .btn {
     display:inline-flex;
     align-items:center;
@@ -152,12 +163,103 @@
     background:var(--green);
     box-shadow:0 0 0 6px rgba(45,138,88,.16);
   }
+  .quick-tabs {
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:18px;
+    position:relative;
+    z-index:1;
+  }
+  .quick-tab {
+    min-height:36px;
+    padding:0 12px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:var(--muted);
+    background:rgba(255,255,255,.04);
+    cursor:pointer;
+  }
+  .quick-tab.active { color:#14110e; background:var(--gold); border-color:transparent; }
+  .ops-strip {
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0,1fr));
+    gap:10px;
+    margin-top:24px;
+    position:relative;
+    z-index:1;
+  }
+  .ops-card {
+    padding:13px 14px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:rgba(255,255,255,.045);
+  }
+  .ops-card strong {
+    display:block;
+    font-family:"Cormorant Garamond", serif;
+    font-size:2rem;
+    line-height:1;
+  }
+  .ops-card span {
+    display:block;
+    margin-top:6px;
+    color:var(--muted);
+    font-size:.75rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
   .next-card { padding:24px; display:flex; flex-direction:column; justify-content:space-between; }
   .next-card h2 { font-size:2rem; }
   .next-reservation { margin-top:26px; padding:18px; border-radius:8px; background:rgba(255,255,255,.06); border:1px solid var(--line); }
   .next-reservation .time { color:var(--gold); font-family:"Cormorant Garamond", serif; font-size:2.8rem; line-height:1; }
   .next-reservation .name { margin-top:10px; font-weight:700; }
   .next-reservation .meta { margin-top:7px; color:var(--muted); font-size:.92rem; }
+  .next-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .mini-action {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:32px;
+    padding:0 10px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--cream);
+    background:rgba(255,255,255,.05);
+    font-size:.82rem;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .mini-action.ok { border-color:rgba(45,138,88,.34); background:rgba(45,138,88,.15); color:#c8efd5; }
+  .mini-action.warn { border-color:rgba(200,164,90,.34); background:rgba(200,164,90,.13); color:#f5d58e; }
+  .mini-action.danger { border-color:rgba(191,81,58,.34); background:rgba(191,81,58,.13); color:#efb9ad; }
+  .mini-action.ghost { color:var(--muted); }
+  .charge-box { margin-top:18px; }
+  .charge-head { display:flex; justify-content:space-between; gap:12px; color:var(--muted); font-size:.86rem; }
+  .load-meter { height:10px; margin-top:9px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
+  .load-fill { height:100%; width:0%; border-radius:999px; background:linear-gradient(90deg, var(--green), var(--gold), var(--red)); transition:.25s ease; }
+  .todo-panel { margin-bottom:18px; padding:22px; }
+  .todo-panel .section-head { padding:0; }
+  .todo-list { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:12px; margin-top:18px; }
+  .todo-item {
+    padding:16px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:rgba(255,255,255,.045);
+    min-height:104px;
+  }
+  .todo-item strong { display:block; margin-top:8px; font-size:1rem; }
+  .todo-item span { display:block; margin-top:6px; color:var(--muted); font-size:.84rem; line-height:1.45; }
+  .priority-dot {
+    display:inline-flex;
+    width:10px;
+    height:10px;
+    border-radius:999px;
+    background:var(--green);
+    box-shadow:0 0 0 5px rgba(45,138,88,.15);
+  }
+  .priority-dot.warn { background:var(--gold); box-shadow:0 0 0 5px rgba(200,164,90,.15); }
+  .priority-dot.danger { background:var(--red); box-shadow:0 0 0 5px rgba(191,81,58,.15); }
   .grid-kpi { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:14px; margin-bottom:18px; }
   .kpi { padding:20px; min-height:142px; display:flex; flex-direction:column; justify-content:space-between; }
   .kpi span { color:var(--muted); font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; }
@@ -177,6 +279,22 @@
     cursor:pointer;
   }
   .filter.active { color:#14110e; background:var(--gold); border-color:transparent; }
+  .table-tools {
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+    padding:16px 22px 0;
+  }
+  .search-field {
+    flex:1 1 240px;
+    min-height:42px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--cream);
+    background:rgba(0,0,0,.16);
+    padding:0 12px;
+  }
   .table-wrap { overflow:auto; padding:16px 22px 22px; }
   table { width:100%; border-collapse:collapse; min-width:900px; }
   th, td { padding:14px 10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:middle; }
@@ -188,6 +306,8 @@
   .badge.confirmed { color:#bfe5cc; background:rgba(45,138,88,.15); border-color:rgba(45,138,88,.25); }
   .badge.pending { color:#f5d58e; background:rgba(200,164,90,.13); border-color:rgba(200,164,90,.25); }
   .badge.cancelled { color:#efb9ad; background:rgba(191,81,58,.14); border-color:rgba(191,81,58,.26); }
+  .badge.arrived { color:#c8efd5; background:rgba(45,138,88,.2); border-color:rgba(45,138,88,.34); }
+  .badge.no_show { color:#efb9ad; background:rgba(191,81,58,.18); border-color:rgba(191,81,58,.34); }
   .action-btn {
     min-height:34px;
     border:1px solid rgba(45,138,88,.34);
@@ -202,6 +322,8 @@
   .action-btn:hover { background:rgba(45,138,88,.26); border-color:rgba(45,138,88,.55); }
   .action-btn[disabled] { opacity:.5; cursor:not-allowed; }
   .action-muted { color:var(--muted); font-size:.85rem; }
+  .row-actions { display:flex; gap:7px; flex-wrap:wrap; }
+  .icon-hint { color:var(--gold); margin-right:6px; }
   .aside { display:grid; gap:18px; align-content:start; }
   .side-card { padding:22px; }
   .side-card h2 { font-size:2rem; }
@@ -213,6 +335,11 @@
   .service { padding:15px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.04); }
   .service span { color:var(--muted); font-size:.76rem; letter-spacing:.18em; text-transform:uppercase; }
   .service strong { display:block; margin-top:8px; font-size:1.55rem; }
+  .analysis-card { padding:18px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.04); }
+  .analysis-card strong { display:block; font-size:1.55rem; }
+  .analysis-card span { color:var(--muted); font-size:.84rem; }
+  .insights { display:grid; gap:10px; margin-top:16px; color:#ded6ca; }
+  .insight { padding:12px; border-left:3px solid var(--gold); background:rgba(200,164,90,.08); border-radius:0 8px 8px 0; font-size:.9rem; line-height:1.45; }
   .empty { padding:28px 22px; color:var(--muted); }
   .pin-lock {
     position:fixed;
@@ -235,6 +362,7 @@
   @media (max-width: 960px) {
     .hero, .main-grid { grid-template-columns:1fr; }
     .grid-kpi { grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .ops-strip, .todo-list { grid-template-columns:repeat(2, minmax(0,1fr)); }
   }
   @media (max-width: 640px) {
     .app { width:min(100% - 24px, 1240px); padding-top:14px; }
@@ -247,6 +375,39 @@
     .filters { margin-top:14px; }
     .table-wrap { padding:12px 18px 18px; }
     .service-grid { grid-template-columns:1fr; }
+    .ops-strip, .todo-list { grid-template-columns:1fr; }
+    table { min-width:0; }
+    thead { display:none; }
+    tbody, tr, td { display:block; width:100%; }
+    tr {
+      margin-bottom:12px;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      background:rgba(255,255,255,.04);
+    }
+    td {
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      padding:7px 0;
+      border:0;
+    }
+    td::before {
+      content:attr(data-label);
+      color:var(--muted);
+      font-size:.72rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      flex:0 0 92px;
+    }
+    td[data-label="Client"] {
+      display:block;
+      padding-top:0;
+    }
+    td[data-label="Client"]::before { display:none; }
+    .reservation-note { max-width:none; white-space:normal; }
+    .row-actions { justify-content:flex-end; }
   }
 </style>
 </head>
@@ -256,7 +417,7 @@
     <img src="assets/logo-couleur-italie-web.png" alt="Fabrizio">
     <h2>Accès réservations</h2>
     <p>Espace privé du restaurant. Entrez le code d'accès pour consulter le service.</p>
-    <input class="field" id="pinInput" inputmode="numeric" autocomplete="one-time-code" placeholder="Code" />
+    <input class="field" id="pinInput" inputmode="numeric" autocomplete="one-time-code" placeholder="Code" maxlength="8" />
     <button class="btn btn-primary" type="submit">Entrer</button>
     <div class="pin-error" id="pinError"></div>
   </form>
@@ -272,6 +433,7 @@
       </div>
     </a>
     <div class="actions">
+      <span class="sync-pill" id="lastSync">Dernière synchro : jamais</span>
       <button class="btn" id="lockBtn" type="button">Verrouiller</button>
       <button class="btn" id="printBtn" type="button">Imprimer</button>
       <button class="btn btn-primary" id="refreshBtn" type="button">Actualiser</button>
@@ -281,8 +443,26 @@
   <section class="hero">
     <div class="hero-main panel">
       <span class="kicker">Service du jour</span>
-      <h1>Vue claire sur les tables.</h1>
-      <p class="hero-copy">Réservations, couverts, créneaux chargés et prochains services en un seul écran pour préparer la salle sans stress.</p>
+      <h1 id="serviceTitle">Aujourd'hui</h1>
+      <p class="hero-copy" id="serviceSummary">Lecture rapide du service, des confirmations et des tables à préparer.</p>
+      <div class="ops-strip" aria-label="Synthèse opérationnelle">
+        <div class="ops-card">
+          <strong id="summaryCovers">0</strong>
+          <span>Couverts</span>
+        </div>
+        <div class="ops-card">
+          <strong id="summaryBookings">0</strong>
+          <span>Réservations</span>
+        </div>
+        <div class="ops-card">
+          <strong id="summaryPending">0</strong>
+          <span>À confirmer</span>
+        </div>
+        <div class="ops-card">
+          <strong id="summaryCancelled">0</strong>
+          <span>Annulations</span>
+        </div>
+      </div>
       <div class="date-row">
         <input class="field" type="date" id="datePicker" />
         <select class="field" id="serviceSelect" aria-label="Service">
@@ -290,6 +470,10 @@
           <option value="lunch">Midi</option>
           <option value="dinner">Soir</option>
         </select>
+      </div>
+      <div class="quick-tabs" aria-label="Accès rapide">
+        <button class="quick-tab active" type="button" data-date-mode="today">Aujourd'hui</button>
+        <button class="quick-tab" type="button" data-date-mode="tomorrow">Demain</button>
       </div>
       <div class="status" id="dataStatus">Mode démonstration prêt</div>
     </div>
@@ -299,7 +483,25 @@
         <h2>À préparer</h2>
       </div>
       <div class="next-reservation" id="nextReservation"></div>
+      <div class="charge-box">
+        <div class="charge-head">
+          <span id="chargeLabel">Charge du service : calme</span>
+          <strong id="chargePercent">0%</strong>
+        </div>
+        <div class="load-meter"><div class="load-fill" id="chargeFill"></div></div>
+      </div>
     </aside>
+  </section>
+
+  <section class="todo-panel panel" aria-label="À traiter maintenant">
+    <div class="section-head">
+      <div>
+        <span class="kicker">À faire maintenant</span>
+        <h2>Priorités du service</h2>
+        <p>Les points qui demandent une action rapide avant ou pendant le service.</p>
+      </div>
+    </div>
+    <div class="todo-list" id="todoList"></div>
   </section>
 
   <section class="grid-kpi" aria-label="Indicateurs clés">
@@ -337,8 +539,15 @@
           <button class="filter active" type="button" data-filter="all">Tout</button>
           <button class="filter" type="button" data-filter="confirmed">Confirmées</button>
           <button class="filter" type="button" data-filter="pending">À confirmer</button>
+          <button class="filter" type="button" data-filter="arrived">Arrivées</button>
           <button class="filter" type="button" data-filter="cancelled">Annulées</button>
+          <button class="filter" type="button" data-filter="no_show">No-show</button>
+          <button class="filter" type="button" data-filter="terrace">Terrasse</button>
+          <button class="filter" type="button" data-filter="large">Grosses tables</button>
         </div>
+      </div>
+      <div class="table-tools">
+        <input class="search-field" id="searchInput" type="search" placeholder="Rechercher nom ou téléphone" autocomplete="off" />
       </div>
       <div class="table-wrap">
         <table>
@@ -387,6 +596,29 @@
           </div>
         </div>
       </section>
+      <section class="side-card panel">
+        <span class="kicker">Analyse rapide</span>
+        <h2>Historique</h2>
+        <div class="service-grid">
+          <div class="analysis-card">
+            <strong id="analysisBookings">0</strong>
+            <span>réservations visibles</span>
+          </div>
+          <div class="analysis-card">
+            <strong id="analysisAvg">0</strong>
+            <span>couverts moyens</span>
+          </div>
+          <div class="analysis-card">
+            <strong id="analysisPeak">--:--</strong>
+            <span>créneau le plus demandé</span>
+          </div>
+          <div class="analysis-card">
+            <strong id="analysisTerrace">0%</strong>
+            <span>part terrasse</span>
+          </div>
+        </div>
+        <div class="insights" id="insightsList"></div>
+      </section>
     </aside>
   </section>
 </main>
@@ -395,6 +627,7 @@
 const DASHBOARD_PIN = '1130';
 const DASHBOARD_FEED_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQOuHuyjj9W-gBZ6vN7S7VDqPNRHbNbFLBCsO7gUnPSyibAXbfj5cneQ1Smixf0ztrUjW1Ixv5ss2CZ/pub?gid=0&single=true&output=csv';
 const DASHBOARD_CONFIRM_WEBHOOK_URL = 'https://hook.eu1.make.com/reahjsiwh6xdlhugok8w3nw8d8kv4qz3';
+const DASHBOARD_STATUS_WEBHOOK_URL = DASHBOARD_CONFIRM_WEBHOOK_URL;
 
 const sampleReservations = [
   { id:'r1', name:'Marie Dupont', phone:'06 12 34 56 78', date:todayOffset(0), time:'11:30', people:2, area:'Terrasse extérieure', status:'confirmed', message:'Proche de l’entrée si possible.' },
@@ -413,7 +646,9 @@ const state = {
   reservations: [],
   filter: 'all',
   service: 'all',
-  date: todayOffset(0)
+  date: todayOffset(0),
+  search: '',
+  lastSync: null
 };
 
 function todayOffset(days) {
@@ -431,6 +666,7 @@ function normalizeReservation(item) {
   const start = item.start?.dateTime || item.start || item.google_start || '';
   const dateFromStart = typeof start === 'string' ? start.slice(0, 10) : '';
   const timeFromStart = typeof start === 'string' && start.includes('T') ? start.slice(11, 16) : '';
+  const rawStatus = String(item.status || '').trim().toLowerCase().replace(/[\s-]+/g, '_');
   return {
     id: item.id || item.eventId || crypto.randomUUID?.() || `${summary}-${Math.random()}`,
     eventId: item.eventId || item.id || '',
@@ -440,8 +676,10 @@ function normalizeReservation(item) {
     time: item.time || timeFromStart || '12:00',
     people: Number(String(item.people || item.covers || item.personnes || 1).match(/\d+/)?.[0] || 1),
     area: item.area || item.space || item.emplacement || 'Salle intérieure',
-    status: item.status || (summary.toLowerCase().includes('annul') ? 'cancelled' : 'confirmed'),
-    message: item.message || item.description || ''
+    status: rawStatus || (summary.toLowerCase().includes('annul') ? 'cancelled' : 'pending'),
+    message: item.message || item.description || '',
+    smsConfirmation: String(item.sms_confirmation_envoye || item.smsConfirmation || '').toLowerCase(),
+    smsReminder: String(item.sms_rappel_envoye || item.smsReminder || '').toLowerCase()
   };
 }
 
@@ -491,6 +729,7 @@ async function loadReservations() {
   const status = byId('dataStatus');
   if (!DASHBOARD_FEED_URL) {
     state.reservations = sampleReservations;
+    state.lastSync = new Date();
     status.textContent = 'Mode démonstration. Prêt à connecter à Make.';
     render();
     return;
@@ -504,9 +743,11 @@ async function loadReservations() {
     const payload = isCsv ? parseCsv(raw) : JSON.parse(raw);
     const list = Array.isArray(payload) ? payload : payload.reservations || payload.events || [];
     state.reservations = list.map(normalizeReservation);
+    state.lastSync = new Date();
     status.textContent = isCsv ? 'Données synchronisées avec Google Sheets.' : 'Données synchronisées avec Make.';
   } catch (error) {
     state.reservations = sampleReservations;
+    state.lastSync = new Date();
     status.textContent = 'Flux Make indisponible. Affichage du mode démonstration.';
   }
   render();
@@ -522,19 +763,38 @@ function scheduleSheetRefresh() {
 function filteredReservations() {
   return state.reservations
     .filter(item => item.date === state.date)
+    .filter(item => matchesService(item))
+    .filter(item => matchesSearch(item))
     .filter(item => {
-      if (state.service === 'lunch') return item.time >= '11:00' && item.time < '15:00';
-      if (state.service === 'dinner') return item.time >= '18:00' || item.time <= '00:30';
-      return true;
+      if (state.filter === 'all') return true;
+      if (state.filter === 'terrace') return item.area.toLowerCase().includes('terrasse');
+      if (state.filter === 'large') return Number(item.people || 0) >= 6;
+      return item.status === state.filter;
     })
-    .filter(item => state.filter === 'all' || item.status === state.filter)
     .sort((a, b) => a.time.localeCompare(b.time));
 }
 
 function activeReservations() {
   return state.reservations
     .filter(item => item.date === state.date)
-    .filter(item => item.status !== 'cancelled');
+    .filter(item => matchesService(item))
+    .filter(item => isActiveStatus(item.status));
+}
+
+function isActiveStatus(status) {
+  return !['cancelled', 'no_show'].includes(status);
+}
+
+function matchesService(item) {
+  if (state.service === 'lunch') return item.time >= '11:00' && item.time < '15:00';
+  if (state.service === 'dinner') return item.time >= '18:00' || item.time <= '00:30';
+  return true;
+}
+
+function matchesSearch(item) {
+  if (!state.search) return true;
+  const haystack = `${item.name} ${item.phone} ${item.message}`.toLowerCase();
+  return haystack.includes(state.search.toLowerCase());
 }
 
 function countPeople(list) {
@@ -544,12 +804,19 @@ function countPeople(list) {
 function statusLabel(status) {
   if (status === 'cancelled') return 'Annulée';
   if (status === 'pending') return 'À confirmer';
+  if (status === 'arrived') return 'Arrivée';
+  if (status === 'no_show') return 'No-show';
   return 'Confirmée';
 }
 
+function formatDisplayDate(dateString) {
+  const date = new Date(`${dateString}T12:00:00`);
+  return date.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+}
+
 function renderKpis() {
-  const today = state.reservations.filter(item => item.date === state.date);
-  const active = today.filter(item => item.status !== 'cancelled');
+  const today = state.reservations.filter(item => item.date === state.date).filter(item => matchesService(item));
+  const active = today.filter(item => isActiveStatus(item.status));
   const terrace = active.filter(item => item.area.toLowerCase().includes('terrasse'));
   const cancelled = today.filter(item => item.status === 'cancelled');
   byId('kpiBookings').textContent = active.length;
@@ -560,22 +827,96 @@ function renderKpis() {
   byId('kpiCoversMeta').textContent = state.date === todayOffset(0) ? "aujourd'hui" : state.date;
 }
 
+function renderServiceSummary() {
+  const all = state.reservations.filter(item => item.date === state.date).filter(item => matchesService(item));
+  const active = all.filter(item => isActiveStatus(item.status));
+  const pending = all.filter(item => item.status === 'pending');
+  const cancelled = all.filter(item => item.status === 'cancelled');
+  byId('serviceTitle').textContent = `${formatDisplayDate(state.date)}`;
+  byId('summaryCovers').textContent = countPeople(active);
+  byId('summaryBookings').textContent = active.length;
+  byId('summaryPending').textContent = pending.length;
+  byId('summaryCancelled').textContent = cancelled.length;
+  const next = nextUpcomingReservation();
+  const nextText = next ? `Prochaine table : ${next.time} — ${next.name} — ${next.people} personne${next.people > 1 ? 's' : ''} — ${next.area}` : 'Aucune table à venir sur cette sélection.';
+  byId('serviceSummary').textContent = `${countPeople(active)} couverts · ${active.length} réservations · ${pending.length} à confirmer · ${cancelled.length} annulation${cancelled.length > 1 ? 's' : ''}. ${nextText}`;
+}
+
+function renderLastSync() {
+  const text = state.lastSync
+    ? state.lastSync.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' })
+    : 'jamais';
+  byId('lastSync').textContent = `Dernière synchro : ${text}`;
+}
+
+function minutesUntilReservation(item) {
+  if (!item || item.date !== todayOffset(0)) return null;
+  const target = new Date(`${item.date}T${item.time}:00`);
+  return Math.round((target - new Date()) / 60000);
+}
+
+function nextUpcomingReservation() {
+  const now = new Date();
+  const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  return activeReservations()
+    .filter(item => state.date !== todayOffset(0) || item.time >= currentTime)
+    .sort((a, b) => a.time.localeCompare(b.time))[0];
+}
+
+function renderTodos() {
+  const active = activeReservations();
+  const pending = active.filter(item => item.status === 'pending');
+  const large = active.filter(item => Number(item.people || 0) >= 6).sort((a, b) => b.people - a.people)[0];
+  const next = nextUpcomingReservation();
+  const nextMinutes = minutesUntilReservation(next);
+  const smsMissing = active.filter(item => item.smsConfirmation && !['true', 'oui', 'yes', '1'].includes(item.smsConfirmation)).length;
+  const todos = [
+    {
+      level: pending.length ? 'warn' : '',
+      title: `${pending.length} réservation${pending.length > 1 ? 's' : ''} à confirmer`,
+      text: pending.length ? 'Appeler les clients puis valider dans le dashboard.' : 'Toutes les réservations visibles sont traitées.'
+    },
+    {
+      level: smsMissing ? 'warn' : '',
+      title: smsMissing ? `${smsMissing} SMS/RCS à vérifier` : 'Rappels prêts',
+      text: smsMissing ? 'Certaines confirmations ne sont pas marquées comme envoyées.' : 'Le suivi SMS/RCS pourra être enrichi depuis Make.'
+    },
+    {
+      level: large ? 'danger' : '',
+      title: large ? `Grosse table : ${large.people} couverts` : 'Aucune grosse table',
+      text: large ? `${large.time} — ${large.name} — ${large.area}` : 'Pas de préparation spéciale détectée.'
+    },
+    {
+      level: nextMinutes !== null && nextMinutes <= 30 ? 'danger' : '',
+      title: next ? `Prochaine table à ${next.time}` : 'Service calme',
+      text: next ? `${next.name} · ${next.people} couvert${next.people > 1 ? 's' : ''}${nextMinutes !== null ? ` · dans ${Math.max(0, nextMinutes)} min` : ''}` : 'Aucune arrivée prochaine.'
+    }
+  ];
+  byId('todoList').innerHTML = todos.map(item => `
+    <article class="todo-item">
+      <i class="priority-dot ${item.level}" aria-hidden="true"></i>
+      <strong>${escapeHtml(item.title)}</strong>
+      <span>${escapeHtml(item.text)}</span>
+    </article>
+  `).join('');
+}
+
 function renderTable() {
   const list = filteredReservations();
   const body = byId('reservationsBody');
   const empty = byId('emptyState');
   body.innerHTML = list.map(item => `
     <tr>
-      <td><strong>${item.time}</strong></td>
-      <td>
+      <td data-label="Heure"><strong><span class="icon-hint">🕒</span>${item.time}</strong></td>
+      <td data-label="Client">
         <span class="reservation-name">${escapeHtml(item.name)}</span>
         <span class="reservation-note">${escapeHtml(item.message || 'Aucune note')}</span>
       </td>
-      <td>${item.people}</td>
-      <td>${escapeHtml(item.area)}</td>
-      <td><span class="badge ${item.status}">${statusLabel(item.status)}</span></td>
-      <td>${escapeHtml(item.phone || '-')}</td>
-      <td>${renderReservationAction(item)}</td>
+      <td data-label="Couverts"><span class="icon-hint">👥</span>${item.people}</td>
+      <td data-label="Espace"><span class="icon-hint">📍</span>${escapeHtml(item.area)}</td>
+      <td data-label="Statut"><span class="badge ${item.status}">${statusLabel(item.status)}</span></td>
+      <td data-label="Téléphone">${item.phone ? `<a href="tel:${escapeHtml(item.phone.replace(/\s/g, ''))}">${escapeHtml(item.phone)}</a>` : '-'}</td>
+      <td data-label="Action">${renderReservationAction(item)}</td>
     </tr>
   `).join('');
   empty.hidden = list.length > 0;
@@ -583,11 +924,46 @@ function renderTable() {
 }
 
 function renderReservationAction(item) {
+  const id = escapeHtml(item.eventId || item.id);
+  const phone = item.phone ? `<a class="mini-action ghost" href="tel:${escapeHtml(item.phone.replace(/\s/g, ''))}">Appeler</a>` : '';
   if (item.status === 'pending') {
-    return `<button class="action-btn" type="button" data-confirm="${escapeHtml(item.eventId || item.id)}">Confirmer</button>`;
+    return `<div class="row-actions">${phone}<button class="action-btn" type="button" data-confirm="${id}">Confirmer</button><button class="mini-action danger" type="button" data-status-id="${id}" data-next-status="cancelled">Annuler</button></div>`;
   }
-  if (item.status === 'confirmed') return '<span class="action-muted">Confirmée</span>';
-  return '<span class="action-muted">Annulée</span>';
+  if (item.status === 'confirmed') {
+    return `<div class="row-actions">${phone}<button class="mini-action ok" type="button" data-status-id="${id}" data-next-status="arrived">Arrivé</button><button class="mini-action danger" type="button" data-status-id="${id}" data-next-status="no_show">No-show</button></div>`;
+  }
+  if (item.status === 'arrived') return `<div class="row-actions">${phone}<span class="action-muted">Arrivée</span></div>`;
+  if (item.status === 'no_show') return `<div class="row-actions">${phone}<span class="action-muted">No-show</span></div>`;
+  return `<div class="row-actions">${phone}<span class="action-muted">Annulée</span></div>`;
+}
+
+function buildStatusPayload(reservation, status) {
+  const formData = new FormData();
+  formData.append('eventId', reservation.eventId || reservation.id);
+  formData.append('id', reservation.id);
+  formData.append('status', status);
+  formData.append('name', reservation.name);
+  formData.append('date', reservation.date);
+  formData.append('time', reservation.time);
+  formData.append('people', reservation.people);
+  formData.append('area', reservation.area);
+  formData.append('phone', reservation.phone || '');
+  formData.append('message', reservation.message || '');
+  formData.append('updated_at', new Date().toISOString());
+  return formData;
+}
+
+async function sendStatusUpdate(reservation, status) {
+  if (!DASHBOARD_STATUS_WEBHOOK_URL) {
+    alert("Le webhook Make de mise à jour n'est pas encore branché.");
+    return false;
+  }
+  await fetch(DASHBOARD_STATUS_WEBHOOK_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: buildStatusPayload(reservation, status)
+  });
+  return true;
 }
 
 async function confirmReservation(eventId) {
@@ -598,21 +974,8 @@ async function confirmReservation(eventId) {
   }
   const reservation = state.reservations.find(item => item.eventId === eventId || item.id === eventId);
   if (!reservation) return;
-  const formData = new FormData();
-  formData.append('eventId', reservation.eventId || reservation.id);
-  formData.append('id', reservation.id);
-  formData.append('status', 'confirmed');
-  formData.append('name', reservation.name);
-  formData.append('date', reservation.date);
-  formData.append('time', reservation.time);
-  formData.append('people', reservation.people);
-  formData.append('area', reservation.area);
   try {
-    await fetch(DASHBOARD_CONFIRM_WEBHOOK_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: formData
-    });
+    await sendStatusUpdate(reservation, 'confirmed');
     reservation.status = 'confirmed';
     render();
     scheduleSheetRefresh();
@@ -622,11 +985,7 @@ async function confirmReservation(eventId) {
 }
 
 function renderNext() {
-  const now = new Date();
-  const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-  const upcoming = activeReservations()
-    .filter(item => state.date !== todayOffset(0) || item.time >= currentTime)
-    .sort((a, b) => a.time.localeCompare(b.time))[0];
+  const upcoming = nextUpcomingReservation();
   const el = byId('nextReservation');
   if (!upcoming) {
     el.innerHTML = '<div class="time">--:--</div><div class="name">Aucune table à venir</div><div class="meta">Le service sélectionné est calme.</div>';
@@ -636,7 +995,24 @@ function renderNext() {
     <div class="time">${upcoming.time}</div>
     <div class="name">${escapeHtml(upcoming.name)}</div>
     <div class="meta">${upcoming.people} couvert${upcoming.people > 1 ? 's' : ''} · ${escapeHtml(upcoming.area)}</div>
+    <div class="next-actions">
+      ${upcoming.phone ? `<a class="mini-action ghost" href="tel:${escapeHtml(upcoming.phone.replace(/\s/g, ''))}">Appeler</a>` : ''}
+      ${upcoming.status === 'pending' ? `<button class="mini-action warn" type="button" data-confirm="${escapeHtml(upcoming.eventId || upcoming.id)}">Confirmer</button>` : ''}
+      ${upcoming.status === 'confirmed' ? `<button class="mini-action ok" type="button" data-status-id="${escapeHtml(upcoming.eventId || upcoming.id)}" data-next-status="arrived">Marquer arrivé</button>` : ''}
+    </div>
   `;
+}
+
+function renderCharge() {
+  const active = activeReservations();
+  const covers = countPeople(active);
+  const percent = Math.min(100, Math.round((covers / 55) * 100));
+  let label = 'calme';
+  if (percent >= 75) label = 'élevée';
+  else if (percent >= 45) label = 'normale';
+  byId('chargeLabel').textContent = `Charge du service : ${label}`;
+  byId('chargePercent').textContent = `${percent}%`;
+  byId('chargeFill').style.width = `${percent}%`;
 }
 
 function renderBusyBars() {
@@ -667,12 +1043,62 @@ function renderServices() {
   byId('outsideCovers').textContent = countPeople(outside);
 }
 
+function renderAnalysis() {
+  const list = state.reservations.filter(item => isActiveStatus(item.status));
+  const total = list.length;
+  const covers = countPeople(list);
+  const terrace = list.filter(item => item.area.toLowerCase().includes('terrasse'));
+  const slots = new Map();
+  list.forEach(item => slots.set(item.time, (slots.get(item.time) || 0) + Number(item.people || 0)));
+  const peak = [...slots.entries()].sort((a, b) => b[1] - a[1])[0];
+  byId('analysisBookings').textContent = total;
+  byId('analysisAvg').textContent = total ? (covers / total).toFixed(1).replace('.', ',') : '0';
+  byId('analysisPeak').textContent = peak ? peak[0] : '--:--';
+  byId('analysisTerrace').textContent = total ? `${Math.round((terrace.length / total) * 100)}%` : '0%';
+  const pending = state.reservations.filter(item => item.status === 'pending').length;
+  const cancelled = state.reservations.filter(item => item.status === 'cancelled').length;
+  const large = list.filter(item => Number(item.people || 0) >= 6).length;
+  byId('insightsList').innerHTML = [
+    peak ? `Le créneau le plus chargé visible est ${peak[0]} avec ${peak[1]} couverts.` : 'Pas encore assez de données pour détecter un pic horaire.',
+    `${pending} réservation${pending > 1 ? 's' : ''} encore à confirmer dans les données visibles.`,
+    `${large} grosse${large > 1 ? 's' : ''} table${large > 1 ? 's' : ''} de 6 couverts ou plus.`,
+    `${cancelled} annulation${cancelled > 1 ? 's' : ''} enregistrée${cancelled > 1 ? 's' : ''}.`
+  ].map(text => `<div class="insight">${escapeHtml(text)}</div>`).join('');
+}
+
 function render() {
+  renderLastSync();
+  updateQuickTabs();
+  renderServiceSummary();
   renderKpis();
+  renderTodos();
   renderTable();
   renderNext();
+  renderCharge();
   renderBusyBars();
   renderServices();
+  renderAnalysis();
+}
+
+function updateQuickTabs() {
+  document.querySelectorAll('[data-date-mode]').forEach(button => {
+    const expected = button.dataset.dateMode === 'tomorrow' ? todayOffset(1) : todayOffset(0);
+    button.classList.toggle('active', state.date === expected);
+  });
+}
+
+async function updateLocalStatus(id, status) {
+  const reservation = state.reservations.find(item => item.eventId === id || item.id === id);
+  if (!reservation) return;
+  try {
+    await sendStatusUpdate(reservation, status);
+  } catch (error) {
+    alert("La mise à jour n'a pas pu être envoyée à Make.");
+    return;
+  }
+  reservation.status = status;
+  render();
+  scheduleSheetRefresh();
 }
 
 function escapeHtml(value) {
@@ -686,6 +1112,21 @@ function unlock() {
   byId('pinLock').classList.remove('active');
 }
 
+function cleanPin(value) {
+  return String(value || '').replace(/\D/g, '');
+}
+
+function checkPin() {
+  const pin = cleanPin(byId('pinInput').value);
+  byId('pinInput').value = pin;
+  byId('pinError').textContent = '';
+  if (pin === DASHBOARD_PIN) {
+    unlock();
+    return true;
+  }
+  return false;
+}
+
 byId('datePicker').value = state.date;
 byId('datePicker').addEventListener('change', event => {
   state.date = event.target.value || todayOffset(0);
@@ -695,6 +1136,17 @@ byId('serviceSelect').addEventListener('change', event => {
   state.service = event.target.value;
   render();
 });
+byId('searchInput').addEventListener('input', event => {
+  state.search = event.target.value.trim();
+  render();
+});
+document.querySelectorAll('[data-date-mode]').forEach(button => {
+  button.addEventListener('click', () => {
+    state.date = button.dataset.dateMode === 'tomorrow' ? todayOffset(1) : todayOffset(0);
+    byId('datePicker').value = state.date;
+    render();
+  });
+});
 document.querySelectorAll('.filter').forEach(button => {
   button.addEventListener('click', () => {
     state.filter = button.dataset.filter;
@@ -703,11 +1155,26 @@ document.querySelectorAll('.filter').forEach(button => {
   });
 });
 byId('reservationsBody').addEventListener('click', event => {
-  const button = event.target.closest('[data-confirm]');
-  if (!button) return;
-  button.disabled = true;
-  button.textContent = 'Confirmation...';
-  confirmReservation(button.dataset.confirm);
+  const confirmButton = event.target.closest('[data-confirm]');
+  if (confirmButton) {
+    confirmButton.disabled = true;
+    confirmButton.textContent = 'Confirmation...';
+    confirmReservation(confirmButton.dataset.confirm);
+    return;
+  }
+  const statusButton = event.target.closest('[data-status-id]');
+  if (statusButton) updateLocalStatus(statusButton.dataset.statusId, statusButton.dataset.nextStatus);
+});
+byId('nextReservation').addEventListener('click', event => {
+  const confirmButton = event.target.closest('[data-confirm]');
+  if (confirmButton) {
+    confirmButton.disabled = true;
+    confirmButton.textContent = 'Confirmation...';
+    confirmReservation(confirmButton.dataset.confirm);
+    return;
+  }
+  const statusButton = event.target.closest('[data-status-id]');
+  if (statusButton) updateLocalStatus(statusButton.dataset.statusId, statusButton.dataset.nextStatus);
 });
 byId('refreshBtn').addEventListener('click', loadReservations);
 byId('printBtn').addEventListener('click', () => window.print());
@@ -718,11 +1185,14 @@ byId('lockBtn').addEventListener('click', () => {
 });
 byId('pinForm').addEventListener('submit', event => {
   event.preventDefault();
-  if (byId('pinInput').value.trim() === DASHBOARD_PIN) {
-    unlock();
-    return;
-  }
+  if (checkPin()) return;
   byId('pinError').textContent = 'Code incorrect.';
+});
+byId('pinInput').addEventListener('input', () => {
+  const pin = cleanPin(byId('pinInput').value);
+  byId('pinInput').value = pin;
+  byId('pinError').textContent = '';
+  if (pin.length >= DASHBOARD_PIN.length) checkPin();
 });
 if (sessionStorage.getItem('madeItalyDashboardUnlocked') === 'true') unlock();
 loadReservations();

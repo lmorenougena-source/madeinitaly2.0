@@ -26,11 +26,15 @@ Ce code masque la page pour un usage simple, mais ce n'est pas une vraie sécuri
 
 - réservations du jour
 - nombre de couverts
+- synthèse opérationnelle du service
+- priorités à traiter maintenant
 - répartition salle / terrasse
 - annulations
 - prochaine table à préparer
 - horaires les plus chargés
 - prévision midi et soir
+- recherche par nom ou téléphone
+- analyse rapide de l'historique visible
 
 ## Branchement Make + Google Sheets
 
@@ -56,7 +60,7 @@ Réservations Made in Italy
 Première ligne du tableau :
 
 ```txt
-id,eventId,date,time,name,phone,people,area,status,message
+id,eventId,date_creation,date,time,service,name,phone,people,area,status,source,sms_confirmation_envoye,sms_rappel_envoye,date_confirmation,date_annulation,no_show,message,langue_client
 ```
 
 Un modèle CSV existe aussi ici :
@@ -157,29 +161,34 @@ Statuts recommandés :
 confirmed
 pending
 cancelled
+arrived
+no_show
 ```
 
 Important : publier un Google Sheet en CSV rend ces données accessibles à toute personne qui possède le lien. Pour un restaurant réel, évite de partager ce lien et passe ensuite à une vraie protection serveur si le dashboard contient des numéros de téléphone clients.
 
 ## Confirmation manuelle depuis le dashboard
 
-Le dashboard contient maintenant un bouton :
+Le dashboard contient maintenant plusieurs boutons de statut :
 
 ```txt
 Confirmer
+Arrivé
+No-show
+Annuler
 ```
 
-Il apparaît uniquement sur les réservations dont le statut est :
+Le bouton `Confirmer` apparaît uniquement sur les réservations dont le statut est :
 
 ```txt
 pending
 ```
 
-Après clic, le dashboard passe la ligne en confirmé visuellement, puis relance plusieurs actualisations automatiques de Google Sheets pour récupérer les données finales du tableau.
+Après clic, le dashboard envoie le nouveau statut à Make, passe la ligne à jour visuellement, puis relance plusieurs actualisations automatiques de Google Sheets pour récupérer les données finales du tableau.
 
-Pour qu'il mette à jour Google Sheets, il faut créer un troisième scénario Make.
+Pour que tous les statuts soient permanents, il faut créer un scénario Make de mise à jour.
 
-### Scénario Make : confirmation-dashboard
+### Scénario Make : statut-dashboard
 
 Module 1 :
 
@@ -190,7 +199,7 @@ Webhooks > Custom webhook
 Nom :
 
 ```txt
-confirmation-dashboard
+statut-dashboard
 ```
 
 Le dashboard enverra :
@@ -204,6 +213,9 @@ date
 time
 people
 area
+phone
+message
+updated_at
 ```
 
 Module 2 :
@@ -241,8 +253,26 @@ name    = name trouvé par Search Rows
 phone   = phone trouvé par Search Rows
 people  = people trouvé par Search Rows
 area    = area trouvé par Search Rows
-status  = confirmed
+status  = status reçu du webhook
 message = message trouvé par Search Rows
+```
+
+Si `status = confirmed`, renseigne aussi :
+
+```txt
+date_confirmation = updated_at reçu du webhook
+```
+
+Si `status = cancelled`, renseigne aussi :
+
+```txt
+date_annulation = updated_at reçu du webhook
+```
+
+Si `status = no_show`, renseigne aussi :
+
+```txt
+no_show = true
 ```
 
 Ensuite, dans `dashboard.html`, remplace :
