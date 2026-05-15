@@ -278,7 +278,7 @@ no_show = true
 Ensuite, dans `dashboard.html`, remplace :
 
 ```js
-const DASHBOARD_CONFIRM_WEBHOOK_URL = 'https://hook.eu1.make.com/reahjsiwh6xdlhugok8w3nw8d8kv4qz3';
+const DASHBOARD_CONFIRM_WEBHOOK_URL = 'https://hook.eu1.make.com/kkrqvegxv274wfdduhsqbvqvafa3h40o';
 ```
 
 par l'URL du webhook Make :
