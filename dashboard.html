@@ -308,6 +308,7 @@
   .badge.cancelled { color:#efb9ad; background:rgba(191,81,58,.14); border-color:rgba(191,81,58,.26); }
   .badge.arrived { color:#c8efd5; background:rgba(45,138,88,.2); border-color:rgba(45,138,88,.34); }
   .badge.no_show { color:#efb9ad; background:rgba(191,81,58,.18); border-color:rgba(191,81,58,.34); }
+  .badge.syncing { box-shadow:0 0 0 1px rgba(200,164,90,.22) inset; }
   .action-btn {
     min-height:34px;
     border:1px solid rgba(45,138,88,.34);
@@ -321,6 +322,7 @@
   }
   .action-btn:hover { background:rgba(45,138,88,.26); border-color:rgba(45,138,88,.55); }
   .action-btn[disabled] { opacity:.5; cursor:not-allowed; }
+  .mini-action[disabled] { opacity:.55; cursor:wait; }
   .action-muted { color:var(--muted); font-size:.85rem; }
   .row-actions { display:flex; gap:7px; flex-wrap:wrap; }
   .icon-hint { color:var(--gold); margin-right:6px; }
@@ -628,6 +630,8 @@ const DASHBOARD_PIN = '1130';
 const DASHBOARD_FEED_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQOuHuyjj9W-gBZ6vN7S7VDqPNRHbNbFLBCsO7gUnPSyibAXbfj5cneQ1Smixf0ztrUjW1Ixv5ss2CZ/pub?gid=1472754258&single=true&output=csv';
 const DASHBOARD_CONFIRM_WEBHOOK_URL = 'https://hook.eu1.make.com/kkrqvegxv274wfdduhsqbvqvafa3h40o';
 const DASHBOARD_STATUS_WEBHOOK_URL = DASHBOARD_CONFIRM_WEBHOOK_URL;
+const STATUS_OVERRIDE_STORAGE_KEY = 'madeItalyDashboardStatusOverrides';
+const STATUS_OVERRIDE_TTL_MS = 2 * 60 * 1000;
 
 const sampleReservations = [
   { id:'r1', name:'Marie Dupont', phone:'06 12 34 56 78', date:todayOffset(0), time:'11:30', people:2, area:'Terrasse extérieure', status:'confirmed', message:'Proche de l’entrée si possible.' },
@@ -648,7 +652,8 @@ const state = {
   service: 'all',
   date: todayOffset(0),
   search: '',
-  lastSync: null
+  lastSync: null,
+  statusOverrides: loadStatusOverrides()
 };
 
 function todayOffset(days) {
@@ -659,6 +664,58 @@ function todayOffset(days) {
 
 function byId(id) {
   return document.getElementById(id);
+}
+
+function loadStatusOverrides() {
+  try {
+    const stored = JSON.parse(sessionStorage.getItem(STATUS_OVERRIDE_STORAGE_KEY) || '{}');
+    const now = Date.now();
+    return Object.fromEntries(
+      Object.entries(stored).filter(([, value]) => value?.expiresAt > now)
+    );
+  } catch (error) {
+    return {};
+  }
+}
+
+function saveStatusOverrides() {
+  try {
+    sessionStorage.setItem(STATUS_OVERRIDE_STORAGE_KEY, JSON.stringify(state.statusOverrides));
+  } catch (error) {
+    // Session storage can be unavailable in some private browser contexts.
+  }
+}
+
+function reservationKey(item) {
+  return String(item.eventId || item.id || '').trim();
+}
+
+function setStatusOverride(reservation, status) {
+  const key = reservationKey(reservation);
+  if (!key) return;
+  state.statusOverrides[key] = {
+    status,
+    expiresAt: Date.now() + STATUS_OVERRIDE_TTL_MS
+  };
+  saveStatusOverrides();
+}
+
+function applyStatusOverrides(reservations) {
+  const now = Date.now();
+  let changed = false;
+  const merged = reservations.map(item => {
+    const key = reservationKey(item);
+    const override = key ? state.statusOverrides[key] : null;
+    if (!override) return item;
+    if (override.expiresAt <= now || item.status === override.status) {
+      delete state.statusOverrides[key];
+      changed = true;
+      return item;
+    }
+    return { ...item, status: override.status, syncing: true };
+  });
+  if (changed) saveStatusOverrides();
+  return merged;
 }
 
 function normalizeReservation(item) {
@@ -742,7 +799,7 @@ async function loadReservations() {
     const isCsv = DASHBOARD_FEED_URL.includes('output=csv') || DASHBOARD_FEED_URL.includes('/pub?') || raw.trim().startsWith('id,') || raw.trim().startsWith('eventId,');
     const payload = isCsv ? parseCsv(raw) : JSON.parse(raw);
     const list = Array.isArray(payload) ? payload : payload.reservations || payload.events || [];
-    state.reservations = list.map(normalizeReservation);
+    state.reservations = applyStatusOverrides(list.map(normalizeReservation));
     state.lastSync = new Date();
     status.textContent = isCsv ? 'Données synchronisées avec Google Sheets.' : 'Données synchronisées avec Make.';
   } catch (error) {
@@ -914,7 +971,7 @@ function renderTable() {
       </td>
       <td data-label="Couverts"><span class="icon-hint">👥</span>${item.people}</td>
       <td data-label="Espace"><span class="icon-hint">📍</span>${escapeHtml(item.area)}</td>
-      <td data-label="Statut"><span class="badge ${item.status}">${statusLabel(item.status)}</span></td>
+      <td data-label="Statut"><span class="badge ${item.status}${item.syncing ? ' syncing' : ''}">${statusLabel(item.status)}</span></td>
       <td data-label="Téléphone">${item.phone ? `<a href="tel:${escapeHtml(item.phone.replace(/\s/g, ''))}">${escapeHtml(item.phone)}</a>` : '-'}</td>
       <td data-label="Action">${renderReservationAction(item)}</td>
     </tr>
@@ -968,7 +1025,9 @@ async function confirmReservation(eventId) {
   if (!reservation) return;
   try {
     await sendStatusUpdate(reservation, 'confirmed');
+    setStatusOverride(reservation, 'confirmed');
     reservation.status = 'confirmed';
+    reservation.syncing = true;
     render();
     scheduleSheetRefresh();
   } catch (error) {
@@ -1088,7 +1147,9 @@ async function updateLocalStatus(id, status) {
     alert("La mise à jour n'a pas pu être envoyée à Make.");
     return;
   }
+  setStatusOverride(reservation, status);
   reservation.status = status;
+  reservation.syncing = true;
   render();
   scheduleSheetRefresh();
 }
@@ -1155,7 +1216,11 @@ byId('reservationsBody').addEventListener('click', event => {
     return;
   }
   const statusButton = event.target.closest('[data-status-id]');
-  if (statusButton) updateLocalStatus(statusButton.dataset.statusId, statusButton.dataset.nextStatus);
+  if (statusButton) {
+    statusButton.disabled = true;
+    statusButton.textContent = 'Mise à jour...';
+    updateLocalStatus(statusButton.dataset.statusId, statusButton.dataset.nextStatus);
+  }
 });
 byId('nextReservation').addEventListener('click', event => {
   const confirmButton = event.target.closest('[data-confirm]');
@@ -1166,7 +1231,11 @@ byId('nextReservation').addEventListener('click', event => {
     return;
   }
   const statusButton = event.target.closest('[data-status-id]');
-  if (statusButton) updateLocalStatus(statusButton.dataset.statusId, statusButton.dataset.nextStatus);
+  if (statusButton) {
+    statusButton.disabled = true;
+    statusButton.textContent = 'Mise à jour...';
+    updateLocalStatus(statusButton.dataset.statusId, statusButton.dataset.nextStatus);
+  }
 });
 byId('refreshBtn').addEventListener('click', loadReservations);
 byId('printBtn').addEventListener('click', () => window.print());
