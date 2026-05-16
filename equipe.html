@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Planning équipe — Made in Italy Lourdes</title>
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#11100d" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:#11100d;
+    --panel:#1c1a16;
+    --panel-soft:#24211c;
+    --muted:#a7a097;
+    --line:rgba(247,240,230,.12);
+    --line-strong:rgba(247,240,230,.2);
+    --gold:#c8a45a;
+    --red:#bf513a;
+    --green:#2d8a58;
+    --blue:#587f9f;
+    --cream:#f7f0e6;
+    --shadow:0 24px 70px -36px rgba(0,0,0,.72);
+  }
+  * { box-sizing:border-box; }
+  html { min-height:100%; background:var(--bg); }
+  body {
+    margin:0;
+    min-height:100%;
+    color:var(--cream);
+    font-family:Inter, system-ui, sans-serif;
+    background:
+      radial-gradient(1000px 460px at 10% -10%, rgba(200,164,90,.18), transparent 62%),
+      radial-gradient(760px 380px at 100% 0%, rgba(45,138,88,.13), transparent 60%),
+      linear-gradient(180deg, #15130f, #0f0e0c 62%, #15130f);
+  }
+  body::before {
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.18;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+    mix-blend-mode:soft-light;
+  }
+  button, input, select { font:inherit; }
+  a { color:inherit; text-decoration:none; }
+  .app { width:min(1240px, calc(100% - 32px)); margin:0 auto; padding:28px 0 56px; }
+  .topbar {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:16px 0 28px;
+  }
+  .brand { display:flex; align-items:center; gap:14px; min-width:0; }
+  .brand img { width:72px; height:72px; object-fit:contain; filter:drop-shadow(0 10px 24px rgba(0,0,0,.45)); }
+  .brand-title strong {
+    display:block;
+    font-family:"Cormorant Garamond", serif;
+    font-size:clamp(1.65rem, 3vw, 2.45rem);
+    line-height:1;
+  }
+  .brand-title span {
+    display:block;
+    margin-top:6px;
+    color:var(--muted);
+    font-size:.82rem;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+  }
+  .actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+  .top-nav { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .top-nav a {
+    min-height:36px;
+    display:inline-flex;
+    align-items:center;
+    padding:0 12px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:var(--muted);
+    background:rgba(255,255,255,.04);
+    font-size:.82rem;
+    font-weight:700;
+  }
+  .top-nav a.active { color:#14110e; border-color:transparent; background:var(--gold); }
+  .btn {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-height:42px;
+    padding:0 14px;
+    border:1px solid var(--line-strong);
+    border-radius:8px;
+    color:var(--cream);
+    background:rgba(255,255,255,.05);
+    cursor:pointer;
+  }
+  .btn:hover { border-color:rgba(247,240,230,.38); background:rgba(255,255,255,.08); }
+  .btn-primary { border-color:transparent; background:var(--red); box-shadow:0 18px 34px -24px rgba(191,81,58,.9); }
+  .panel {
+    background:linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+  }
+  .kicker { color:var(--gold); font-size:.74rem; letter-spacing:.28em; text-transform:uppercase; }
+  h1, h2, h3 { margin:0; font-family:"Cormorant Garamond", serif; font-weight:600; }
+  h1 { margin-top:12px; font-size:clamp(2.5rem, 6vw, 5rem); line-height:.9; max-width:780px; }
+  h2 { font-size:clamp(2rem, 4vw, 3.2rem); }
+  .hero {
+    display:grid;
+    grid-template-columns:minmax(0, 1.25fr) minmax(280px, .75fr);
+    gap:18px;
+    align-items:stretch;
+    margin-bottom:18px;
+  }
+  .hero-main { padding:28px; min-height:260px; position:relative; overflow:hidden; }
+  .hero-copy { margin:18px 0 0; max-width:700px; color:#d5cec3; font-size:1.02rem; line-height:1.7; }
+  .week-tools { display:flex; gap:10px; flex-wrap:wrap; margin-top:26px; position:relative; z-index:1; }
+  .field {
+    min-height:44px;
+    border:1px solid var(--line-strong);
+    border-radius:8px;
+    color:var(--cream);
+    background:rgba(0,0,0,.18);
+    padding:0 12px;
+    color-scheme:dark;
+  }
+  .sync-pill {
+    display:inline-flex;
+    align-items:center;
+    min-height:36px;
+    padding:0 12px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:var(--muted);
+    background:rgba(255,255,255,.04);
+    font-size:.82rem;
+  }
+  .summary-card { padding:24px; display:flex; flex-direction:column; justify-content:space-between; }
+  .summary-card h2 { font-size:2rem; }
+  .summary-list { display:grid; gap:12px; margin-top:22px; }
+  .summary-line {
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    padding:12px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:rgba(255,255,255,.04);
+    color:#d5cec3;
+  }
+  .summary-line strong { color:var(--cream); }
+  .grid-kpi {
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    gap:14px;
+    margin-bottom:18px;
+  }
+  .kpi { padding:20px; min-height:142px; display:flex; flex-direction:column; justify-content:space-between; }
+  .kpi span { color:var(--muted); font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; }
+  .kpi strong { font-family:"Cormorant Garamond", serif; font-size:3rem; line-height:1; color:var(--gold); }
+  .kpi em { color:var(--muted); font-style:normal; font-size:.86rem; }
+  .section { margin-top:18px; }
+  .section-head {
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    align-items:flex-end;
+    padding:24px 24px 0;
+  }
+  .section-head p { margin:8px 0 0; color:var(--muted); line-height:1.55; }
+  .filters { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+  .filter {
+    min-height:36px;
+    padding:0 12px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:var(--muted);
+    background:rgba(255,255,255,.04);
+    cursor:pointer;
+    font-weight:700;
+  }
+  .filter.active { color:#14110e; background:var(--gold); border-color:transparent; }
+  .week-grid-wrap { overflow:auto; padding:18px 24px 24px; }
+  .week-grid {
+    display:grid;
+    grid-template-columns:150px repeat(7, minmax(112px, 1fr));
+    min-width:940px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .week-cell {
+    min-height:72px;
+    padding:12px;
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    background:rgba(255,255,255,.025);
+  }
+  .week-cell:nth-child(8n) { border-right:0; }
+  .week-cell.head { min-height:58px; color:var(--muted); font-size:.74rem; letter-spacing:.16em; text-transform:uppercase; background:rgba(255,255,255,.055); }
+  .week-cell.label { color:var(--cream); font-weight:800; background:rgba(255,255,255,.05); }
+  .week-main { display:block; font-weight:800; }
+  .week-meta { display:block; margin-top:5px; color:var(--muted); font-size:.82rem; }
+  .badge {
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    min-height:26px;
+    border-radius:999px;
+    padding:0 9px;
+    border:1px solid var(--line);
+    color:var(--muted);
+    background:rgba(255,255,255,.045);
+    font-size:.78rem;
+    font-weight:700;
+  }
+  .badge.ok { color:#c8efd5; background:rgba(45,138,88,.16); border-color:rgba(45,138,88,.3); }
+  .badge.warn { color:#f5d58e; background:rgba(200,164,90,.14); border-color:rgba(200,164,90,.3); }
+  .badge.danger { color:#efb9ad; background:rgba(191,81,58,.14); border-color:rgba(191,81,58,.3); }
+  .badge.rest { color:#8f877e; }
+  .team-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-top:18px;
+  }
+  .team-panel { overflow:hidden; }
+  .team-table-wrap { overflow:auto; padding:18px 24px 24px; }
+  table { width:100%; border-collapse:collapse; min-width:760px; }
+  th, td { padding:13px 10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+  th { color:var(--muted); font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; font-weight:700; }
+  td { color:#eee8dc; }
+  .member { font-weight:800; }
+  .role { display:block; margin-top:4px; color:var(--muted); font-size:.82rem; }
+  .shift { display:grid; gap:4px; }
+  .shift strong { font-size:.88rem; }
+  .main-grid {
+    display:grid;
+    grid-template-columns:minmax(0, 1.1fr) minmax(310px, .9fr);
+    gap:18px;
+    margin-top:18px;
+  }
+  .side-card { padding:24px; }
+  .alert-list, .member-list { display:grid; gap:12px; margin-top:18px; }
+  .alert {
+    padding:14px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.04);
+    color:#d5cec3;
+    line-height:1.5;
+  }
+  .alert strong { color:var(--cream); display:block; margin-bottom:4px; }
+  .member-tools { display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
+  .member-card {
+    padding:16px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:rgba(255,255,255,.04);
+  }
+  .member-card strong { display:block; font-size:1.05rem; }
+  .member-card span { display:block; margin-top:5px; color:var(--muted); font-size:.88rem; }
+  .pin-lock {
+    position:fixed;
+    inset:0;
+    z-index:50;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    background:rgba(17,16,13,.92);
+    backdrop-filter:blur(14px);
+  }
+  .pin-lock.active { display:flex; }
+  .pin-box { width:min(420px, 100%); padding:28px; text-align:center; }
+  .pin-box img { width:92px; height:92px; object-fit:contain; margin-bottom:12px; }
+  .pin-box p { color:var(--muted); line-height:1.6; }
+  .pin-box .field { width:100%; margin:12px 0; text-align:center; font-size:1.4rem; letter-spacing:.2em; }
+  .pin-error { min-height:22px; color:#efb9ad; font-size:.9rem; }
+  @media (max-width:980px) {
+    .topbar, .section-head { align-items:flex-start; flex-direction:column; }
+    .actions { justify-content:flex-start; }
+    .hero, .main-grid, .team-grid { grid-template-columns:1fr; }
+    .grid-kpi { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width:620px) {
+    .app { width:min(100% - 22px, 1240px); padding-top:16px; }
+    .brand img { width:58px; height:58px; }
+    .grid-kpi { grid-template-columns:1fr; }
+    h1 { font-size:3rem; }
+  }
+  @media print {
+    body { background:#fff; color:#111; }
+    body::before, .pin-lock, .actions, .filters, .member-tools { display:none !important; }
+    .app { width:100%; padding:0; }
+    .panel { box-shadow:none; border-color:#ddd; background:#fff; color:#111; break-inside:avoid; }
+    .team-grid, .main-grid, .hero { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="pin-lock active" id="pinLock">
+  <form class="pin-box panel" id="pinForm">
+    <img src="assets/logo-couleur-italie-web.png" alt="Fabrizio">
+    <h2>Accès équipe</h2>
+    <p>Espace privé du restaurant. Entrez le code d'accès pour consulter le planning.</p>
+    <input class="field" id="pinInput" inputmode="numeric" autocomplete="one-time-code" placeholder="Code" maxlength="8" />
+    <button class="btn btn-primary" type="submit">Entrer</button>
+    <div class="pin-error" id="pinError"></div>
+  </form>
+</div>
+
+<main class="app" aria-live="polite">
+  <header class="topbar">
+    <a class="brand" href="index.html#accueil">
+      <img src="assets/logo-couleur-italie-web.png" alt="Fabrizio">
+      <div class="brand-title">
+        <strong>Planning équipe</strong>
+        <span>Cuisine & salle</span>
+      </div>
+    </a>
+    <div class="actions">
+      <nav class="top-nav" aria-label="Navigation dashboard">
+        <a href="dashboard.html">Réservations</a>
+        <a class="active" href="equipe.html">Équipe</a>
+        <a href="dashboard.html#analyse">Analyse</a>
+      </nav>
+      <span class="sync-pill" id="lastSync">Dernière synchro : jamais</span>
+      <button class="btn" id="lockBtn" type="button">Verrouiller</button>
+      <button class="btn" id="printBtn" type="button">Imprimer</button>
+      <button class="btn btn-primary" id="refreshBtn" type="button">Actualiser</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-main panel">
+      <span class="kicker">Semaine équipe</span>
+      <h1 id="weekTitle">Planning de la semaine</h1>
+      <p class="hero-copy">Vue claire des équipes cuisine et salle, avec alertes de charge selon les réservations visibles dans le dashboard.</p>
+      <div class="week-tools">
+        <button class="btn" type="button" id="prevWeek">Semaine précédente</button>
+        <button class="btn" type="button" id="currentWeek">Semaine actuelle</button>
+        <button class="btn" type="button" id="nextWeek">Semaine suivante</button>
+        <select class="field" id="teamFilter" aria-label="Filtrer l'équipe">
+          <option value="all">Toutes les équipes</option>
+          <option value="cuisine">Cuisine</option>
+          <option value="salle">Salle</option>
+        </select>
+      </div>
+    </div>
+    <aside class="summary-card panel">
+      <div>
+        <span class="kicker">Résumé rapide</span>
+        <h2>État semaine</h2>
+      </div>
+      <div class="summary-list" id="summaryList"></div>
+    </aside>
+  </section>
+
+  <section class="grid-kpi">
+    <article class="kpi panel">
+      <span>Cuisine</span>
+      <strong id="kpiKitchen">0</strong>
+      <em>membres actifs</em>
+    </article>
+    <article class="kpi panel">
+      <span>Salle</span>
+      <strong id="kpiFloor">0</strong>
+      <em>membres actifs</em>
+    </article>
+    <article class="kpi panel">
+      <span>Heures</span>
+      <strong id="kpiHours">0h</strong>
+      <em>prévues cette semaine</em>
+    </article>
+    <article class="kpi panel">
+      <span>Alertes</span>
+      <strong id="kpiAlerts">0</strong>
+      <em>services à surveiller</em>
+    </article>
+  </section>
+
+  <section class="section panel">
+    <div class="section-head">
+      <div>
+        <span class="kicker">Vue hebdomadaire</span>
+        <h2>Charge & équipe</h2>
+        <p>Lecture rapide du nombre de personnes prévues et du niveau de charge estimé par jour.</p>
+      </div>
+      <div class="filters">
+        <button class="filter active" type="button" data-service="all">Tous</button>
+        <button class="filter" type="button" data-service="lunch">Midi</button>
+        <button class="filter" type="button" data-service="dinner">Soir</button>
+      </div>
+    </div>
+    <div class="week-grid-wrap">
+      <div class="week-grid" id="weekGrid"></div>
+    </div>
+  </section>
+
+  <section class="team-grid" id="teamTables"></section>
+
+  <section class="main-grid">
+    <section class="side-card panel">
+      <span class="kicker">À surveiller</span>
+      <h2>Alertes service</h2>
+      <div class="alert-list" id="alertList"></div>
+    </section>
+    <section class="side-card panel">
+      <span class="kicker">Vue membre</span>
+      <h2>Fiche équipe</h2>
+      <div class="member-tools">
+        <input class="field" id="memberSearch" type="search" placeholder="Rechercher un membre" autocomplete="off" />
+        <button class="btn" type="button" id="clearSearch">Effacer</button>
+      </div>
+      <div class="member-list" id="memberList"></div>
+    </section>
+  </section>
+</main>
+
+<script>
+const DASHBOARD_PIN = '1130';
+const DASHBOARD_FEED_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQOuHuyjj9W-gBZ6vN7S7VDqPNRHbNbFLBCsO7gUnPSyibAXbfj5cneQ1Smixf0ztrUjW1Ixv5ss2CZ/pub?gid=1472754258&single=true&output=csv';
+const staff = [
+  { id:'c1', first:'Marco', team:'cuisine', role:'Chef' },
+  { id:'c2', first:'Luca', team:'cuisine', role:'Pizzaiolo' },
+  { id:'c3', first:'Giulia', team:'cuisine', role:'Second' },
+  { id:'c4', first:'Antonio', team:'cuisine', role:'Commis' },
+  { id:'c5', first:'Nina', team:'cuisine', role:'Plonge' },
+  { id:'c6', first:'Pietro', team:'cuisine', role:'Pizzaiolo' },
+  { id:'c7', first:'Rosa', team:'cuisine', role:'Desserts' },
+  { id:'c8', first:'Enzo', team:'cuisine', role:'Commis' },
+  { id:'c9', first:'Marta', team:'cuisine', role:'Préparation' },
+  { id:'c10', first:'Paolo', team:'cuisine', role:'Extra week-end' },
+  { id:'s1', first:'Anna', team:'salle', role:'Manager' },
+  { id:'s2', first:'Sofia', team:'salle', role:'Serveuse' },
+  { id:'s3', first:'Enzo', team:'salle', role:'Runner' },
+  { id:'s4', first:'Clara', team:'salle', role:'Accueil' },
+  { id:'s5', first:'Hugo', team:'salle', role:'Bar' },
+  { id:'s6', first:'Emma', team:'salle', role:'Serveuse' },
+  { id:'s7', first:'Noah', team:'salle', role:'Runner' },
+  { id:'s8', first:'Louise', team:'salle', role:'Serveuse' },
+  { id:'s9', first:'Samir', team:'salle', role:'Extra week-end' },
+  { id:'s10', first:'Lina', team:'salle', role:'Extra week-end' }
+];
+const state = {
+  weekStart: getMonday(new Date()),
+  reservations: [],
+  service: 'all',
+  team: 'all',
+  search: '',
+  lastSync: null
+};
+
+function byId(id) { return document.getElementById(id); }
+function pad(value) { return String(value).padStart(2, '0'); }
+function dateKey(date) { return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`; }
+function getMonday(date) {
+  const copy = new Date(date);
+  const day = copy.getDay() || 7;
+  copy.setHours(0, 0, 0, 0);
+  copy.setDate(copy.getDate() - day + 1);
+  return copy;
+}
+function addDays(date, days) {
+  const copy = new Date(date);
+  copy.setDate(copy.getDate() + days);
+  return copy;
+}
+function weekDays() {
+  return Array.from({ length:7 }, (_, index) => addDays(state.weekStart, index));
+}
+function formatDay(date) {
+  return date.toLocaleDateString('fr-FR', { weekday:'short', day:'2-digit', month:'2-digit' }).replace('.', '');
+}
+function formatWeekTitle() {
+  const days = weekDays();
+  return `Semaine du ${days[0].toLocaleDateString('fr-FR', { day:'numeric', month:'long' })} au ${days[6].toLocaleDateString('fr-FR', { day:'numeric', month:'long' })}`;
+}
+function parseCsvLine(line) {
+  const cells = [];
+  let current = '';
+  let quoted = false;
+  for (let i = 0; i < line.length; i += 1) {
+    const char = line[i];
+    const next = line[i + 1];
+    if (char === '"' && quoted && next === '"') {
+      current += '"';
+      i += 1;
+    } else if (char === '"') {
+      quoted = !quoted;
+    } else if (char === ',' && !quoted) {
+      cells.push(current);
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  cells.push(current);
+  return cells;
+}
+function parseCsv(text) {
+  const lines = text.trim().split(/\r?\n/).filter(Boolean);
+  if (lines.length < 2) return [];
+  const headers = parseCsvLine(lines[0]).map(header => header.trim());
+  return lines.slice(1).map(line => {
+    const values = parseCsvLine(line);
+    return headers.reduce((row, header, index) => {
+      row[header] = values[index] || '';
+      return row;
+    }, {});
+  });
+}
+function normalizeReservation(row) {
+  return {
+    id: row.id || row.eventId || '',
+    date: row.date || '',
+    time: row.time || '12:00',
+    people: Number(String(row.people || 1).match(/\d+/)?.[0] || 1),
+    status: String(row.status || 'pending').trim().toLowerCase()
+  };
+}
+function isActiveReservation(item) {
+  return !['cancelled', 'no_show'].includes(item.status);
+}
+function serviceOfTime(time) {
+  if (time >= '11:00' && time < '15:00') return 'lunch';
+  return 'dinner';
+}
+function reservationsForDay(date, service = state.service) {
+  const key = dateKey(date);
+  return state.reservations
+    .filter(item => item.date === key)
+    .filter(isActiveReservation)
+    .filter(item => service === 'all' || serviceOfTime(item.time) === service);
+}
+function coversForDay(date, service = state.service) {
+  return reservationsForDay(date, service).reduce((sum, item) => sum + item.people, 0);
+}
+function plannedPeople(team, date, service = state.service) {
+  return shiftsFor(team, date, service).filter(shift => shift.type !== 'rest' && shift.type !== 'absence').length;
+}
+function requiredPeople(team, covers) {
+  if (!covers) return 0;
+  return Math.max(1, Math.ceil(covers / (team === 'salle' ? 12 : 15)));
+}
+function loadLevel(covers) {
+  if (covers >= 70) return { label:'très fort', className:'danger' };
+  if (covers >= 42) return { label:'fort', className:'warn' };
+  if (covers >= 18) return { label:'normal', className:'ok' };
+  return { label:'calme', className:'rest' };
+}
+function shiftPattern(member, dayIndex) {
+  const weekend = dayIndex >= 5;
+  const numeric = Number(member.id.replace(/\D/g, ''));
+  if ((numeric + dayIndex) % 6 === 0) return { label:'Repos', type:'rest', hours:0 };
+  if ((numeric + dayIndex) % 11 === 0) return { label:'Absence', type:'absence', hours:0 };
+  if (weekend && numeric % 3 === 0) return { label:'11-15 · 18-00', type:'double', hours:10 };
+  if ((numeric + dayIndex) % 2 === 0) return { label:member.team === 'salle' ? '11-15' : '10-15', type:'midi', hours:4.5 };
+  return { label:weekend ? '18-00' : '18-23', type:'soir', hours:weekend ? 6 : 5 };
+}
+function shiftsFor(team, date, service = state.service) {
+  const dayIndex = (date.getDay() + 6) % 7;
+  return staff
+    .filter(member => member.team === team)
+    .map(member => ({ member, ...shiftPattern(member, dayIndex) }))
+    .filter(shift => {
+      if (service === 'all') return true;
+      if (shift.type === 'double') return true;
+      if (service === 'lunch') return shift.type === 'midi';
+      return shift.type === 'soir';
+    });
+}
+function weekHours() {
+  return weekDays().reduce((total, date) => {
+    return total + staff.reduce((sum, member) => sum + shiftPattern(member, (date.getDay() + 6) % 7).hours, 0);
+  }, 0);
+}
+function computeAlerts() {
+  const alerts = [];
+  weekDays().forEach(date => {
+    ['lunch', 'dinner'].forEach(service => {
+      const covers = coversForDay(date, service);
+      if (!covers) return;
+      ['salle', 'cuisine'].forEach(team => {
+        const planned = plannedPeople(team, date, service);
+        const required = requiredPeople(team, covers);
+        const label = service === 'lunch' ? 'midi' : 'soir';
+        if (planned < required) {
+          alerts.push({
+            level:'danger',
+            title:`${formatDay(date)} ${label} · ${team}`,
+            text:`${covers} couverts prévus. ${planned} personne(s) planifiée(s), minimum conseillé : ${required}.`
+          });
+        } else if (planned >= required + 3 && covers < 25) {
+          alerts.push({
+            level:'warn',
+            title:`${formatDay(date)} ${label} · ${team}`,
+            text:`Service calme. ${planned} personne(s) planifiée(s) pour ${covers} couverts.`
+          });
+        }
+      });
+    });
+  });
+  return alerts;
+}
+async function loadReservations() {
+  try {
+    const separator = DASHBOARD_FEED_URL.includes('?') ? '&' : '?';
+    const response = await fetch(`${DASHBOARD_FEED_URL}${separator}_=${Date.now()}`, { cache:'no-store' });
+    if (!response.ok) throw new Error('Flux indisponible');
+    state.reservations = parseCsv(await response.text()).map(normalizeReservation);
+    state.lastSync = new Date();
+  } catch (error) {
+    state.reservations = [];
+    state.lastSync = new Date();
+  }
+  render();
+}
+function renderLastSync() {
+  byId('lastSync').textContent = state.lastSync
+    ? `Dernière synchro : ${state.lastSync.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' })}`
+    : 'Dernière synchro : jamais';
+}
+function renderSummary() {
+  const kitchen = staff.filter(member => member.team === 'cuisine').length;
+  const floor = staff.filter(member => member.team === 'salle').length;
+  const hours = Math.round(weekHours());
+  const alerts = computeAlerts();
+  const busiest = weekDays()
+    .map(date => ({ date, covers: coversForDay(date, 'all') }))
+    .sort((a, b) => b.covers - a.covers)[0];
+  byId('weekTitle').textContent = formatWeekTitle();
+  byId('kpiKitchen').textContent = kitchen;
+  byId('kpiFloor').textContent = floor;
+  byId('kpiHours').textContent = `${hours}h`;
+  byId('kpiAlerts').textContent = alerts.length;
+  byId('summaryList').innerHTML = [
+    ['Cuisine', `${kitchen} membres`],
+    ['Salle', `${floor} membres`],
+    ['Heures prévues', `${hours}h`],
+    ['Pic prévu', busiest?.covers ? `${formatDay(busiest.date)} · ${busiest.covers} couverts` : 'Pas de réservation visible']
+  ].map(([label, value]) => `<div class="summary-line"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join('');
+}
+function renderWeekGrid() {
+  const days = weekDays();
+  const headers = [''].concat(days.map(formatDay));
+  const rows = ['Cuisine', 'Salle', 'Charge'];
+  const cells = headers.map(text => `<div class="week-cell head">${escapeHtml(text)}</div>`);
+  rows.forEach(row => {
+    cells.push(`<div class="week-cell label">${row}</div>`);
+    days.forEach(date => {
+      const covers = coversForDay(date);
+      if (row === 'Charge') {
+        const level = loadLevel(covers);
+        cells.push(`<div class="week-cell"><span class="badge ${level.className}">${level.label}</span><span class="week-meta">${covers} couverts</span></div>`);
+        return;
+      }
+      const team = row === 'Cuisine' ? 'cuisine' : 'salle';
+      const planned = plannedPeople(team, date);
+      const required = requiredPeople(team, covers);
+      const status = required && planned < required ? 'danger' : required && planned >= required ? 'ok' : 'rest';
+      cells.push(`<div class="week-cell"><span class="week-main">${planned} pers.</span><span class="week-meta">Conseillé : ${required}</span><span class="badge ${status}">${status === 'danger' ? 'à compléter' : 'ok'}</span></div>`);
+    });
+  });
+  byId('weekGrid').innerHTML = cells.join('');
+}
+function renderTeamTables() {
+  const teams = state.team === 'all' ? ['cuisine', 'salle'] : [state.team];
+  const days = weekDays();
+  byId('teamTables').innerHTML = teams.map(team => `
+    <section class="team-panel panel">
+      <div class="section-head">
+        <div>
+          <span class="kicker">${team === 'cuisine' ? 'Cuisine' : 'Salle'}</span>
+          <h2>Équipe ${team === 'cuisine' ? 'cuisine' : 'salle'}</h2>
+          <p>Planning indicatif de la semaine, prêt à remplacer par un Sheet équipe.</p>
+        </div>
+      </div>
+      <div class="team-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Membre</th>
+              ${days.map(day => `<th>${escapeHtml(formatDay(day))}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${staff.filter(member => member.team === team).map(member => `
+              <tr>
+                <td><span class="member">${escapeHtml(member.first)}</span><span class="role">${escapeHtml(member.role)}</span></td>
+                ${days.map(day => {
+                  const shift = shiftPattern(member, (day.getDay() + 6) % 7);
+                  const badge = shift.type === 'rest' ? 'rest' : shift.type === 'absence' ? 'danger' : shift.type === 'double' ? 'warn' : 'ok';
+                  return `<td><div class="shift"><strong>${escapeHtml(shift.label)}</strong><span class="badge ${badge}">${escapeHtml(shift.type)}</span></div></td>`;
+                }).join('')}
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  `).join('');
+}
+function renderAlerts() {
+  const alerts = computeAlerts();
+  byId('alertList').innerHTML = alerts.length
+    ? alerts.slice(0, 8).map(alert => `<div class="alert"><strong>${escapeHtml(alert.title)}</strong>${escapeHtml(alert.text)}</div>`).join('')
+    : '<div class="alert"><strong>Aucune alerte</strong>Le planning est cohérent avec les réservations visibles.</div>';
+}
+function renderMembers() {
+  const query = state.search.toLowerCase();
+  const visible = staff
+    .filter(member => state.team === 'all' || member.team === state.team)
+    .filter(member => !query || `${member.first} ${member.role} ${member.team}`.toLowerCase().includes(query));
+  byId('memberList').innerHTML = visible.map(member => {
+    const shifts = weekDays().map(day => shiftPattern(member, (day.getDay() + 6) % 7));
+    const hours = shifts.reduce((sum, shift) => sum + shift.hours, 0);
+    const services = shifts.filter(shift => shift.hours > 0).length;
+    const rests = shifts.filter(shift => shift.type === 'rest').length;
+    return `<article class="member-card">
+      <strong>${escapeHtml(member.first)} · ${escapeHtml(member.team)}</strong>
+      <span>${escapeHtml(member.role)} · ${hours}h prévues · ${services} services · ${rests} repos</span>
+    </article>`;
+  }).join('');
+}
+function render() {
+  renderLastSync();
+  renderSummary();
+  renderWeekGrid();
+  renderTeamTables();
+  renderAlerts();
+  renderMembers();
+}
+function unlock() {
+  sessionStorage.setItem('madeItalyTeamUnlocked', 'true');
+  byId('pinLock').classList.remove('active');
+}
+function cleanPin(value) {
+  return String(value || '').replace(/\D/g, '');
+}
+function checkPin() {
+  const pin = cleanPin(byId('pinInput').value);
+  byId('pinInput').value = pin;
+  byId('pinError').textContent = '';
+  if (pin === DASHBOARD_PIN) {
+    unlock();
+    return true;
+  }
+  return false;
+}
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'
+  }[char]));
+}
+
+byId('prevWeek').addEventListener('click', () => {
+  state.weekStart = addDays(state.weekStart, -7);
+  render();
+});
+byId('currentWeek').addEventListener('click', () => {
+  state.weekStart = getMonday(new Date());
+  render();
+});
+byId('nextWeek').addEventListener('click', () => {
+  state.weekStart = addDays(state.weekStart, 7);
+  render();
+});
+document.querySelectorAll('[data-service]').forEach(button => {
+  button.addEventListener('click', () => {
+    state.service = button.dataset.service;
+    document.querySelectorAll('[data-service]').forEach(item => item.classList.toggle('active', item === button));
+    render();
+  });
+});
+byId('teamFilter').addEventListener('change', event => {
+  state.team = event.target.value;
+  render();
+});
+byId('memberSearch').addEventListener('input', event => {
+  state.search = event.target.value.trim();
+  renderMembers();
+});
+byId('clearSearch').addEventListener('click', () => {
+  state.search = '';
+  byId('memberSearch').value = '';
+  renderMembers();
+});
+byId('refreshBtn').addEventListener('click', loadReservations);
+byId('printBtn').addEventListener('click', () => window.print());
+byId('lockBtn').addEventListener('click', () => {
+  sessionStorage.removeItem('madeItalyTeamUnlocked');
+  byId('pinInput').value = '';
+  byId('pinLock').classList.add('active');
+});
+byId('pinForm').addEventListener('submit', event => {
+  event.preventDefault();
+  if (checkPin()) return;
+  byId('pinError').textContent = 'Code incorrect.';
+});
+byId('pinInput').addEventListener('input', () => {
+  byId('pinInput').value = cleanPin(byId('pinInput').value);
+});
+if (sessionStorage.getItem('madeItalyTeamUnlocked') === 'true') unlock();
+loadReservations();
+</script>
+</body>
+</html>

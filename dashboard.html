@@ -79,6 +79,29 @@
     text-transform:uppercase;
   }
   .actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+  .top-nav {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .top-nav a {
+    min-height:36px;
+    display:inline-flex;
+    align-items:center;
+    padding:0 12px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:var(--muted);
+    background:rgba(255,255,255,.04);
+    font-size:.82rem;
+    font-weight:700;
+  }
+  .top-nav a.active {
+    color:#14110e;
+    border-color:transparent;
+    background:var(--gold);
+  }
   .sync-pill {
     display:inline-flex;
     align-items:center;
@@ -435,6 +458,11 @@
       </div>
     </a>
     <div class="actions">
+      <nav class="top-nav" aria-label="Navigation dashboard">
+        <a class="active" href="dashboard.html">Réservations</a>
+        <a href="equipe.html">Équipe</a>
+        <a href="dashboard.html#analyse">Analyse</a>
+      </nav>
       <span class="sync-pill" id="lastSync">Dernière synchro : jamais</span>
       <button class="btn" id="lockBtn" type="button">Verrouiller</button>
       <button class="btn" id="printBtn" type="button">Imprimer</button>
