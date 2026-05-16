@@ -940,15 +940,7 @@ function renderReservationAction(item) {
 function buildStatusPayload(reservation, status) {
   const formData = new FormData();
   formData.append('eventId', reservation.eventId || reservation.id);
-  formData.append('id', reservation.id);
   formData.append('status', status);
-  formData.append('name', reservation.name);
-  formData.append('date', reservation.date);
-  formData.append('time', reservation.time);
-  formData.append('people', reservation.people);
-  formData.append('area', reservation.area);
-  formData.append('phone', reservation.phone || '');
-  formData.append('message', reservation.message || '');
   formData.append('updated_at', new Date().toISOString());
   return formData;
 }

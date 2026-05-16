@@ -60,7 +60,7 @@ Réservations Made in Italy
 Première ligne du tableau :
 
 ```txt
-id,eventId,date_creation,date,time,service,name,phone,people,area,status,source,sms_confirmation_envoye,sms_rappel_envoye,date_confirmation,date_annulation,no_show,message,langue_client
+id,eventId,date,time,name,phone,people,area,status,message
 ```
 
 Un modèle CSV existe aussi ici :
@@ -80,21 +80,16 @@ Google Sheets > Add a Row
 Remplis les colonnes comme ceci :
 
 ```txt
-name
-phone
-date
-time
-people
-area
-status
-message
-```
-
-Et ajoute aussi :
-
-```txt
 eventId = ID de l'événement Google Calendar créé
-status  = confirmed
+id      = ID de l'événement Google Calendar créé
+date    = date reçue du webhook
+time    = time reçu du webhook
+name    = name reçu du webhook
+phone   = phone reçu du webhook
+people  = people reçu du webhook
+area    = area reçu du webhook
+status  = pending
+message = message reçu du webhook
 ```
 
 ## 3. Mettre à jour lors d'une annulation
@@ -206,15 +201,7 @@ Le dashboard enverra :
 
 ```txt
 eventId
-id
 status
-name
-date
-time
-people
-area
-phone
-message
 updated_at
 ```
 
@@ -255,24 +242,6 @@ people  = people trouvé par Search Rows
 area    = area trouvé par Search Rows
 status  = status reçu du webhook
 message = message trouvé par Search Rows
-```
-
-Si `status = confirmed`, renseigne aussi :
-
-```txt
-date_confirmation = updated_at reçu du webhook
-```
-
-Si `status = cancelled`, renseigne aussi :
-
-```txt
-date_annulation = updated_at reçu du webhook
-```
-
-Si `status = no_show`, renseigne aussi :
-
-```txt
-no_show = true
 ```
 
 Ensuite, dans `dashboard.html`, remplace :
