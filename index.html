@@ -73,7 +73,14 @@
   };
 </script>
 <style>
-  :root { --cream:#f5efe4; --charcoal:#1a1612; --terracotta:#b8533a; --olive:#5b6b3a; --gold:#c8a45a; }
+  :root {
+    --cream:#f5efe4;
+    --charcoal:#1a1612;
+    --terracotta:#b8533a;
+    --olive:#5b6b3a;
+    --gold:#c8a45a;
+    --hero-photo:url('https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=2400&q=80');
+  }
   html { scroll-behavior:smooth; }
   section[id] { scroll-margin-top: 96px; }
   #galerie { scroll-margin-top: 108px; }
@@ -109,7 +116,7 @@
     background-image:
       linear-gradient(90deg, rgba(10,8,6,.76) 0%, rgba(10,8,6,.44) 42%, rgba(10,8,6,.18) 72%),
       linear-gradient(180deg, rgba(10,8,6,.16) 0%, rgba(10,8,6,.48) 55%, rgba(10,8,6,.86) 100%),
-      url('https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=2400&q=80');
+      var(--hero-photo);
     background-size: cover; background-position: center;
   }
   .hero-layout h1, .hero-layout p { text-shadow: 0 2px 24px rgba(0,0,0,.35); }
@@ -1084,21 +1091,21 @@
     <div class="grid lg:grid-cols-3 gap-6">
       <div class="reveal group">
         <div class="zoom h-80 mb-5">
-          <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=900&q=80" class="w-full h-full object-cover" alt="Terrasse extérieure">
+          <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=900&q=80" data-real-src="assets/photos-reelles/terr1.webp" class="w-full h-full object-cover" alt="Terrasse extérieure">
         </div>
         <h3 class="font-serif text-2xl mt-2">Terrasse extérieure</h3>
         <p class="text-sm text-charcoal/70 mt-3 leading-relaxed">Profitez de Lourdes en extérieur dans une ambiance conviviale et chaleureuse, au rythme du gave et de son eau si précieuse.</p>
       </div>
       <div class="reveal reveal-delay-1 group">
         <div class="zoom h-80 mb-5">
-          <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=900&q=80" class="w-full h-full object-cover" alt="Salle climatisée">
+          <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=900&q=80" data-real-src="assets/photos-reelles/p1.webp" class="w-full h-full object-cover" alt="Salle climatisée">
         </div>
         <h3 class="font-serif text-2xl mt-2">Salle climatisée</h3>
         <p class="text-sm text-charcoal/70 mt-3 leading-relaxed">Un espace confortable pour déjeuner ou dîner au frais après une journée de visite ou de pèlerinage.</p>
       </div>
       <div class="reveal reveal-delay-2 group">
         <div class="zoom h-80 mb-5">
-          <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80" class="w-full h-full object-cover" alt="Ambiance">
+          <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80" data-real-src="assets/photos-reelles/p2.webp" class="w-full h-full object-cover" alt="Façade Made in Italy Lourdes">
         </div>
         <h3 class="font-serif text-2xl mt-2">Ambiance Made in Italy</h3>
         <p class="text-sm text-charcoal/70 mt-3 leading-relaxed">Une adresse vivante, généreuse et authentique, pensée pour partager un vrai moment italien — comme à Naples.</p>
@@ -1139,7 +1146,7 @@
     <div class="lg:col-span-5 reveal reveal-delay-2">
       <div class="relative">
         <div class="zoom rounded-lg">
-          <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1000&q=80" alt="Pizza italienne artisanale" class="w-full h-[480px] object-cover">
+          <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1000&q=80" data-real-src="assets/photos-reelles/env.webp" alt="Environnement du restaurant à Lourdes" class="w-full h-[480px] object-cover">
         </div>
         <!-- Floating badge -->
         <div class="absolute -bottom-6 -left-6 bg-cream text-charcoal px-5 py-4 rounded-lg shadow-card flex items-center gap-3">
@@ -1318,7 +1325,7 @@
         <h2 class="font-serif text-4xl lg:text-5xl mt-2 leading-tight">Une pizzeria napolitaine authentique à <span class="italic text-terracotta">Lourdes</span>.</h2>
         <p class="mt-6 text-charcoal/70 leading-relaxed">Made in Italy est né d'une envie simple : offrir à Lourdes une adresse italienne sincère, chaleureuse et généreuse. À deux pas du Sanctuaire, notre restaurant accueille locaux et voyageurs autour d'une cuisine conviviale, de pizzas napolitaines authentiques et d'un cadre confortable.</p>
         <div class="mt-8 zoom h-72">
-          <img src="https://images.unsplash.com/photo-1593504049359-74330189a345?auto=format&fit=crop&w=900&q=80" class="w-full h-full object-cover" alt="Four à pizza">
+          <img src="https://images.unsplash.com/photo-1593504049359-74330189a345?auto=format&fit=crop&w=900&q=80" data-real-src="assets/photos-reelles/fac.webp" class="w-full h-full object-cover" alt="Façade du restaurant Made in Italy Lourdes">
         </div>
       </div>
 
@@ -1372,16 +1379,16 @@
 
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4" id="galleryGrid">
       <div class="gal-item zoom h-56 md:h-72 col-span-2 row-span-2 md:h-[36rem]" data-cat="pizzas"><img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover" alt=""></div>
-      <div class="gal-item zoom h-56 md:h-72" data-cat="ambiance"><img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
-      <div class="gal-item zoom h-56 md:h-72" data-cat="terrasse"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
-      <div class="gal-item zoom h-56 md:h-72" data-cat="details"><img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
+      <div class="gal-item zoom h-56 md:h-72" data-cat="ambiance"><img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" data-real-src="assets/photos-reelles/p3.webp" class="w-full h-full object-cover" alt=""></div>
+      <div class="gal-item zoom h-56 md:h-72" data-cat="terrasse"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" data-real-src="assets/photos-reelles/p4.webp" class="w-full h-full object-cover" alt=""></div>
+      <div class="gal-item zoom h-56 md:h-72" data-cat="details"><img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80" data-real-src="assets/photos-reelles/fac.webp" class="w-full h-full object-cover" alt=""></div>
       <div class="gal-item zoom h-56 md:h-72" data-cat="pizzas"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
-      <div class="gal-item zoom h-56 md:h-72" data-cat="salle"><img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
+      <div class="gal-item zoom h-56 md:h-72" data-cat="salle"><img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80" data-real-src="assets/photos-reelles/p5.webp" class="w-full h-full object-cover" alt=""></div>
       <div class="gal-item zoom h-56 md:h-72" data-cat="details"><img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" style="object-position:center 72%;" alt=""></div>
-      <div class="gal-item zoom h-56 md:h-72" data-cat="pizzas"><img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
-      <div class="gal-item zoom h-56 md:h-72" data-cat="ambiance"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
-      <div class="gal-item zoom h-56 md:h-72" data-cat="terrasse"><img src="https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
-      <div class="gal-item zoom h-56 md:h-72" data-cat="details"><img src="https://images.unsplash.com/photo-1593504049359-74330189a345?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt=""></div>
+      <div class="gal-item zoom h-56 md:h-72" data-cat="pizzas"><img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=800&q=80" data-real-src="assets/photos-reelles/p7.webp" class="w-full h-full object-cover" alt=""></div>
+      <div class="gal-item zoom h-56 md:h-72" data-cat="ambiance"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80" data-real-src="assets/photos-reelles/p6.webp" class="w-full h-full object-cover" alt=""></div>
+      <div class="gal-item zoom h-56 md:h-72" data-cat="terrasse"><img src="https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80" data-real-src="assets/photos-reelles/terr2.webp" class="w-full h-full object-cover" alt=""></div>
+      <div class="gal-item zoom h-56 md:h-72" data-cat="details"><img src="https://images.unsplash.com/photo-1593504049359-74330189a345?auto=format&fit=crop&w=800&q=80" data-real-src="assets/photos-reelles/env.webp" class="w-full h-full object-cover" alt=""></div>
     </div>
   </div>
 </section>
@@ -1902,6 +1909,34 @@ document.querySelectorAll('#galleryGrid img').forEach(img => {
     img.src = galleryFallbackImage;
   }, { once: true });
 });
+
+/* ========== Photos réelles : remplacement automatique si les fichiers existent ========== */
+function imageExists(src) {
+  return new Promise(resolve => {
+    const probe = new Image();
+    probe.onload = () => resolve(true);
+    probe.onerror = () => resolve(false);
+    probe.src = src;
+  });
+}
+
+async function applyRealPhotos() {
+  const heroPhoto = 'assets/photos-reelles/hero.webp';
+  const fallbackHeroPhoto = 'assets/photos-reelles/fac.webp';
+  if (await imageExists(heroPhoto)) {
+    document.documentElement.style.setProperty('--hero-photo', `url('${heroPhoto}')`);
+  } else if (await imageExists(fallbackHeroPhoto)) {
+    document.documentElement.style.setProperty('--hero-photo', `url('${fallbackHeroPhoto}')`);
+  }
+
+  document.querySelectorAll('img[data-real-src]').forEach(async img => {
+    const realSrc = img.dataset.realSrc;
+    if (realSrc && await imageExists(realSrc)) {
+      img.src = realSrc;
+    }
+  });
+}
+applyRealPhotos();
 
 /* ========== Reveal on scroll ========== */
 const io = new IntersectionObserver(entries => {
