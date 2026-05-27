@@ -751,16 +751,41 @@ function applyStatusOverrides(reservations) {
 function normalizeReservation(item) {
   const summary = item.summary || item.title || item.name || '';
   const start = item.start?.dateTime || item.start || item.google_start || '';
+
+  function toIsoDate(v) {
+    if (!v) return '';
+    const s = String(v).trim();
+    let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+    m = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/);
+    if (m) {
+      const y = m[3].length === 2 ? '20' + m[3] : m[3];
+      return `${y}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+    }
+    const d = new Date(s);
+    return isNaN(d) ? '' : d.toISOString().slice(0, 10);
+  }
+  function toHhMm(v) {
+    if (!v) return '';
+    const s = String(v).trim();
+    let m = s.match(/^(\d{1,2})[h:](\d{2})/i);
+    if (m) return `${m[1].padStart(2,'0')}:${m[2]}`;
+    m = s.match(/^(\d{1,2})\s*h$/i);
+    if (m) return `${m[1].padStart(2,'0')}:00`;
+    return s.slice(0, 5);
+  }
+
   const dateFromStart = typeof start === 'string' ? start.slice(0, 10) : '';
   const timeFromStart = typeof start === 'string' && start.includes('T') ? start.slice(11, 16) : '';
   const rawStatus = String(item.status || '').trim().toLowerCase().replace(/[\s-]+/g, '_');
+
   return {
     id: item.id || item.eventId || crypto.randomUUID?.() || `${summary}-${Math.random()}`,
     eventId: item.eventId || item.id || '',
     name: item.name || summary.replace(/^Réservation\s*-\s*/i, '').split(' - ')[0] || 'Client',
     phone: item.phone || item.telephone || '',
-    date: item.date || dateFromStart || todayOffset(0),
-    time: item.time || timeFromStart || '12:00',
+    date: toIsoDate(item.date) || toIsoDate(dateFromStart) || todayOffset(0),
+    time: toHhMm(item.time) || toHhMm(timeFromStart) || '12:00',
     people: Number(String(item.people || item.covers || item.personnes || 1).match(/\d+/)?.[0] || 1),
     area: item.area || item.space || item.emplacement || 'Salle intérieure',
     status: rawStatus || (summary.toLowerCase().includes('annul') ? 'cancelled' : 'pending'),
