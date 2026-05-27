@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Analyse — Made in Italy Lourdes</title>
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#11100d" />
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg:#11100d;
+  --panel:#1c1a16;
+  --panel-soft:#24211c;
+  --paper:#f7f0e6;
+  --muted:#a7a097;
+  --line:rgba(247,240,230,.12);
+  --line-strong:rgba(247,240,230,.2);
+  --gold:#c8a45a;
+  --red:#bf513a;
+  --green:#2d8a58;
+  --amber:#d99343;
+  --cream:#f7f0e6;
+  --shadow:0 24px 70px -36px rgba(0,0,0,.72);
+}
+* { box-sizing:border-box; }
+html, body { margin:0; padding:0; background:var(--bg); color:var(--paper); font-family:Inter, system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+body {
+  background:
+    radial-gradient(1100px 600px at 80% -200px, rgba(200,164,90,.10), transparent 60%),
+    radial-gradient(900px 500px at -100px 30%, rgba(191,81,58,.08), transparent 60%),
+    var(--bg);
+  min-height:100vh;
+}
+a { color:inherit; text-decoration:none; }
+.panel {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+}
+.serif { font-family:"Cormorant Garamond", Georgia, serif; font-weight:600; }
+.muted { color:var(--muted); }
+.kicker { font-size:.7rem; letter-spacing:.32em; text-transform:uppercase; color:var(--muted); }
+.field {
+  background:#0d0c0a; color:var(--paper); border:1px solid var(--line-strong);
+  border-radius:12px; padding:.85rem 1rem; font-family:inherit; font-size:1rem;
+}
+.field:focus { outline:none; border-color:var(--gold); box-shadow:0 0 0 4px rgba(200,164,90,.15); }
+.btn {
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.7rem 1.2rem; border-radius:9999px; font-weight:600; font-size:.88rem;
+  border:1px solid var(--line-strong); color:var(--paper); background:transparent;
+  cursor:pointer; transition:all .25s ease;
+}
+.btn:hover { background:rgba(247,240,230,.06); border-color:var(--gold); }
+.btn-primary { background:var(--gold); color:#14110e; border-color:transparent; }
+.btn-primary:hover { background:#d6b56b; }
+
+/* PIN lock */
+.pin-lock {
+  position:fixed; inset:0; z-index:100; display:none;
+  align-items:center; justify-content:center; padding:24px;
+  background:rgba(17,16,13,.92); backdrop-filter:blur(14px);
+}
+.pin-lock.active { display:flex; }
+.pin-box { width:min(440px,100%); padding:30px; text-align:center; }
+.pin-box img { width:86px; height:86px; object-fit:contain; margin-bottom:18px; }
+.pin-box h2 { font-size:2rem; margin:0 0 6px; }
+.pin-box p { color:var(--muted); line-height:1.6; margin:0 0 16px; }
+.pin-box input { width:100%; text-align:center; font-size:1.35rem; letter-spacing:.18em; margin:12px 0; }
+.pin-error { min-height:22px; color:#f1aa9e; font-size:.9rem; }
+
+/* Layout */
+.app { max-width:1400px; margin:0 auto; padding:24px 28px 80px; }
+.topbar {
+  display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+  padding:14px 0 22px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:26px;
+}
+.logo { display:flex; align-items:center; gap:12px; font-family:"Cormorant Garamond", serif; font-size:1.4rem; }
+.logo img { width:36px; height:36px; }
+.top-nav { display:flex; gap:18px; margin-left:18px; }
+.top-nav a { color:var(--muted); font-size:.92rem; padding:.45rem .85rem; border-radius:9999px; transition:all .25s ease; }
+.top-nav a:hover { color:var(--paper); background:rgba(247,240,230,.05); }
+.top-nav a.active { color:#14110e; background:var(--gold); }
+.spacer { flex:1; }
+.sync-pill { font-size:.78rem; color:var(--muted); padding:.35rem .8rem; border:1px solid var(--line); border-radius:9999px; }
+
+/* Hero */
+.hero {
+  display:grid; grid-template-columns:minmax(0,1fr) auto; gap:24px;
+  align-items:end; margin-bottom:26px;
+}
+.hero h1 { font-family:"Cormorant Garamond", serif; font-size:2.6rem; font-weight:600; margin:8px 0 4px; line-height:1.05; }
+.hero h1 .accent { color:var(--gold); font-style:italic; }
+.hero .lede { color:var(--muted); font-size:1rem; max-width:520px; }
+.period-tabs { display:flex; gap:6px; padding:5px; background:var(--panel-soft); border:1px solid var(--line); border-radius:9999px; }
+.period-tabs button {
+  border:none; background:transparent; color:var(--muted); padding:.55rem 1.1rem;
+  border-radius:9999px; cursor:pointer; font-family:inherit; font-size:.9rem; font-weight:500;
+  transition:all .25s ease;
+}
+.period-tabs button.active { background:var(--gold); color:#14110e; }
+.period-tabs button:not(.active):hover { color:var(--paper); }
+
+/* KPI grid */
+.kpis { display:grid; grid-template-columns:repeat(6, minmax(0,1fr)); gap:14px; margin-bottom:24px; }
+.kpi { padding:18px 18px 16px; }
+.kpi .kicker { display:block; margin-bottom:10px; }
+.kpi .value { font-family:"Cormorant Garamond", serif; font-size:2.4rem; font-weight:600; line-height:1; letter-spacing:-.01em; }
+.kpi .sub { display:flex; align-items:center; gap:8px; margin-top:8px; font-size:.8rem; }
+.delta { display:inline-flex; align-items:center; gap:3px; padding:2px 8px; border-radius:9999px; font-weight:600; font-size:.74rem; }
+.delta.up { background:rgba(45,138,88,.18); color:#7cd3a0; }
+.delta.down { background:rgba(191,81,58,.18); color:#f1aa9e; }
+.delta.flat { background:rgba(247,240,230,.08); color:var(--muted); }
+
+/* Charts grid */
+.grid-2 { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px; margin-bottom:18px; }
+.grid-3 { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:18px; margin-bottom:18px; }
+.chart-card { padding:22px 22px 18px; }
+.chart-card h3 { font-family:"Cormorant Garamond", serif; font-size:1.4rem; font-weight:600; margin:0 0 4px; }
+.chart-card .sub-title { color:var(--muted); font-size:.85rem; margin-bottom:18px; }
+.chart-card svg { width:100%; height:auto; display:block; overflow:visible; }
+.chart-legend { display:flex; flex-wrap:wrap; gap:14px; margin-top:14px; font-size:.82rem; color:var(--muted); }
+.chart-legend .dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+
+/* Insights */
+.insights { padding:24px; }
+.insight {
+  display:flex; gap:14px; align-items:flex-start; padding:14px 0;
+  border-bottom:1px solid var(--line);
+}
+.insight:last-child { border-bottom:none; }
+.insight .icon {
+  flex-shrink:0; width:36px; height:36px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center; font-size:1rem;
+}
+.insight.warn .icon { background:rgba(191,81,58,.18); color:#f1aa9e; }
+.insight.good .icon { background:rgba(45,138,88,.18); color:#7cd3a0; }
+.insight.info .icon { background:rgba(200,164,90,.18); color:var(--gold); }
+.insight .body { flex:1; }
+.insight .body strong { display:block; font-weight:600; margin-bottom:3px; }
+.insight .body span { color:var(--muted); font-size:.88rem; line-height:1.5; }
+
+/* Misc */
+.bar-row { display:flex; align-items:center; gap:12px; padding:9px 0; font-size:.9rem; }
+.bar-row .label { flex:0 0 110px; color:var(--muted); }
+.bar-row .bar { flex:1; height:10px; background:var(--panel-soft); border-radius:9999px; overflow:hidden; }
+.bar-row .bar > span { display:block; height:100%; background:linear-gradient(90deg, var(--gold), #e0b96d); border-radius:9999px; transition:width .6s cubic-bezier(.2,.7,.2,1); }
+.bar-row .v { flex:0 0 60px; text-align:right; font-weight:600; }
+
+.data-status { font-size:.8rem; color:var(--muted); padding:14px 0; }
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .kpis { grid-template-columns:repeat(3, minmax(0,1fr)); }
+  .grid-3 { grid-template-columns:1fr; }
+}
+@media (max-width: 720px) {
+  .app { padding:16px 14px 100px; }
+  .hero { grid-template-columns:1fr; align-items:start; }
+  .kpis { grid-template-columns:repeat(2, minmax(0,1fr)); }
+  .grid-2 { grid-template-columns:1fr; }
+  .hero h1 { font-size:2rem; }
+  .topbar { gap:10px; }
+  .top-nav { margin-left:0; gap:8px; flex-wrap:wrap; }
+  .top-nav a { padding:.4rem .7rem; font-size:.84rem; }
+  .period-tabs button { padding:.45rem .8rem; font-size:.82rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- PIN LOCK -->
+<div class="pin-lock active" id="pinLock">
+  <form class="pin-box panel" id="pinForm">
+    <img src="assets/logo-couleur-italie-web.png" alt="Made in Italy" onerror="this.style.display='none'">
+    <h2 class="serif">Accès analyse</h2>
+    <p>Espace privé du restaurant. Entrez le code d'accès pour consulter les statistiques.</p>
+    <input class="field" id="pinInput" inputmode="numeric" autocomplete="one-time-code" placeholder="Code" maxlength="8" />
+    <button class="btn btn-primary" type="submit" style="width:100%; justify-content:center;">Entrer</button>
+    <div class="pin-error" id="pinError"></div>
+  </form>
+</div>
+
+<main class="app" id="app" style="display:none;">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <a class="logo" href="dashboard.html">
+      <img src="assets/logo-couleur-italie-web.png" alt="" onerror="this.style.display='none'">
+      <span>Made in Italy</span>
+    </a>
+    <nav class="top-nav" aria-label="Navigation">
+      <a href="dashboard.html">Réservations</a>
+      <a href="equipe.html">Équipe</a>
+      <a class="active" href="analyse.html">Analyse</a>
+    </nav>
+    <div class="spacer"></div>
+    <span class="sync-pill" id="lastSync">Chargement…</span>
+    <button class="btn" id="refreshBtn" type="button">Actualiser</button>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <span class="kicker">Pilotage</span>
+      <h1>Analyse <span class="accent">stratégique</span></h1>
+      <p class="lede" id="periodLabel">Vue d'ensemble des réservations, conversions et tendances.</p>
+    </div>
+    <div class="period-tabs" id="periodTabs" role="tablist" aria-label="Période d'analyse">
+      <button data-period="week" type="button">Semaine</button>
+      <button data-period="month" type="button" class="active">Mois</button>
+      <button data-period="quarter" type="button">Trimestre</button>
+      <button data-period="year" type="button">Année</button>
+    </div>
+  </section>
+
+  <!-- KPIs -->
+  <section class="kpis" id="kpis">
+    <!-- 6 KPI cards injected by JS -->
+  </section>
+
+  <!-- CHART : volume over time (full width) -->
+  <section class="chart-card panel" style="margin-bottom:18px;">
+    <h3>Volume de réservations</h3>
+    <p class="sub-title" id="volumeSubtitle">Évolution jour par jour sur la période.</p>
+    <svg id="chartVolume" viewBox="0 0 1000 280" preserveAspectRatio="none"></svg>
+    <div class="chart-legend">
+      <span><span class="dot" style="background:var(--gold);"></span>Réservations</span>
+      <span><span class="dot" style="background:#7cd3a0;"></span>Couverts confirmés</span>
+      <span><span class="dot" style="background:#f1aa9e;"></span>Annulations</span>
+    </div>
+  </section>
+
+  <!-- CHARTS : status donut + jour de semaine -->
+  <section class="grid-2">
+    <div class="chart-card panel">
+      <h3>Répartition par statut</h3>
+      <p class="sub-title">Distribution des réservations selon leur état final.</p>
+      <div style="display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
+        <svg id="chartStatus" viewBox="0 0 200 200" style="width:200px; height:200px; flex-shrink:0;"></svg>
+        <div id="statusLegend" style="flex:1; min-width:180px;"></div>
+      </div>
+    </div>
+
+    <div class="chart-card panel">
+      <h3>Par jour de semaine</h3>
+      <p class="sub-title">Quels jours concentrent le plus de réservations.</p>
+      <svg id="chartDow" viewBox="0 0 600 280" preserveAspectRatio="none"></svg>
+    </div>
+  </section>
+
+  <!-- CHARTS : créneaux horaires + emplacement -->
+  <section class="grid-2">
+    <div class="chart-card panel">
+      <h3>Par créneau horaire</h3>
+      <p class="sub-title">Service du midi vs service du soir, par tranche d'heure.</p>
+      <svg id="chartHour" viewBox="0 0 600 280" preserveAspectRatio="none"></svg>
+    </div>
+
+    <div class="chart-card panel">
+      <h3>Salle vs Terrasse</h3>
+      <p class="sub-title">Répartition entre les espaces, et part annulée.</p>
+      <div id="areaSplit"></div>
+    </div>
+  </section>
+
+  <!-- CHARTS : taille des groupes + meilleurs jours -->
+  <section class="grid-2">
+    <div class="chart-card panel">
+      <h3>Taille des tables</h3>
+      <p class="sub-title">Profil des groupes accueillis sur la période.</p>
+      <div id="partySize"></div>
+    </div>
+
+    <div class="chart-card panel">
+      <h3>Meilleurs jours</h3>
+      <p class="sub-title">Top 5 des journées en nombre de couverts.</p>
+      <div id="topDays"></div>
+    </div>
+  </section>
+
+  <!-- INSIGHTS -->
+  <section class="chart-card panel insights">
+    <h3>Observations & pistes d'action</h3>
+    <p class="sub-title">Recommandations générées automatiquement à partir de tes données.</p>
+    <div id="insights"></div>
+  </section>
+
+  <p class="data-status" id="dataStatus">Initialisation…</p>
+</main>
+
+<script>
+/* =========================================================
+   CONFIG — mêmes valeurs que dashboard.html
+   ========================================================= */
+const DASHBOARD_PIN = '1130';
+const DASHBOARD_FEED_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQOuHuyjj9W-gBZ6vN7S7VDqPNRHbNbFLBCsO7gUnPSyibAXbfj5cneQ1Smixf0ztrUjW1Ixv5ss2CZ/pub?gid=1472754258&single=true&output=csv';
+const SESSION_UNLOCK_KEY = 'madeItalyDashboardUnlocked';
+
+/* =========================================================
+   PIN LOCK
+   ========================================================= */
+function showApp() {
+  document.getElementById('pinLock').classList.remove('active');
+  document.getElementById('app').style.display = 'block';
+  bootstrap();
+}
+function tryUnlock() {
+  if (sessionStorage.getItem(SESSION_UNLOCK_KEY) === '1') {
+    showApp();
+    return true;
+  }
+  return false;
+}
+document.getElementById('pinForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = document.getElementById('pinInput').value.trim();
+  const err = document.getElementById('pinError');
+  if (input === DASHBOARD_PIN) {
+    sessionStorage.setItem(SESSION_UNLOCK_KEY, '1');
+    err.textContent = '';
+    showApp();
+  } else {
+    err.textContent = 'Code incorrect. Réessayez.';
+    document.getElementById('pinInput').value = '';
+    document.getElementById('pinInput').focus();
+  }
+});
+if (!tryUnlock()) document.getElementById('pinInput').focus();
+
+/* =========================================================
+   STATE
+   ========================================================= */
+const state = {
+  reservations: [],
+  period: 'month',
+  lastSync: null,
+};
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+function todayOffset(days) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+function pad(n) { return String(n).padStart(2, '0'); }
+function isoDate(d) { return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function frDate(s) {
+  if (!s) return '';
+  const [y, m, d] = s.split('-').map(Number);
+  if (!y) return s;
+  return `${pad(d)}/${pad(m)}/${y}`;
+}
+function periodDays() {
+  return state.period === 'week' ? 7 : state.period === 'month' ? 30 : state.period === 'quarter' ? 90 : 365;
+}
+function periodLabel() {
+  return state.period === 'week' ? '7 derniers jours' : state.period === 'month' ? '30 derniers jours' : state.period === 'quarter' ? '90 derniers jours' : '365 derniers jours';
+}
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+
+/* =========================================================
+   CSV PARSING (mêmes regex que dashboard, tolérant date/heure)
+   ========================================================= */
+function parseCsvLine(line) {
+  const out = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQ) {
+      if (ch === '"' && line[i+1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') inQ = false;
+      else cur += ch;
+    } else {
+      if (ch === '"') inQ = true;
+      else if (ch === ',') { out.push(cur); cur = ''; }
+      else cur += ch;
+    }
+  }
+  out.push(cur);
+  return out;
+}
+function parseCsv(text) {
+  const lines = text.split(/\r?\n/).filter(Boolean);
+  if (lines.length < 2) return [];
+  const headers = parseCsvLine(lines[0]).map(h => h.trim());
+  return lines.slice(1).map(line => {
+    const vals = parseCsvLine(line);
+    return headers.reduce((row, h, i) => { row[h] = (vals[i] || '').trim(); return row; }, {});
+  });
+}
+function toIsoDate(v) {
+  if (!v) return '';
+  const s = String(v).trim();
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  m = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/);
+  if (m) {
+    const y = m[3].length === 2 ? '20' + m[3] : m[3];
+    return `${y}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+  }
+  const d = new Date(s);
+  return isNaN(d) ? '' : d.toISOString().slice(0, 10);
+}
+function toHhMm(v) {
+  if (!v) return '';
+  const s = String(v).trim();
+  let m = s.match(/^(\d{1,2})[h:](\d{2})/i);
+  if (m) return `${m[1].padStart(2,'0')}:${m[2]}`;
+  m = s.match(/^(\d{1,2})\s*h$/i);
+  if (m) return `${m[1].padStart(2,'0')}:00`;
+  return s.slice(0, 5);
+}
+function normalize(item) {
+  const summary = item.summary || item.title || item.name || '';
+  const start = item.start?.dateTime || item.start || item.google_start || '';
+  const dateFromStart = typeof start === 'string' ? start.slice(0, 10) : '';
+  const timeFromStart = typeof start === 'string' && start.includes('T') ? start.slice(11, 16) : '';
+  const rawStatus = String(item.status || '').trim().toLowerCase().replace(/[\s-]+/g, '_');
+  return {
+    name: item.name || summary || 'Client',
+    date: toIsoDate(item.date) || toIsoDate(dateFromStart) || '',
+    time: toHhMm(item.time) || toHhMm(timeFromStart) || '',
+    people: Number(String(item.people || item.covers || item.personnes || 1).match(/\d+/)?.[0] || 1),
+    area: item.area || item.space || item.emplacement || '',
+    status: rawStatus || 'pending',
+    message: item.message || item.description || '',
+  };
+}
+
+/* =========================================================
+   LOAD
+   ========================================================= */
+async function loadReservations() {
+  const status = document.getElementById('dataStatus');
+  const isLocalFile = location.protocol === 'file:';
+  if (isLocalFile) {
+    status.innerHTML = '⚠ Prévisualisation locale (<code>file://</code>) — le navigateur bloque la connexion à Google Sheets. <strong>Upload sur Vercel</strong> pour voir les vraies données, ou lance un mini-serveur local : <code>python3 -m http.server 8000</code>.';
+    state.reservations = [];
+    render();
+    return;
+  }
+  status.textContent = 'Actualisation en cours…';
+  try {
+    const url = `${DASHBOARD_FEED_URL}${DASHBOARD_FEED_URL.includes('?') ? '&' : '?'}_=${Date.now()}`;
+    const resp = await fetch(url, { cache: 'no-store' });
+    if (!resp.ok) throw new Error('Flux indisponible (HTTP ' + resp.status + ')');
+    const raw = await resp.text();
+    const list = parseCsv(raw).map(normalize).filter(r => r.date);
+    state.reservations = list;
+    state.lastSync = new Date();
+    status.textContent = `Données synchronisées avec Google Sheets · ${list.length} réservations chargées sur l'historique disponible.`;
+    document.getElementById('lastSync').textContent = `Dernière synchro : ${state.lastSync.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})}`;
+    render();
+  } catch (e) {
+    status.textContent = `Flux indisponible (${e.message}). Vérifie la publication du Sheet : Fichier → Partager → Publier sur le Web.`;
+    state.reservations = [];
+    render();
+  }
+}
+
+/* =========================================================
+   METRIC COMPUTATION
+   ========================================================= */
+function withinPeriod(list, daysBack, offset = 0) {
+  const end = new Date(); end.setDate(end.getDate() - offset);
+  const start = new Date(end); start.setDate(start.getDate() - daysBack);
+  const startStr = isoDate(start), endStr = isoDate(end);
+  return list.filter(r => r.date >= startStr && r.date <= endStr);
+}
+function summary(list) {
+  const total = list.length;
+  const confirmed = list.filter(r => r.status === 'confirmed' || r.status === 'arrived').length;
+  const arrived = list.filter(r => r.status === 'arrived').length;
+  const pending = list.filter(r => r.status === 'pending').length;
+  const cancelled = list.filter(r => r.status === 'cancelled').length;
+  const noShow = list.filter(r => r.status === 'no_show').length;
+  const coversAll = list.reduce((a, r) => a + r.people, 0);
+  const coversConfirmed = list.filter(r => r.status === 'confirmed' || r.status === 'arrived').reduce((a, r) => a + r.people, 0);
+  const avg = total ? coversAll / total : 0;
+  const cancelRate = total ? (cancelled / total) * 100 : 0;
+  const noShowRate = total ? (noShow / total) * 100 : 0;
+  return { total, confirmed, arrived, pending, cancelled, noShow, coversAll, coversConfirmed, avg, cancelRate, noShowRate };
+}
+function deltaText(curr, prev, suffix = '', precision = 0) {
+  if (!prev) return curr > 0 ? { v: '+∞', cls: 'up' } : { v: '—', cls: 'flat' };
+  const d = ((curr - prev) / prev) * 100;
+  const sign = d > 0 ? '+' : '';
+  const cls = Math.abs(d) < 1 ? 'flat' : d > 0 ? 'up' : 'down';
+  return { v: `${sign}${d.toFixed(precision)}%${suffix}`, cls };
+}
+
+/* =========================================================
+   CHART RENDERERS (SVG inline, dépendance zéro)
+   ========================================================= */
+function renderVolumeChart(daily) {
+  const svg = document.getElementById('chartVolume');
+  const W = 1000, H = 280, padL = 40, padR = 20, padT = 20, padB = 36;
+  const innerW = W - padL - padR, innerH = H - padT - padB;
+  const n = daily.length;
+  if (!n) { svg.innerHTML = '<text x="500" y="140" text-anchor="middle" fill="#a7a097" font-size="14">Pas de données sur cette période.</text>'; return; }
+  const maxY = Math.max(1, ...daily.map(d => Math.max(d.total, d.coversConfirmed)));
+  const stepX = innerW / Math.max(n - 1, 1);
+  const xy = (i, v) => [padL + i * stepX, padT + innerH - (v / maxY) * innerH];
+
+  // Y grid
+  const gridLines = [0, 0.25, 0.5, 0.75, 1].map(p => {
+    const y = padT + innerH * (1 - p);
+    const val = Math.round(maxY * p);
+    return `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="rgba(247,240,230,.06)" />
+            <text x="${padL-8}" y="${y+4}" fill="#a7a097" font-size="11" text-anchor="end">${val}</text>`;
+  }).join('');
+
+  // X labels (every ~6 days)
+  const labelStep = Math.max(1, Math.floor(n / 8));
+  const xLabels = daily.map((d, i) => {
+    if (i % labelStep !== 0 && i !== n - 1) return '';
+    const [x] = xy(i, 0);
+    return `<text x="${x}" y="${H-12}" fill="#a7a097" font-size="10" text-anchor="middle">${frDate(d.date).slice(0,5)}</text>`;
+  }).join('');
+
+  // Lines
+  function path(series, color, smooth = true) {
+    return daily.map((d, i) => {
+      const [x, y] = xy(i, d[series]);
+      return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
+    }).join(' ');
+  }
+  function dots(series, color) {
+    return daily.map((d, i) => {
+      const [x, y] = xy(i, d[series]);
+      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.5" fill="${color}" />`;
+    }).join('');
+  }
+
+  svg.innerHTML = `
+    ${gridLines}
+    ${xLabels}
+    <path d="${path('total')}" fill="none" stroke="#c8a45a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${path('coversConfirmed')}" fill="none" stroke="#7cd3a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0"/>
+    <path d="${path('cancelled')}" fill="none" stroke="#f1aa9e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+    ${dots('total', '#c8a45a')}
+  `;
+}
+
+function renderStatusDonut(s) {
+  const svg = document.getElementById('chartStatus');
+  const legend = document.getElementById('statusLegend');
+  const segments = [
+    { label: 'Confirmées', value: s.confirmed - s.arrived, color: '#c8a45a' },
+    { label: 'Arrivées', value: s.arrived, color: '#7cd3a0' },
+    { label: 'À confirmer', value: s.pending, color: '#d99343' },
+    { label: 'Annulées', value: s.cancelled, color: '#f1aa9e' },
+    { label: 'No-show', value: s.noShow, color: '#a47326' },
+  ].filter(seg => seg.value > 0);
+  const total = segments.reduce((a, b) => a + b.value, 0);
+  if (!total) {
+    svg.innerHTML = '<circle cx="100" cy="100" r="75" fill="none" stroke="rgba(247,240,230,.08)" stroke-width="22"/><text x="100" y="106" text-anchor="middle" fill="#a7a097" font-size="14">Pas de données</text>';
+    legend.innerHTML = '';
+    return;
+  }
+  const cx = 100, cy = 100, r = 75, sw = 22;
+  let cumul = 0;
+  const arcs = segments.map(seg => {
+    const frac = seg.value / total;
+    const startAngle = cumul * 2 * Math.PI - Math.PI / 2;
+    cumul += frac;
+    const endAngle = cumul * 2 * Math.PI - Math.PI / 2;
+    const x1 = cx + r * Math.cos(startAngle), y1 = cy + r * Math.sin(startAngle);
+    const x2 = cx + r * Math.cos(endAngle), y2 = cy + r * Math.sin(endAngle);
+    const large = frac > 0.5 ? 1 : 0;
+    return `<path d="M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}" fill="none" stroke="${seg.color}" stroke-width="${sw}" stroke-linecap="butt"/>`;
+  }).join('');
+  svg.innerHTML = `
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(247,240,230,.06)" stroke-width="${sw}"/>
+    ${arcs}
+    <text x="${cx}" y="${cy-4}" text-anchor="middle" fill="#f7f0e6" font-family="Cormorant Garamond" font-size="34" font-weight="600">${total}</text>
+    <text x="${cx}" y="${cy+18}" text-anchor="middle" fill="#a7a097" font-size="11">réservations</text>
+  `;
+  legend.innerHTML = segments.map(seg => `
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:7px 0; border-bottom:1px solid rgba(247,240,230,.06); font-size:.88rem;">
+      <span><span class="dot" style="background:${seg.color};"></span>${seg.label}</span>
+      <span><strong>${seg.value}</strong> <span class="muted">(${Math.round(seg.value/total*100)}%)</span></span>
+    </div>
+  `).join('');
+}
+
+function renderDowChart(list) {
+  const svg = document.getElementById('chartDow');
+  const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+  const buckets = [0,0,0,0,0,0,0];
+  const covers = [0,0,0,0,0,0,0];
+  list.forEach(r => {
+    if (!r.date) return;
+    const d = new Date(r.date + 'T12:00:00');
+    const idx = (d.getDay() + 6) % 7; // Lun = 0
+    buckets[idx]++;
+    if (r.status === 'confirmed' || r.status === 'arrived') covers[idx] += r.people;
+  });
+  const W = 600, H = 280, padL = 30, padR = 14, padT = 14, padB = 34;
+  const innerW = W - padL - padR, innerH = H - padT - padB;
+  const maxY = Math.max(1, ...covers, ...buckets);
+  const groupW = innerW / 7;
+  const barW = groupW * 0.32;
+  const bars = days.map((d, i) => {
+    const xCenter = padL + i * groupW + groupW / 2;
+    const hRes = (buckets[i] / maxY) * innerH;
+    const hCov = (covers[i] / maxY) * innerH;
+    return `
+      <rect x="${xCenter - barW - 2}" y="${padT + innerH - hRes}" width="${barW}" height="${hRes}" fill="#c8a45a" rx="3"/>
+      <rect x="${xCenter + 2}" y="${padT + innerH - hCov}" width="${barW}" height="${hCov}" fill="#7cd3a0" opacity=".75" rx="3"/>
+      <text x="${xCenter}" y="${H-10}" fill="#a7a097" font-size="11" text-anchor="middle">${d}</text>
+      <text x="${xCenter}" y="${padT + innerH - hRes - 4}" fill="#c8a45a" font-size="10" text-anchor="middle" font-weight="600">${buckets[i] || ''}</text>
+    `;
+  }).join('');
+  svg.innerHTML = `
+    <line x1="${padL}" y1="${padT+innerH}" x2="${W-padR}" y2="${padT+innerH}" stroke="rgba(247,240,230,.1)"/>
+    ${bars}
+    <text x="${padL}" y="${padT-2}" fill="#a7a097" font-size="10">Réservations · Couverts confirmés</text>
+  `;
+}
+
+function renderHourChart(list) {
+  const svg = document.getElementById('chartHour');
+  // Build buckets 11h -> 23h
+  const hours = []; for (let h = 11; h <= 23; h++) hours.push(h);
+  const counts = hours.map(h => list.filter(r => {
+    const t = r.time || '00:00';
+    return parseInt(t.slice(0, 2)) === h;
+  }).reduce((a, r) => a + r.people, 0));
+  const W = 600, H = 280, padL = 30, padR = 14, padT = 14, padB = 34;
+  const innerW = W - padL - padR, innerH = H - padT - padB;
+  const maxY = Math.max(1, ...counts);
+  const groupW = innerW / hours.length;
+  const barW = groupW * 0.7;
+  const bars = hours.map((h, i) => {
+    const xCenter = padL + i * groupW + groupW / 2;
+    const hBar = (counts[i] / maxY) * innerH;
+    const isLunch = h >= 11 && h < 15;
+    const color = isLunch ? '#d99343' : '#c8a45a';
+    return `
+      <rect x="${xCenter - barW/2}" y="${padT + innerH - hBar}" width="${barW}" height="${hBar}" fill="${color}" rx="3"/>
+      <text x="${xCenter}" y="${H-10}" fill="#a7a097" font-size="10" text-anchor="middle">${h}h</text>
+      ${counts[i] > 0 ? `<text x="${xCenter}" y="${padT + innerH - hBar - 4}" fill="${color}" font-size="10" text-anchor="middle" font-weight="600">${counts[i]}</text>` : ''}
+    `;
+  }).join('');
+  svg.innerHTML = `
+    <line x1="${padL}" y1="${padT+innerH}" x2="${W-padR}" y2="${padT+innerH}" stroke="rgba(247,240,230,.1)"/>
+    ${bars}
+    <text x="${padL}" y="${padT-2}" fill="#a7a097" font-size="10"><tspan fill="#d99343">●</tspan> Déjeuner   <tspan fill="#c8a45a">●</tspan> Dîner   · Couverts totaux</text>
+  `;
+}
+
+function renderAreaSplit(list) {
+  const cont = document.getElementById('areaSplit');
+  const buckets = {};
+  list.forEach(r => {
+    const a = r.area || 'Non précisé';
+    if (!buckets[a]) buckets[a] = { total: 0, covers: 0, cancelled: 0 };
+    buckets[a].total++;
+    buckets[a].covers += r.people;
+    if (r.status === 'cancelled') buckets[a].cancelled++;
+  });
+  const entries = Object.entries(buckets).sort((a, b) => b[1].total - a[1].total).slice(0, 6);
+  const max = Math.max(1, ...entries.map(e => e[1].total));
+  if (!entries.length) { cont.innerHTML = '<p class="muted" style="font-size:.9rem;">Pas de données sur cette période.</p>'; return; }
+  cont.innerHTML = entries.map(([label, v]) => `
+    <div class="bar-row">
+      <span class="label">${escapeHtml(label)}</span>
+      <span class="bar"><span style="width:${(v.total/max*100).toFixed(1)}%"></span></span>
+      <span class="v">${v.total} <span class="muted" style="font-weight:400; font-size:.78rem;">(${v.covers} cv)</span></span>
+    </div>
+  `).join('');
+}
+
+function renderPartySize(list) {
+  const cont = document.getElementById('partySize');
+  const buckets = { 'Solo (1)': 0, 'Couple (2)': 0, 'Petits (3-4)': 0, 'Moyens (5-6)': 0, 'Groupes (7+)': 0 };
+  list.forEach(r => {
+    const p = r.people;
+    if (p === 1) buckets['Solo (1)']++;
+    else if (p === 2) buckets['Couple (2)']++;
+    else if (p <= 4) buckets['Petits (3-4)']++;
+    else if (p <= 6) buckets['Moyens (5-6)']++;
+    else buckets['Groupes (7+)']++;
+  });
+  const max = Math.max(1, ...Object.values(buckets));
+  cont.innerHTML = Object.entries(buckets).map(([label, v]) => `
+    <div class="bar-row">
+      <span class="label">${escapeHtml(label)}</span>
+      <span class="bar"><span style="width:${(v/max*100).toFixed(1)}%"></span></span>
+      <span class="v">${v}</span>
+    </div>
+  `).join('');
+}
+
+function renderTopDays(list) {
+  const cont = document.getElementById('topDays');
+  const byDay = {};
+  list.forEach(r => {
+    if (r.status === 'cancelled') return;
+    if (!byDay[r.date]) byDay[r.date] = { reservations: 0, covers: 0 };
+    byDay[r.date].reservations++;
+    byDay[r.date].covers += r.people;
+  });
+  const top = Object.entries(byDay).sort((a, b) => b[1].covers - a[1].covers).slice(0, 5);
+  const max = Math.max(1, ...top.map(t => t[1].covers));
+  if (!top.length) { cont.innerHTML = '<p class="muted" style="font-size:.9rem;">Pas de données.</p>'; return; }
+  cont.innerHTML = top.map(([date, v]) => {
+    const dow = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'][new Date(date+'T12:00:00').getDay()];
+    return `
+      <div class="bar-row">
+        <span class="label"><strong style="color:var(--paper);">${dow}</strong> ${frDate(date).slice(0,5)}</span>
+        <span class="bar"><span style="width:${(v.covers/max*100).toFixed(1)}%"></span></span>
+        <span class="v">${v.covers} cv</span>
+      </div>
+    `;
+  }).join('');
+}
+
+/* =========================================================
+   INSIGHTS
+   ========================================================= */
+function renderInsights(s, sPrev, list) {
+  const cont = document.getElementById('insights');
+  const items = [];
+
+  // Cancellation rate alert
+  if (s.cancelRate >= 15) {
+    items.push({ type: 'warn', icon: '⚠', title: `Taux d'annulation élevé : ${s.cancelRate.toFixed(1)}%`, body: 'Au-dessus de 15%, envisage une politique de garantie (acompte, carte bancaire en garantie, ou rappel SMS J-1).' });
+  } else if (s.cancelRate < 5 && s.total > 5) {
+    items.push({ type: 'good', icon: '✓', title: `Taux d'annulation maîtrisé (${s.cancelRate.toFixed(1)}%)`, body: 'Continue sur cette voie. Le client respecte ses engagements.' });
+  }
+
+  // No-show
+  if (s.noShowRate >= 5) {
+    items.push({ type: 'warn', icon: '!', title: `${s.noShow} no-show sur la période (${s.noShowRate.toFixed(1)}%)`, body: 'Les no-show représentent du CA perdu sans préavis. Considère un SMS de confirmation J-1 avec demande de réponse.' });
+  }
+
+  // Pending pile
+  if (s.pending > Math.max(3, s.total * 0.2)) {
+    items.push({ type: 'warn', icon: '⏱', title: `${s.pending} réservations en attente de confirmation`, body: 'Traite ces demandes avant qu\'elles ne deviennent annulations.' });
+  }
+
+  // Evolution
+  const dRes = sPrev.total ? ((s.total - sPrev.total) / sPrev.total) * 100 : 0;
+  if (sPrev.total > 0) {
+    if (dRes >= 10) items.push({ type: 'good', icon: '↑', title: `+${dRes.toFixed(0)}% de réservations vs période précédente`, body: `Passé de ${sPrev.total} à ${s.total}. Bonne dynamique.` });
+    else if (dRes <= -10) items.push({ type: 'warn', icon: '↓', title: `${dRes.toFixed(0)}% de réservations vs période précédente`, body: `Passé de ${sPrev.total} à ${s.total}. Vérifie ta visibilité (Google Business Profile, réseaux, fiches partenaires).` });
+  }
+
+  // Best day of week
+  const dow = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  const dowCount = [0,0,0,0,0,0,0];
+  list.forEach(r => { if (r.date) dowCount[new Date(r.date+'T12:00:00').getDay()]++; });
+  const bestIdx = dowCount.indexOf(Math.max(...dowCount));
+  const worstIdx = dowCount.indexOf(Math.min(...dowCount.filter(c => c > 0).length ? dowCount : [0]));
+  if (dowCount[bestIdx] > 0) {
+    items.push({ type: 'info', icon: '★', title: `Meilleur jour : ${dow[bestIdx]} (${dowCount[bestIdx]} résa)`, body: `Concentre tes efforts marketing pour amplifier ce pic, ou pour combler les jours creux.` });
+  }
+
+  // Average party size
+  if (s.avg >= 4) {
+    items.push({ type: 'info', icon: '👥', title: `Tables familiales : moyenne de ${s.avg.toFixed(1)} couverts`, body: 'Tu accueilles surtout des groupes. Pense à mettre en avant ton offre groupes/menus séminaire.' });
+  } else if (s.avg < 2.5 && s.total > 10) {
+    items.push({ type: 'info', icon: '💑', title: `Clientèle couples (${s.avg.toFixed(1)} couverts en moyenne)`, body: 'Adresse intime. Soigne les offres Saint-Valentin, anniversaires, dîners romantiques.' });
+  }
+
+  // Conversion rate
+  const arrivedRate = s.total ? (s.arrived / s.total) * 100 : 0;
+  if (s.arrived > 0 && arrivedRate >= 70) {
+    items.push({ type: 'good', icon: '✓', title: `Taux d'arrivée effectif : ${arrivedRate.toFixed(0)}%`, body: 'Les clients qui réservent viennent vraiment. Pipeline sain.' });
+  }
+
+  if (!items.length) {
+    items.push({ type: 'info', icon: '⊙', title: 'Pas encore assez de données pour des observations fines', body: 'Reviens dans quelques jours pour des recommandations contextualisées.' });
+  }
+
+  cont.innerHTML = items.map(it => `
+    <div class="insight ${it.type}">
+      <div class="icon">${it.icon}</div>
+      <div class="body">
+        <strong>${escapeHtml(it.title)}</strong>
+        <span>${escapeHtml(it.body)}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* =========================================================
+   ORCHESTRATION
+   ========================================================= */
+function buildDaily(list, daysBack) {
+  const end = new Date(); const start = new Date(); start.setDate(start.getDate() - daysBack);
+  const out = [];
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    const ds = isoDate(d);
+    const dayList = list.filter(r => r.date === ds);
+    out.push({
+      date: ds,
+      total: dayList.length,
+      coversConfirmed: dayList.filter(r => r.status === 'confirmed' || r.status === 'arrived').reduce((a, r) => a + r.people, 0),
+      cancelled: dayList.filter(r => r.status === 'cancelled').length,
+    });
+  }
+  return out;
+}
+
+function render() {
+  const d = periodDays();
+  const list = withinPeriod(state.reservations, d, 0);
+  const listPrev = withinPeriod(state.reservations, d, d);
+  const s = summary(list);
+  const sPrev = summary(listPrev);
+
+  // Period label
+  const startDate = new Date(); startDate.setDate(startDate.getDate() - d);
+  document.getElementById('periodLabel').textContent = `Période analysée : ${frDate(isoDate(startDate))} → ${frDate(todayOffset(0))} (${periodLabel()})`;
+  document.getElementById('volumeSubtitle').textContent = `Évolution jour par jour sur les ${d} derniers jours.`;
+
+  // KPIs
+  const dRes = deltaText(s.total, sPrev.total);
+  const dCov = deltaText(s.coversConfirmed, sPrev.coversConfirmed);
+  const dCanc = deltaText(s.cancelRate, sPrev.cancelRate, 'pt');
+  const dNs = deltaText(s.noShowRate, sPrev.noShowRate, 'pt');
+  // Invert color logic for cancel/no-show: up is bad
+  if (dCanc.cls === 'up') dCanc.cls = 'down'; else if (dCanc.cls === 'down') dCanc.cls = 'up';
+  if (dNs.cls === 'up') dNs.cls = 'down'; else if (dNs.cls === 'down') dNs.cls = 'up';
+  const dAvg = deltaText(s.avg, sPrev.avg, '', 1);
+
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi panel">
+      <span class="kicker">Réservations</span>
+      <div class="value">${s.total}</div>
+      <div class="sub"><span class="delta ${dRes.cls}">${dRes.v}</span> <span class="muted">vs période préc.</span></div>
+    </div>
+    <div class="kpi panel">
+      <span class="kicker">Couverts confirmés</span>
+      <div class="value">${s.coversConfirmed}</div>
+      <div class="sub"><span class="delta ${dCov.cls}">${dCov.v}</span> <span class="muted">vs période préc.</span></div>
+    </div>
+    <div class="kpi panel">
+      <span class="kicker">Taux d'annulation</span>
+      <div class="value">${s.cancelRate.toFixed(1)}<span style="font-size:1rem; color:var(--muted);">%</span></div>
+      <div class="sub"><span class="delta ${dCanc.cls}">${dCanc.v}</span> <span class="muted">vs préc.</span></div>
+    </div>
+    <div class="kpi panel">
+      <span class="kicker">Taux de no-show</span>
+      <div class="value">${s.noShowRate.toFixed(1)}<span style="font-size:1rem; color:var(--muted);">%</span></div>
+      <div class="sub"><span class="delta ${dNs.cls}">${dNs.v}</span> <span class="muted">vs préc.</span></div>
+    </div>
+    <div class="kpi panel">
+      <span class="kicker">Taille moyenne</span>
+      <div class="value">${s.avg.toFixed(1)}</div>
+      <div class="sub"><span class="delta ${dAvg.cls}">${dAvg.v}</span> <span class="muted">couverts / résa</span></div>
+    </div>
+    <div class="kpi panel">
+      <span class="kicker">En attente</span>
+      <div class="value">${s.pending}</div>
+      <div class="sub muted">à confirmer</div>
+    </div>
+  `;
+
+  // Charts
+  const daily = buildDaily(state.reservations, d);
+  renderVolumeChart(daily);
+  renderStatusDonut(s);
+  renderDowChart(list);
+  renderHourChart(list);
+  renderAreaSplit(list);
+  renderPartySize(list);
+  renderTopDays(list);
+  renderInsights(s, sPrev, list);
+}
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+function bindEvents() {
+  document.getElementById('refreshBtn').addEventListener('click', loadReservations);
+  document.querySelectorAll('#periodTabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#periodTabs button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.period = btn.dataset.period;
+      render();
+    });
+  });
+}
+
+function bootstrap() {
+  bindEvents();
+  loadReservations();
+}
+</script>
+</body>
+</html>
