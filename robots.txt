@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Pages internes — ne pas indexer
+Disallow: /dashboard.html
+Disallow: /dossier-rdv-made-in-italy.html
+Disallow: /analyse.html
+
+Sitemap: https://VOTRE-DOMAINE.fr/sitemap.xml
