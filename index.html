@@ -81,39 +81,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          cream:      '#f5efe4',
-          creamlight: '#faf6ee',
-          paper:      '#ede4d3',
-          charcoal:   '#1a1612',
-          ink:        '#2a221c',
-          terracotta: '#b8533a',
-          terradeep:  '#8e3c27',
-          olive:      '#5b6b3a',
-          olivedeep:  '#3f4a25',
-          tomato:     '#c0392b',
-          gold:       '#c8a45a',
-          golddeep:   '#9c7b34',
-        },
-        fontFamily: {
-          serif: ['"Cormorant Garamond"','ui-serif','Georgia','serif'],
-          sans:  ['Inter','ui-sans-serif','system-ui','sans-serif'],
-          hand:  ['Caveat','cursive'],
-        },
-        boxShadow: {
-          soft:  '0 12px 40px -16px rgba(26,22,18,.25)',
-          card:  '0 24px 60px -28px rgba(26,22,18,.45)',
-          glow:  '0 0 0 1px rgba(200,164,90,.35), 0 18px 50px -20px rgba(184,83,58,.45)',
-        },
-      },
-    },
-  };
-</script>
+<!-- Tailwind compilé en local (remplace le CDN). Repli si besoin : <script src="https://cdn.tailwindcss.com"></script> -->
+<link rel="stylesheet" href="assets/tailwind.css" />
 <style>
   :root {
     --cream:#f5efe4;
@@ -1456,87 +1425,28 @@
     </div>
 
     <div class="grid lg:grid-cols-12 gap-8">
-      <!-- Form -->
-      <form id="bookingForm" class="lg:col-span-7 card p-7 lg:p-10 reveal">
-        <h3 class="font-serif text-2xl">Demande de réservation</h3>
-        <p class="text-sm text-charcoal/60 mt-1">Réponse de notre équipe sous 2 h ouvrées.</p>
+      <!-- Réservation par téléphone -->
+      <div class="lg:col-span-7 card p-7 lg:p-10 reveal flex flex-col">
+        <span class="eyebrow">Réservation</span>
+        <h3 class="font-serif text-3xl lg:text-4xl mt-2">Réservez par téléphone</h3>
+        <p class="text-charcoal/65 mt-3 max-w-md leading-relaxed">Un seul numéro, une réponse tout de suite : la réservation se fait directement avec notre équipe. Votre table est confirmée en quelques secondes.</p>
 
-        <div class="grid sm:grid-cols-2 gap-4 mt-6">
-          <label class="block">
-            <span class="text-xs uppercase tracking-widest text-charcoal/55">Nom complet</span>
-            <input required class="field mt-1" type="text" name="name" autocomplete="name" placeholder="Ex. Fabrizio Pizza">
-          </label>
-          <label class="block">
-            <span class="text-xs uppercase tracking-widest text-charcoal/55">Téléphone</span>
-            <input required class="field mt-1" type="tel" name="phone" autocomplete="tel" placeholder="+33 6 12 34 56 78">
-          </label>
-          <label class="block sm:col-span-2">
-            <span class="text-xs uppercase tracking-widest text-charcoal/55">Emplacement souhaité</span>
-            <select required class="field mt-1" name="area">
-              <option value="Salle intérieure">Salle intérieure</option>
-              <option value="Terrasse extérieure">Terrasse extérieure</option>
-            </select>
-          </label>
-          <label class="block">
-            <span class="text-xs uppercase tracking-widest text-charcoal/55">Date</span>
-            <input required class="field mt-1" type="date" name="date">
-          </label>
-          <label class="block">
-            <span class="text-xs uppercase tracking-widest text-charcoal/55">Heure</span>
-            <select required class="field mt-1" name="time">
-              <option value="">Choisissez un créneau</option>
-              <option value="11:00">11:00</option>
-              <option value="11:30">11:30</option>
-              <option value="12:00">12:00</option>
-              <option value="12:30">12:30</option>
-              <option value="13:00">13:00</option>
-              <option value="13:30">13:30</option>
-              <option value="14:00">14:00</option>
-              <option value="14:30">14:30</option>
-              <option value="15:00">15:00</option>
-              <option value="15:30">15:30</option>
-              <option value="16:00">16:00</option>
-              <option value="16:30">16:30</option>
-              <option value="17:00">17:00</option>
-              <option value="17:30">17:30</option>
-              <option value="18:00">18:00</option>
-              <option value="18:30">18:30</option>
-              <option value="19:00">19:00</option>
-              <option value="19:30">19:30</option>
-              <option value="20:00">20:00</option>
-              <option value="20:30">20:30</option>
-              <option value="21:00">21:00</option>
-              <option value="21:30">21:30</option>
-              <option value="22:00">22:00</option>
-              <option value="22:30">22:30</option>
-              <option value="23:00">23:00</option>
-              <option value="23:30">23:30</option>
-              <option value="24:00">00:00</option>
-            </select>
-          </label>
-          <label class="block sm:col-span-2">
-            <span class="text-xs uppercase tracking-widest text-charcoal/55">Nombre de personnes</span>
-            <select required class="field mt-1" name="people">
-              <option>1 personne</option><option>2 personnes</option><option>3 personnes</option><option>4 personnes</option>
-              <option>5 personnes</option><option>6 personnes</option><option>7 +</option><option>Groupe (10+)</option>
-            </select>
-          </label>
-          <label class="block sm:col-span-2">
-            <span class="text-xs uppercase tracking-widest text-charcoal/55">Message (allergies, occasion...)</span>
-            <textarea rows="4" class="field mt-1" name="message" placeholder="Anniversaire, allergies, demande spéciale..."></textarea>
-          </label>
-        </div>
+        <ul class="mt-7 space-y-3 text-sm text-charcoal/80">
+          <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-olive/15 text-olive grid place-items-center shrink-0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>Confirmation immédiate de votre table</li>
+          <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-olive/15 text-olive grid place-items-center shrink-0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>Terrasse, salle ou groupe : on trouve la meilleure place</li>
+          <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-olive/15 text-olive grid place-items-center shrink-0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>Allergies, anniversaire, demande spéciale ? Dites-le-nous</li>
+        </ul>
 
-        <div class="mt-7 flex flex-wrap items-center gap-3">
-          <button type="submit" class="btn btn-primary" id="bookingSubmit">
-            Envoyer ma demande
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </button>
-          <span class="text-xs text-charcoal/55">Pas d'engagement · réponse rapide</span>
+        <div class="mt-8 rounded-2xl bg-charcoal text-cream p-6 lg:p-8">
+          <div class="text-xs uppercase tracking-widest text-cream/55">Appelez le restaurant</div>
+          <a href="tel:+33695286059" class="font-serif text-4xl lg:text-5xl text-cream mt-1 inline-block leading-none hover:text-gold transition">06 95 28 60 59</a>
+          <div class="mt-6 flex flex-col sm:flex-row gap-3">
+            <a href="tel:+33695286059" class="btn justify-center text-base font-semibold flex-1" style="background:#1f9d57;color:#fff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shrink-0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Appeler pour réserver</a>
+            <a href="https://wa.me/33695286059" target="_blank" rel="noopener" class="btn justify-center text-base flex-1" style="background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.22)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shrink-0"><path d="M21 11.5a8.5 8.5 0 1 1-15.6-4.7L3 21l14.2-2.4A8.5 8.5 0 0 0 21 11.5z"/></svg>WhatsApp</a>
+          </div>
+          <p class="text-xs text-cream/55 mt-4">Ouvert 7j/7 · 9h-2h · Réponse immédiate, sans engagement</p>
         </div>
-        <div id="bookingOk" class="hidden mt-5 p-4 rounded-lg bg-olive/15 text-olivedeep text-sm">Merci ! Votre demande a bien été envoyée. Nous revenons vers vous très vite.</div>
-        <div id="bookingError" class="hidden mt-5 p-4 rounded-lg bg-terracotta/10 text-terracotta text-sm">La réservation n'a pas pu être envoyée. Merci d'appeler le restaurant au 06 95 28 60 59.</div>
-      </form>
+      </div>
 
       <!-- Coord & map -->
       <aside class="lg:col-span-5 space-y-5">
@@ -2449,6 +2359,15 @@ let currentLang = 'fr';
 
 const TRANSLATIONS = {
   en: {
+    "Réservation":"Booking",
+    "Réservez par téléphone":"Book by phone",
+    "Un seul numéro, une réponse tout de suite : la réservation se fait directement avec notre équipe. Votre table est confirmée en quelques secondes.":"One number, an instant answer: booking is made directly with our team. Your table is confirmed within seconds.",
+    "Confirmation immédiate de votre table":"Instant confirmation of your table",
+    "Terrasse, salle ou groupe : on trouve la meilleure place":"Terrace, indoor or group: we find you the best spot",
+    "Allergies, anniversaire, demande spéciale ? Dites-le-nous":"Allergies, birthday, special request? Just tell us",
+    "Appelez le restaurant":"Call the restaurant",
+    "Appeler pour réserver":"Call to book",
+    "Ouvert 7j/7 · 9h-2h · Réponse immédiate, sans engagement":"Open 7/7 · 9am–2am · Instant answer, no commitment",
     "Accueil":"Home",
     "Carte":"Menu",
     "La carte":"Menu",
@@ -2620,6 +2539,15 @@ const TRANSLATIONS = {
     "© 2026 Luis Moreno-Ugena — Tous droits réservés.":"© 2026 Luis Moreno-Ugena — All rights reserved."
   },
   it: {
+    "Réservation":"Prenotazione",
+    "Réservez par téléphone":"Prenota per telefono",
+    "Un seul numéro, une réponse tout de suite : la réservation se fait directement avec notre équipe. Votre table est confirmée en quelques secondes.":"Un solo numero, una risposta immediata: la prenotazione si fa direttamente con il nostro team. Il tuo tavolo è confermato in pochi secondi.",
+    "Confirmation immédiate de votre table":"Conferma immediata del tuo tavolo",
+    "Terrasse, salle ou groupe : on trouve la meilleure place":"Terrazza, sala o gruppo: troviamo il posto migliore",
+    "Allergies, anniversaire, demande spéciale ? Dites-le-nous":"Allergie, compleanno, richiesta speciale? Basta dircelo",
+    "Appelez le restaurant":"Chiama il ristorante",
+    "Appeler pour réserver":"Chiama per prenotare",
+    "Ouvert 7j/7 · 9h-2h · Réponse immédiate, sans engagement":"Aperto 7/7 · 9–2 · Risposta immediata, senza impegno",
     "Accueil":"Home",
     "Carte":"Menu",
     "La carte":"Menu",
@@ -2739,6 +2667,15 @@ const TRANSLATIONS = {
     "© 2026 Luis Moreno-Ugena — Tous droits réservés.":"© 2026 Luis Moreno-Ugena — Tutti i diritti riservati."
   },
   es: {
+    "Réservation":"Reservar",
+    "Réservez par téléphone":"Reserva por teléfono",
+    "Un seul numéro, une réponse tout de suite : la réservation se fait directement avec notre équipe. Votre table est confirmée en quelques secondes.":"Un solo número, respuesta inmediata: la reserva se hace directamente con nuestro equipo. Tu mesa queda confirmada en segundos.",
+    "Confirmation immédiate de votre table":"Confirmación inmediata de tu mesa",
+    "Terrasse, salle ou groupe : on trouve la meilleure place":"Terraza, sala o grupo: encontramos el mejor sitio",
+    "Allergies, anniversaire, demande spéciale ? Dites-le-nous":"¿Alergias, cumpleaños, petición especial? Solo dínoslo",
+    "Appelez le restaurant":"Llama al restaurante",
+    "Appeler pour réserver":"Llamar para reservar",
+    "Ouvert 7j/7 · 9h-2h · Réponse immédiate, sans engagement":"Abierto 7/7 · 9h–2h · Respuesta inmediata, sin compromiso",
     "Accueil":"Inicio",
     "Carte":"Carta",
     "La carte":"Carta",
